@@ -1,0 +1,11 @@
+export const getUserFirstName = (state) => state.auth.firstName;
+export const getUserLastName = (state) => state.auth.lastName;
+export const getUserNumber = (state) => state.auth.number;
+export const getUserEmail = (state) => state.auth.email;
+export const getUserToken = (state) => state.auth.token;
+export const getIsLoggedIn = (state) => state.auth.isLoggedIn;
+export const getIsRefreshing = (state) => state.auth.isRefreshing;
+export const getIsRegister = (state) => state.auth.isRegister;
+export const getIsAdmin = (state) => state.auth.isAdmin;
+export const getOptUser = (state) => state.auth.optUser;
+export const getUserId = (state) => state.auth.id;

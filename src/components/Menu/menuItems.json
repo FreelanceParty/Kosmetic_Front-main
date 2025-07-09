@@ -1,0 +1,501 @@
+[
+	{
+		"level":    1,
+		"to":       "#category",
+		"text":     "категорії",
+		"children": [
+			{
+				"level":    2,
+				"to":       "/category/facial",
+				"text":     "догляд для обличчя",
+				"children": [
+					{
+						"level":    3,
+						"to":       "/category/facial/masks",
+						"text":     "Маски для обличчя",
+						"children": [
+							{
+								"to":       "/category/facial/masks/alginateMasks",
+								"text":     "Альгінатні маски",
+								"children": []
+							},
+							{
+								"to":       "/category/facial/masks/fabricMask",
+								"text":     "Тканинні маски",
+								"children": []
+							},
+							{
+								"to":       "/category/facial/masks/nightMask",
+								"text":     "Нічні маски",
+								"children": []
+							},
+							{
+								"to":       "/category/facial/masks/hydroagelMasks",
+								"text":     "Гідрогелеві маски",
+								"children": []
+							},
+							{
+								"to":       "/category/facial/masks/mask-fyilm",
+								"text":     "Маска-плівка",
+								"children": []
+							},
+							{
+								"to":       "/category/facial/masks/clayMasks",
+								"text":     "Глиняні маски",
+								"children": []
+							}
+						]
+					},
+					{
+						"level":    3,
+						"to":       "/category/facial/moisturizing",
+						"text":     "зволоження",
+						"children": [
+							{
+								"level":    4,
+								"to":       "/category/facial/moisturizing/cream",
+								"text":     "крем для обличчя",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/moisturizing/balm",
+								"text":     "бальзам для обличчя",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/moisturizing/geel",
+								"text":     "гель для обличчя",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/moisturizing/bridge",
+								"text":     "міст для обличчя",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/moisturizing/serum",
+								"text":     "сироватка для обличчя",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/moisturizing/toner",
+								"text":     "тонер",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/moisturizing/padu",
+								"text":     "пади для обличчя",
+								"children": []
+							}
+						]
+					},
+					{
+						"level":    3,
+						"to":       "/category/facial/cleaning",
+						"text":     "очищення",
+						"children": [
+							{
+								"level":    4,
+								"to":       "/category/facial/cleaning/enzymePowder",
+								"text":     "ензимна пудра",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/cleaning/washingFoam",
+								"text":     "пінка для вмивання",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/cleaning/hydrophilicOil",
+								"text":     "гідрофільна олія",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/cleaning/scrub",
+								"text":     "скраб для обличчя",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/cleaning/peelingGel",
+								"text":     "пілінг гель",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/cleaning/cleansingBalm",
+								"text":     "бальзам для очищення",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/cleaning/demaciaj",
+								"text":     "демакіяж",
+								"children": []
+							}
+						]
+					},
+					{
+						"level":    3,
+						"to":       "/category/facial/lipCare",
+						"text":     "догляд за губами",
+						"children": [
+							{
+								"level":    4,
+								"to":       "/category/facial/lipCare/lipBalm",
+								"text":     "бальзам для губ",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/lipCare/lipMask",
+								"text":     "маска для губ",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/lipCare/lipScrub",
+								"text":     "скраб для губ",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/lipCare/lipOil",
+								"text":     "олія для губ",
+								"children": []
+							}
+						]
+					},
+					{
+						"level":    3,
+						"to":       "/category/facial/forSkinUnderTheEyes",
+						"text":     "для шкіри під очима",
+						"children": [
+							{
+								"level":    4,
+								"to":       "/category/facial/forSkinUnderTheEyes/creamUnderTheEyes",
+								"text":     "крем під очі",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/forSkinUnderTheEyes/serumUnderTheEyes",
+								"text":     "сироватка під очі",
+								"children": []
+							},
+							{
+								"level":    4,
+								"to":       "/category/facial/forSkinUnderTheEyes/patches",
+								"text":     "патчі",
+								"children": []
+							}
+						]
+					}
+				]
+			},
+			{
+				"level":    2,
+				"to":       "/category/makeup",
+				"text":     "макіяж",
+				"children": [
+					{
+						"to":       "/category/makeup/forFace",
+						"text":     "для лиця",
+						"children": [
+							{
+								"to":       "/category/makeup/forFace/bbCream",
+								"text":     "ББ крем",
+								"children": []
+							},
+							{
+								"to":       "/category/makeup/forFace/ssCream",
+								"text":     "СС крем",
+								"children": []
+							},
+							{
+								"to":       "/category/makeup/forFace/tint",
+								"text":     "Тональний крем",
+								"children": []
+							},
+							{
+								"to":       "/category/makeup/forFace/powder",
+								"text":     "Пудра",
+								"children": []
+							},
+							{
+								"to":       "/category/makeup/forFace/killed",
+								"text":     "Кушон",
+								"children": []
+							},
+							{
+								"to":       "/category/makeup/forFace/rouge",
+								"text":     "Рум'яна",
+								"children": []
+							}
+						]
+					},
+					{
+						"to":       "/category/makeup/forEyes",
+						"text":     "для очей",
+						"children": [
+							{
+								"to":       "/category/makeup/forEyes/inadvertently",
+								"text":     "туш",
+								"children": []
+							},
+							{
+								"to":       "/category/makeup/forEyes/eyeliner",
+								"text":     "підводка для очей",
+								"children": []
+							},
+							{
+								"to":       "/category/makeup/forEyes/concealer",
+								"text":     "консилер",
+								"children": []
+							}
+						]
+					},
+					{
+						"to":       "/category/makeup/forLips",
+						"text":     "для губ",
+						"children": [
+							{
+								"to":       "/category/makeup/forLips/lipTint",
+								"text":     "тінт для губ",
+								"children": []
+							}
+						]
+					}
+				]
+			},
+			{
+				"level":    2,
+				"to":       "/category/hairCare",
+				"text":     "догляд для волосся",
+				"children": [
+					{
+						"to":       "/category/hairCare/shampoos",
+						"text":     "Шампуні",
+						"children": [
+							{
+								"to":       "/category/hairCare/shampoos/dryShampoo",
+								"text":     "Сухий шампунь",
+								"children": []
+							}
+						]
+					},
+					{
+						"to":       "/category/hairCare/airConditioners",
+						"text":     "Кондиціонери",
+						"children": []
+					},
+					{
+						"to":       "/category/hairCare/forTheScalp",
+						"text":     "Для шкіри голови",
+						"children": []
+					},
+					{
+						"to":       "/category/hairCare/additionalCare",
+						"text":     "Додатковий догляд",
+						"children": [
+							{
+								"to":       "/category/hairCare/additionalCare/hairMasks",
+								"text":     "Маски для волосся",
+								"children": []
+							},
+							{
+								"to":       "/category/hairCare/additionalCare/hairEmulsions",
+								"text":     "Емульсії для волосся",
+								"children": []
+							},
+							{
+								"to":       "/category/hairCare/additionalCare/hairFillers",
+								"text":     "Філери для волосся",
+								"children": []
+							},
+							{
+								"to":       "/category/hairCare/additionalCare/hairOil",
+								"text":     "Олія для волосся",
+								"children": []
+							},
+							{
+								"to":       "/category/hairCare/additionalCare/hairSpray",
+								"text":     "Спрей для волосся",
+								"children": []
+							},
+							{
+								"to":       "/category/hairCare/additionalCare/hairSerum",
+								"text":     "Сироватки для волосся",
+								"children": []
+							}
+						]
+					}
+				]
+			},
+			{
+				"level":    2,
+				"to":       "/category/bodyCare",
+				"text":     "догляд для тіла",
+				"children": [
+					{
+						"to":       "/category/bodyCare/handCosmetics",
+						"text":     "Косметика для рук",
+						"children": [
+							{
+								"to":       "/category/bodyCare/handCosmetics/handCream",
+								"text":     "Крем для рук",
+								"children": []
+							}
+						]
+					},
+					{
+						"to":       "/category/bodyCare/bodyCream",
+						"text":     "Крем для тіла",
+						"children": []
+					},
+					{
+						"to":       "/category/bodyCare/bodyFoam",
+						"text":     "Пінка для тіла",
+						"children": []
+					},
+					{
+						"to":       "/category/bodyCare/bodyLotion",
+						"text":     "Лосьйон для тіла",
+						"children": []
+					},
+					{
+						"to":       "/category/bodyCare/soulGel",
+						"text":     "Гель для душу",
+						"children": []
+					},
+					{
+						"to":       "/category/bodyCare/deodorant",
+						"text":     "Дезодорант",
+						"children": []
+					}
+				]
+			},
+			{
+				"level":    2,
+				"to":       "/category/careAccessories",
+				"text":     "аксесуари для догляду",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/category/sunProtection",
+				"text":     "захист від сонця",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/category/samples",
+				"text":     "пробники",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/category/folds",
+				"text":     "набори",
+				"children": []
+			}
+		]
+	},
+	{
+		"level":    1,
+		"to":       "/brands",
+		"text":     "бренди",
+		"children": [
+			{
+				"level":    2,
+				"to":       "/brands/daengGiMeoRi",
+				"text":     "Daeng Gi MeoRi",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/brands/lador",
+				"text":     "Lador",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/brands/drJart",
+				"text":     "Dr. Jart+",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/brands/beautyOfJoseon",
+				"text":     "Beauty Of Joseon",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/brands/missha",
+				"text":     "Missha",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/brands/mediPeel",
+				"text":     "Medi-Peel",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/brands/estheticHouse",
+				"text":     "Esthetic House",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/brands/purito",
+				"text":     "Purito",
+				"children": []
+			},
+			{
+				"level":    2,
+				"to":       "/brands/masil",
+				"text":     "Masil",
+				"children": []
+			}
+		]
+	},
+	{
+		"level":      1,
+		"to":         "/news",
+		"text":       "новинки",
+		"textMobile": "нове постачання",
+		"children":   []
+	},
+	{
+		"level":      1,
+		"to":         "/discount",
+		"text":       "акції",
+		"textMobile": "товари зі зниженою ціною",
+		"children":   []
+	},
+	{
+		"level":      1,
+		"to":         "/wholesaleProgram",
+		"text":       "клієнтам",
+		"textMobile": "клієнтам",
+		"children":   []
+	},
+	{
+		"level":    1,
+		"to":       "#contacts",
+		"text":     "контакти",
+		"children": []
+	}
+]
