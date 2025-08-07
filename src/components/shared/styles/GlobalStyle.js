@@ -60,15 +60,6 @@ export const GlobalStyle = createGlobalStyle`
 	input {
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	}
-	.hidden {
-		opacity:     0;
-		overflow:    hidden;
-		height:      0;
-		width:       0;
-		padding:     0;
-		margin:      0;
-		line-height: 0;
-	}
 	.WrapListProduct {
 		transition: transform 0.5s linear;
 	}

@@ -20,6 +20,7 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import {useMedia} from "./utils/hooks/useMedia";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import {PrivateRoute, PrivateAdminRoute} from "./modules/PrivateRoutes/PrivateRoutse";
+import CooperationPage from "./pages/CooperationPage/CooperationPage";
 
 function App() {
 	const {isMobileScreen} = useMedia();
@@ -36,6 +37,14 @@ function App() {
 						</Suspense>
 					}
 				>
+					<Route
+						path="cooperation"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<CooperationPage/>
+							</Suspense>
+						}
+					/>
 					<Route
 						index
 						element={
