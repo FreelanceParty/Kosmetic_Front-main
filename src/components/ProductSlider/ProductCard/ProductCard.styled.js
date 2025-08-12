@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const CardWrapper = styled.div`
-  width: 160px;
+  width: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,8 +16,8 @@ export const CardWrapper = styled.div`
   }
 `;
 export const CardImageWrap = styled.div`
-	width:      160px;
-	height:     160px;
+	width:      280px;
+	height:     280px;
 	padding:    30px;
 	position:   relative;
 	background: ${(p) => p.theme.colors.neutural_ligth_gray};

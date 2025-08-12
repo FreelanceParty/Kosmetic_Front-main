@@ -22,8 +22,8 @@ import {
 	AmountRed,
 } from "./ProductCard.styled";
 
-import HeartIcon from "../../../assets/icons/slider/heart.svg";
-import HeartEmptyIcon from "../../../assets/icons/slider/heart-2.svg";
+import HeartIcon from "../../../assets/icons/heart-filled.svg";
+import HeartEmptyIcon from "../../../assets/icons/heart-empty.svg";
 import BuyIcon from "../../../assets/icons/buy.svg";
 
 const ProductCard = ({

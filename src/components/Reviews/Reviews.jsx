@@ -121,7 +121,7 @@ const Reviews = () => {
 												<HeartIcon
 													key={index}
 													src={
-														require("../../assets/icons/reviews/heart.svg")
+														require("../../assets/icons/heart-filled.svg")
 															.default
 													}
 													alt="heart"

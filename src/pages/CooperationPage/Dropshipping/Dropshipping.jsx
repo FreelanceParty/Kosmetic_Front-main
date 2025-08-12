@@ -1,6 +1,6 @@
 import CooperationList from "../_elements/CooperationList";
 import {MainTitle, SecondaryTitle} from "../CooperationPage.styled";
-import Button from "../_elements/Button/Button";
+import Button from "../../../components/ButtonNew/Button";
 
 const Dropshipping = () => {
 	const orderConditionsListItems = [

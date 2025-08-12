@@ -1,0 +1,38 @@
+import {useEffect} from "react";
+
+export function Popup({isOpen, content, onClose}) {
+	useEffect(() => {
+		if (isOpen) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "";
+		}
+		return () => {
+			document.body.style.overflow = "";
+		};
+	}, [isOpen]);
+
+	if (!isOpen) {
+		return null;
+	}
+
+	const handleContentClick = (e) => {
+		e.stopPropagation();
+	};
+
+	return (
+		<div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-hidden" onClick={onClose}>
+			<div className="bg-white w-fit" onClick={handleContentClick}>
+				<div className="flex justify-end pt-5 pr-5">
+					<button
+						className="text-gray-500 hover:text-black"
+						onClick={onClose}
+					>
+						✖
+					</button>
+				</div>
+				{content}
+			</div>
+		</div>
+	);
+}
