@@ -21,8 +21,8 @@ export function Popup({isOpen, content, onClose}) {
 	};
 
 	return (
-		<div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-hidden" onClick={onClose}>
-			<div className="bg-white w-fit" onClick={handleContentClick}>
+		<div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-hidden p-3 md:p-0" onClick={onClose}>
+			<div className="bg-white max-w-fit" onClick={handleContentClick}>
 				<div className="flex justify-end pt-5 pr-5">
 					<button
 						className="text-gray-500 hover:text-black"

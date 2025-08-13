@@ -5,7 +5,6 @@ export function usePopup() {
 	const [content, setContent] = useState(null);
 
 	const openPopup = (popupContent) => {
-		console.log('+')
 		setContent(popupContent);
 		setIsOpen(true);
 	};
