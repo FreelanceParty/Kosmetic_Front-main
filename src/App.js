@@ -134,7 +134,7 @@ function App() {
 						}
 					/>
 					<Route
-						path="kliientam"
+						path="about-us"
 						element={
 							<Suspense fallback={<Loader/>}>
 								<AboutUsPage/>
