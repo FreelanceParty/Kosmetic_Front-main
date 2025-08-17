@@ -41,7 +41,6 @@ const MenuItem = styled.li`
 
 export const MenuLink = styled(NavLink)`
 	text-decoration: none;
-	font-family:     "Mulish", sans-serif;
 	font-weight:     400;
 	font-size:       16px;
 	line-height:     1.02312;

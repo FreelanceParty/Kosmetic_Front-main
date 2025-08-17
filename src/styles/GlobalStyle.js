@@ -5,7 +5,6 @@ export const GlobalStyle = createGlobalStyle`
 	html,
 	body {
 		height:                  100%;
-		font-family:             'Mulish', sans-serif;
 		font-size:               18px;
 		font-weight:             400;
 		line-height:             1;
@@ -21,10 +20,6 @@ export const GlobalStyle = createGlobalStyle`
 	}
 	body.modal-open {
 		overflow: hidden;
-	}
-	code {
-		font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-		             monospace;
 	}
 	*,
 	::after,

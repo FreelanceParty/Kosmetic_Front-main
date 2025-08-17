@@ -38,7 +38,6 @@ export const Elips = styled.div`
 `;
 
 export const TitleSale = styled.p`
-  font-family: "Mulish", sans-serif;
   font-weight: 600;
   font-size: 17px;
   line-height: 1.079;
@@ -69,7 +68,6 @@ export const TitleSale = styled.p`
   }
 `;
 export const TitleNew = styled.p`
-  font-family: "Mulish", sans-serif;
   font-weight: 600;
   font-size: 17px;
   line-height: 1.079;

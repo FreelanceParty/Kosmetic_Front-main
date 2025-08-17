@@ -37,7 +37,6 @@ export const MobileMenuContainer = styled(Menu)`
 
 // export const MobileMenuItem = styled.div`
 //   /* a {
-//     font-family: "Mulish", sans-serif;
 //     font-weight: 300;
 //     font-size: 14px;
 //     line-height: 1.57;
@@ -53,7 +52,6 @@ export const MobileMenuContainer = styled(Menu)`
 // `;
 
 export const AuthenticatedLink = styled(Link)`
-  font-family: "Mulish", sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 1.57;
@@ -70,7 +68,6 @@ export const AuthenticatedLink = styled(Link)`
 `;
 
 export const InfoLink = styled.a`
-  font-family: "Mulish", sans-serif;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.57;
@@ -86,7 +83,6 @@ export const InfoLink = styled.a`
   }
 `;
 export const ContactBtn = styled.button`
-  font-family: "Mulish", sans-serif;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.57;

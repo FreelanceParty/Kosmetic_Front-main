@@ -45,7 +45,6 @@ export const CardTag = styled.div`
 
   color: ${(p) => p.theme.colors.primary_text};
   font-size: 10px;
-  font-family: Montserrat;
   font-weight: 500;
   text-transform: uppercase;
   line-height: 14px;
@@ -58,7 +57,6 @@ export const CardInfo = styled.div`
 export const CardBrand = styled.div`
   color: ${(p) => p.theme.colors.primary_text};
   font-size: 12px;
-  font-family: Montserrat;
   font-weight: 600;
   text-transform: uppercase;
   line-height: 16.8px;
@@ -69,7 +67,6 @@ export const CardBrand = styled.div`
 export const CardDesc = styled.div`
   color: ${(p) => p.theme.colors.primary_text};
   font-size: 12px;
-  font-family: Montserrat;
   font-weight: 400;
   line-height: 16.8px;
   word-wrap: break-word;
@@ -93,7 +90,6 @@ export const CardRatingImg = styled.img`
 export const CardReviews = styled.span`
   color: ${(p) => p.theme.colors.primary_text};
   font-size: 10px;
-  font-family: Montserrat;
   font-weight: 400;
   line-height: 14px;
   word-wrap: break-word;
@@ -114,7 +110,6 @@ export const CardPriceBlock = styled.div`
 export const CardOldPrice = styled.span`
   color: var(--primary-text, #000e55);
   font-size: 10px;
-  font-family: Montserrat;
   font-weight: 400;
   /* text-decoration: line-through; */
   line-height: 14px;
@@ -128,7 +123,6 @@ export const CardNewPrice = styled.span`
   color: ${(p) =>
     p.sale ? p.theme.colors.accent_red : p.theme.colors.primary_text};
   font-size: 14px;
-  font-family: Montserrat;
   font-weight: 700;
   line-height: 19.6px;
   word-wrap: break-word;
@@ -137,7 +131,6 @@ export const CardNewPrice = styled.span`
 export const CardBuyButton = styled.button`
   background: ${(p) => p.theme.colors.button_buy};
   color: #fff;
-  font-family: "Montserrat", sans-serif;
   font-weight: 600;
   font-size: 14px;
   border: none;
@@ -159,7 +152,6 @@ export const BuyButtonImg = styled.img`
 export const AmountGreen = styled.span`
   color: ${(p) => p.theme.colors.accent_green};
   font-size: 10px;
-  font-family: Montserrat;
   font-weight: 400;
   line-height: 14px;
   word-wrap: break-word;
@@ -167,7 +159,6 @@ export const AmountGreen = styled.span`
 export const AmountRed = styled.span`
   color: ${(p) => p.theme.colors.accent_red};
   font-size: 10px;
-  font-family: Montserrat;
   font-weight: 400;
   line-height: 14px;
   word-wrap: break-word;

@@ -16,7 +16,6 @@ export const Item = styled.li`
 
 export const LinkStyle = styled(NavLink)`
 	text-decoration: none;
-	font-family:     "Mulish", sans-serif;
 	font-weight:     400;
 	font-size:       16px;
 	line-height:     1.02312;
@@ -68,8 +67,6 @@ export const RightIcon = styled(AiOutlineRight)`
 
 export const ContactLink = styled.a`
   text-decoration: none;
-
-  font-family: "Mulish", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.02312;
@@ -203,7 +200,6 @@ export const ItemBrands = styled.li`
   }
 `;
 export const BrandLetter = styled.h3`
-  font-family: "Mulish", sans-serif;
   font-weight: 700;
   font-size: 20px;
   line-height: 1.02312;
@@ -224,7 +220,6 @@ export const ListBrand = styled.ul`
 
 // ______________brand_______________
 export const LinkBrand = styled(NavLink)`
-  font-family: "Mulish", sans-serif;
   font-weight: 700;
   font-size: 12px;
   line-height: 1.02312;

@@ -46,7 +46,6 @@ import styled from "styled-components";
 //   }
 // `;
 // export const ScheduleTitle = styled.h4`
-//   font-family: "Mulish", sans-serif;
 //   font-weight: 600;
 //   font-size: 12px;
 //   line-height: 1.03;
@@ -60,7 +59,6 @@ import styled from "styled-components";
 //   }
 // `;
 // export const ScheduleText = styled.p`
-//   font-family: "Mulish", sans-serif;
 //   font-weight: 400;
 //   font-size: 12px;
 //   line-height: 1.03;
@@ -97,7 +95,6 @@ export const Logo = styled.a`
 
 export const LogoText = styled.span`
 	font-size:   26.1px;
-	font-family: Montserrat;
 	font-weight: 600;
 	line-height: 36.53px;
 	word-wrap:   break-word;
@@ -125,7 +122,6 @@ export const SocialLink = styled.a`
 	text-decoration: none;
 	color:           ${(p) => p.theme.colors.primary_text};
 	font-size:       8px;
-	font-family:     Montserrat;
 	font-weight:     500;
 	text-transform:  uppercase;
 	line-height:     11.2px;
@@ -150,7 +146,6 @@ export const FooterNav = styled.nav`
 export const FooterNavLink = styled(NavLink)`
 	color:           ${(p) => p.theme.colors.primary_text};
 	font-size:       14px;
-	font-family:     Montserrat;
 	font-weight:     400;
 	line-height:     19.6px;
 	word-wrap:       break-word;
@@ -165,7 +160,6 @@ export const FooterNavLink = styled(NavLink)`
 export const Copyright = styled.div`
 	color:       ${(p) => p.theme.colors.primary_text};
 	font-size:   10px;
-	font-family: Montserrat;
 	font-weight: 400;
 	line-height: 14px;
 	word-wrap:   break-word;

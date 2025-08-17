@@ -24,7 +24,6 @@ export const ReviewsSection = styled.section`
 `;
 
 export const ReviewsTitle = styled.h2`
-  font-family: Montserrat;
   text-align: center;
   text-transform: uppercase;
   color: ${(p) => p.theme.colors.primary_text};
@@ -85,7 +84,6 @@ export const ProductInfo = styled.div`
 export const BrandName = styled.span`
   color: ${(p) => p.theme.colors.primary_text};
   font-size: 16px;
-  font-family: Montserrat;
   font-weight: 600;
   line-height: 22.4px;
   word-wrap: break-word;
@@ -94,7 +92,6 @@ export const BrandName = styled.span`
 export const ProductName = styled.h3`
   color: ${(p) => p.theme.colors.primary_text};
   font-size: 16px;
-  font-family: Montserrat;
   font-weight: 400;
   line-height: 22.4px;
   word-wrap: break-word;
@@ -123,7 +120,6 @@ export const ReviewWrap = styled.div`
 export const ReviewerName = styled.span`
   color: ${(p) => p.theme.colors.primary_text};
   font-size: 16px;
-  font-family: Montserrat;
   font-weight: 600;
   line-height: 22.4px;
   word-wrap: break-word;
@@ -132,7 +128,6 @@ export const ReviewerName = styled.span`
 export const ReviewDate = styled.span`
   color: ${(p) => p.theme.colors.primary_text};
   font-size: 16px;
-  font-family: Montserrat;
   font-weight: 400;
   line-height: 22.4px;
   word-wrap: break-word;
@@ -141,7 +136,6 @@ export const ReviewDate = styled.span`
 export const ReviewText = styled.p`
   color: ${(p) => p.theme.colors.primary_text};
   font-size: 16px;
-  font-family: Montserrat;
   font-weight: 400;
   line-height: 22.4px;
   word-wrap: break-word;

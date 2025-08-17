@@ -19,7 +19,6 @@ export const TitleLine = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-family: "Mulish", sans-serif;
   font-weight: 700;
   font-size: 28px;
   line-height: 1.09;

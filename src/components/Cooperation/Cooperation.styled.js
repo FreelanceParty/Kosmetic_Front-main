@@ -12,7 +12,6 @@ export const CoopWrapper = styled.section`
 export const CoopTitle = styled.h2`
 	color:          ${(p) => p.theme.colors.primary_text};
 	font-size:      18px;
-	font-family:    Montserrat;
 	font-weight:    600;
 	text-transform: uppercase;
 	line-height:    25.2px;
@@ -46,7 +45,6 @@ export const CoopContent = styled.div`
 export const CoopSubtitle = styled.div`
 	color:          #000E55;
 	font-size:      16px;
-	font-family:    Montserrat;
 	font-weight:    700;
 	text-transform: uppercase;
 	line-height:    22.4px;
@@ -79,7 +77,6 @@ export const CoopIcon = styled.img`
 export const CoopText = styled.span`
 	color:          #000E55;
 	font-size:      16px;
-	font-family:    Montserrat;
 	font-weight:    500;
 	text-transform: uppercase;
 	line-height:    22.4px;
@@ -95,7 +92,6 @@ export const CoopButton = styled.a`
 	display:         flex;
 	color:           ${(p) => p.theme.colors.white};
 	font-size:       18px;
-	font-family:     Montserrat;
 	font-weight:     500;
 	text-transform:  uppercase;
 	line-height:     25.2px;

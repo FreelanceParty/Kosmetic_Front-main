@@ -11,7 +11,6 @@ export const AboutUsContainer = styled.div`
 `;
 
 export const Title = styled.h2`
-	font-family:    "Mulish", sans-serif;
 	font-weight:    700;
 	font-size:      17px;
 	line-height:    1.079;
@@ -31,7 +30,6 @@ export const Title = styled.h2`
 `;
 
 export const SubTitle = styled.h3`
-	font-family:   "Mulish", sans-serif;
 	font-weight:   600;
 	font-size:     15px;
 	line-height:   1.09;
@@ -47,7 +45,6 @@ export const SubTitle = styled.h3`
 	}
 `;
 export const SubTitleBold = styled.h3`
-	font-family:   "Mulish", sans-serif;
 	font-weight:   700;
 	font-size:     15px;
 	line-height:   1.09;
@@ -63,7 +60,6 @@ export const SubTitleBold = styled.h3`
 	}
 `;
 export const SubTitleSpan = styled.span`
-	font-family: "Mulish", sans-serif;
 	font-weight: 600;
 	font-size:   15px;
 	line-height: 1.09;
@@ -78,7 +74,6 @@ export const SubTitleSpan = styled.span`
 `;
 
 export const Text = styled.p`
-	font-family:   "Mulish", sans-serif;
 	font-weight:   300;
 	font-size:     15px;
 	line-height:   1.079;
@@ -132,7 +127,6 @@ export const Link = styled.a`
 `;
 
 export const LinkToSaleProgram = styled.a`
-	font-family:     "Mulish", sans-serif;
 	font-weight:     700;
 	font-size:       12px;
 	line-height:     1.09;
@@ -161,7 +155,6 @@ export const LinkToSaleProgram = styled.a`
 `;
 
 export const OpenOptRegisterWindow = styled.button`
-	font-family:     "Mulish", sans-serif;
 	font-weight:     900;
 	font-size:       17px;
 	line-height:     1.09;
@@ -267,7 +260,6 @@ export const IconWraper = styled.div`
 `;
 
 export const BenefitsTextP = styled.p`
-	font-family:    "Mulish", sans-serif;
 	font-weight:    600;
 	font-size:      14px;
 	line-height:    1.079;

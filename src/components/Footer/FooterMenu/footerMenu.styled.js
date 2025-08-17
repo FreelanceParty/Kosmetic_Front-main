@@ -14,7 +14,6 @@ export const TitleWrap = styled.div`
 	margin-bottom: 5px;
 `;
 export const Title = styled.h3`
-	font-family:    "Mulish", sans-serif;
 	color:          #616161;
 	font-weight:    700;
 	font-size:      12px;
@@ -48,9 +47,7 @@ export const Item = styled.li`
 
 export const LinkStyled = styled(NavLink)`
 	position:        relative;
-	/* font-family: "Noto Sans", sans-serif; */
 	text-decoration: none;
-	font-family:     "Mulish", sans-serif;
 	font-weight:     400;
 	font-size:       12px;
 	line-height:     1.03;
@@ -91,9 +88,7 @@ export const LinkStyled = styled(NavLink)`
 
 export const CategoryLink = styled.a`
 	position:        relative;
-	/* font-family: "Noto Sans", sans-serif; */
 	text-decoration: none;
-	font-family:     "Mulish", sans-serif;
 	font-weight:     400;
 	font-size:       12px;
 	line-height:     1.03;

@@ -8,7 +8,6 @@ export const ButtonStyle = styled.button`
 	text-align:       center;
 	justify-content:  center;
 	align-items:      center;
-	font-family:      "Mulish", sans-serif;
 	font-weight:      ${(p) => p.theme.fontWeights.bold};
 	font-size:        12px;
 	text-decoration:  none;

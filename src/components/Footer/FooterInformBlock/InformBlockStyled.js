@@ -16,7 +16,6 @@ export const TitleWrap = styled.div`
 `;
 
 export const Title = styled.h3`
-	font-family:    "Mulish", sans-serif;
 	color:          #616161;
 	font-weight:    700;
 	font-size:      12px;
@@ -55,7 +54,6 @@ export const LinkStyledSecond = styled.a`
   font-style: normal;
   font-weight: ${(p) => p.theme.fontWeights.body};
   line-height: 1; */
-	font-family:     "Mulish", sans-serif;
 	font-weight:     400;
 	font-size:       12px;
 	line-height:     1.03;
@@ -104,7 +102,6 @@ export const LinkStyled = styled(Link)`
   font-style: normal;
   font-weight: ${(p) => p.theme.fontWeights.body};
   line-height: 1; */
-	font-family:     "Mulish", sans-serif;
 	font-weight:     400;
 	font-size:       12px;
 	line-height:     1.03;

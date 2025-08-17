@@ -8,7 +8,6 @@ export const LinkLogo = styled(Link)`
   margin: 0px 12px;
 `;
 export const TextLogo = styled.p`
-	font-family:             "Mulish", sans-serif;
 	font-weight:             700;
 	font-size:               27px;
 	line-height:             1.03;
@@ -31,7 +30,6 @@ export const TextLogo = styled.p`
 	}
 `;
 export const TextLogoSecondWord = styled.p`
-  font-family: "Mulish", sans-serif;
   font-weight: 700;
   font-size: 27px;
   line-height: 1.03;

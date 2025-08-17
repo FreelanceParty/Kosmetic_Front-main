@@ -101,7 +101,6 @@ export const BrandItem = styled.li`
 `;
 
 export const Title = styled.h3`
-  font-family: "Mulish", sans-serif;
   font-weight: 700;
   font-size: 20px;
   line-height: 1.02312;
@@ -124,7 +123,6 @@ export const BrandCard = styled.div`
 `;
 
 export const BrandName = styled(NavLink)`
-  font-family: "Mulish", sans-serif;
   font-weight: 700;
   font-size: 12px;
   line-height: 1.02312;

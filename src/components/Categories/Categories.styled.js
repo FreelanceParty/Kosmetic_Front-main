@@ -12,7 +12,6 @@ export const CategoriesWrapper = styled.section`
 export const CategoriesTitle = styled.h2`
 	color:          ${(p) => p.theme.colors.primary_text};
 	font-size:      18px;
-	font-family:    Montserrat;
 	font-weight:    600;
 	text-transform: uppercase;
 	line-height:    25.2px;
@@ -74,7 +73,6 @@ export const CategoryName = styled.div`
 	border-radius:   30px;
 	color:           ${(p) => p.theme.colors.primary_text};
 	font-size:       12px;
-	font-family:     Montserrat;
 	font-weight:     500;
 	text-transform:  uppercase;
 	line-height:     16.8px;

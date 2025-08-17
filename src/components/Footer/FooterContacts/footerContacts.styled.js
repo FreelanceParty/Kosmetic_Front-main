@@ -20,7 +20,6 @@ export const TitleWrap = styled.div`
 	/* margin-bottom: 5px; */
 `;
 export const Title = styled.h3`
-	font-family:    "Mulish", sans-serif;
 	color:          #616161;
 	font-weight:    700;
 	font-size:      12px;

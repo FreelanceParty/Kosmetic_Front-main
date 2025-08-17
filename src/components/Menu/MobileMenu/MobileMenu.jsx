@@ -57,7 +57,6 @@ const NavItem = styled.li`
   padding: 7px 0;
 `;
 const NavLinkStyled = styled(NavLink)`
-  font-family: "Mulish", sans-serif;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.57;
@@ -75,7 +74,6 @@ const NavLinkStyled = styled(NavLink)`
   }
 `;
 const LinkStyled = styled.a`
-  font-family: "Mulish", sans-serif;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.57;
@@ -92,7 +90,6 @@ const LinkStyled = styled.a`
   }
 `;
 const AnchorStyled = styled.a`
-  font-family: "Mulish", sans-serif;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.57;
@@ -125,7 +122,6 @@ const SubMenu = styled.ul`
   padding-top: 8px;
 `;
 export const BrandStyleLink = styled(NavLink)`
-  font-family: "Mulish", sans-serif;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.57;

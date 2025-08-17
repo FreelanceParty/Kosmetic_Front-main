@@ -17,7 +17,7 @@ const Footer = () => {
 					<SocialMediaListMobile/>
 				</div>
 				<div className="flex flex-col gap-[60px] pt-8">
-					<div className="flex flex-col gap-6">
+					<div className="flex flex-col gap-6 text-[14px] leading-[10px]">
 						<a href="/about-us">Про нас</a>
 						<a href="/cooperation">Оптова співпраця</a>
 						<a href="/">Оплата і доставка</a>

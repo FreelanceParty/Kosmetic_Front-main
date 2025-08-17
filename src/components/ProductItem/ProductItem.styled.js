@@ -110,7 +110,6 @@ export const Content = styled.div`
   }
 `;
 export const BrandName = styled.p`
-  font-family: "Mulish", sans-serif;
   font-weight: 700;
   font-size: 10px;
   line-height: 1.079;
@@ -132,7 +131,6 @@ export const BrandName = styled.p`
 `;
 
 export const Name = styled.p`
-  font-family: "Mulish", sans-serif;
   font-weight: 400;
   font-size: 10px;
   line-height: 1.079;
@@ -170,7 +168,6 @@ export const PriceWrap = styled.div`
 `;
 
 export const PriceName = styled.p`
-  font-family: "Mulish", sans-serif;
   font-weight: 700;
   font-size: 10px;
   line-height: 1.079;
@@ -193,7 +190,6 @@ export const PriceName = styled.p`
 `;
 
 export const Available = styled.p`
-  font-family: "Mulish", sans-serif;
   font-weight: 400;
   font-size: 10px;
   line-height: 1.09;
@@ -215,7 +211,6 @@ export const Available = styled.p`
 `;
 
 export const Price = styled.p`
-  font-family: "Mulish", sans-serif;
   font-weight: 900;
   font-size: ${(p) => p.theme.fontSizes.sm}px;
   line-height: 1.079;
@@ -241,7 +236,6 @@ export const Price = styled.p`
   }
 `;
 export const PriceSale = styled.p`
-  font-family: "Mulish", sans-serif;
   font-weight: 700;
   font-size: 8px;
   line-height: 1.079;
@@ -315,7 +309,6 @@ export const CounterBlock = styled.div`
 `;
 export const InputIncDec = styled.input`
   text-align: center;
-  font-family: monospace;
   outline: none;
   color: ${(p) => p.theme.colors.textColor};
   border: 0;

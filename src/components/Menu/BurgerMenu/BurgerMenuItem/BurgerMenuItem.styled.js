@@ -12,7 +12,6 @@ export const LinkWrap = styled.div`
 `;
 
 export const StyleLink = styled(NavLink)`
-	font-family:     "Mulish", sans-serif;
 	font-weight:     300;
 	font-size:       14px;
 	line-height:     1.57;
@@ -33,7 +32,6 @@ export const StyleLink = styled(NavLink)`
 `;
 
 export const LinkHref = styled.a`
-  font-family: "Mulish", sans-serif;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.57;
@@ -79,7 +77,6 @@ export const DownIcon = styled(AiOutlineDown)`
 `;
 
 export const BrandStyleLink = styled(NavLink)`
-  font-family: "Mulish", sans-serif;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.57;
