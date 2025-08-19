@@ -18,7 +18,7 @@ const SocialMediaList = () => {
 			/>
 			<div className="flex flex-col gap-6">
 				{items.map((item, index) => (
-					<div className="flex gap-4 items-center cursor-pointer">
+					<div key={index} className="flex gap-4 items-center cursor-pointer">
 						<img
 							src={item.src}
 							alt={item.icon}

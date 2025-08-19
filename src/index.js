@@ -6,8 +6,6 @@ import App from "./App";
 
 import {BrowserRouter} from "react-router-dom";
 
-import {GlobalStyle} from "./styles/GlobalStyle";
-
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {Provider} from "react-redux";
@@ -33,7 +31,6 @@ root.render(
 					pauseOnHover
 					theme="colored"
 				/>
-				<GlobalStyle/>
 			</BrowserRouter>
 		</Provider>
 	</React.StrictMode>
