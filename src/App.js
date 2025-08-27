@@ -21,6 +21,7 @@ import {useMedia} from "./utils/hooks/useMedia";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import {PrivateRoute, PrivateAdminRoute} from "./modules/PrivateRoutes/PrivateRoutse";
 import CooperationPage from "./pages/CooperationPage/CooperationPage";
+import UserPage from "./pages/UserPage/UserPage";
 
 function App() {
 	const {isMobileScreen} = useMedia();
@@ -187,10 +188,15 @@ function App() {
 						element={<PrivateAdminRoute component={AdminPage} to="/"/>}
 					/>
 				</Route>
-				{/* <Route
-          path="cabinet"
-          element={<PrivateRoute component={UserPage} to="/" />}
-        >
+				<Route
+					path="/cabinet"
+					element={
+						<Suspense fallback={<Loader/>}>
+							<UserPage/>
+						</Suspense>
+					}
+				/>
+				{/*
           <Route
             path="userData"
             element={<PrivateRoute component={UserData} to="/" />}

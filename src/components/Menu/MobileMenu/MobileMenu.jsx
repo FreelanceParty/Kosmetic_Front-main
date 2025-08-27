@@ -256,7 +256,7 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
   };
 
   return (
-    <BurgerWrapper>
+    <BurgerWrapper className="flex lg:hidden">
       <MobileMenuWrapper isOpen={isOpen}>
         <CloseBtn onClick={toggleMenu}>
           <AiOutlineClose />

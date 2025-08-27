@@ -25,14 +25,15 @@ const Promo = () => {
 
 	return (
 		<>
-			{isMobileScreen && <PromoWrapper style={{height: "37px"}}/>}
+			{isMobileScreen && <PromoWrapper style={{height: "28px"}}/>}
 
-			<PromoWrapper>
+			<PromoWrapper className="flex justify-center py-[10px] w-full text-center z-10">
 				{isMobileScreen ? (
 					<PromoText
 						href="https://t.me/+Eejgotzs-ktiMTIy"
 						target="_blank"
 						rel="noreferrer"
+						className="text-xs leading-2"
 					>
 						Підписуйся на наш телеграм
 					</PromoText>
@@ -42,7 +43,7 @@ const Promo = () => {
 						slidesPerView={1}
 						loop={true}
 						autoplay={{
-							delay:                5000,
+							delay:                50000,
 							disableOnInteraction: false,
 							pauseOnMouseEnter:    true,
 						}}
@@ -53,11 +54,12 @@ const Promo = () => {
 						{promoMessages.map((msg, idx) => (
 							<SwiperSlide key={idx}>
 								{idx === 0 ? (
-									<PromoText href={msg.href} target="_blank" rel="noreferrer">
+									<PromoText href={msg.href} target="_blank" rel="noreferrer"
+										className="font-medium text-md leading-[22px]">
 										{msg.text}
 									</PromoText>
 								) : (
-									<PromoText as="span">{msg.text}</PromoText>
+									<PromoText className="font-medium text-md leading-[22px]" as="span">{msg.text}</PromoText>
 								)}
 							</SwiperSlide>
 						))}
