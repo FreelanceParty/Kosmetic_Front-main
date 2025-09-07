@@ -14,12 +14,13 @@ const initialState = {
 	isAdmin:      false,
 	optUser:      false,
 	id:           null,
+	_id:          null,
 	error:        null,
 	loading:      false,
 };
 const authSlice = createSlice({
 	name:          "auth",
-	initialState,
+	initialState:  initialState,
 	reducers:      {},
 	extraReducers: (builder) => {
 		builder
@@ -45,6 +46,7 @@ const authSlice = createSlice({
 				state.lastName = action.payload.lastName;
 				state.email = action.payload.email;
 				state.number = action.payload.number;
+				state._id = action.payload._id;
 				state.id = action.payload.id;
 				state.token = action.payload.token;
 				state.isRefreshing = false;
@@ -58,6 +60,7 @@ const authSlice = createSlice({
 				state.lastName = action.payload.lastName;
 				state.email = action.payload.email;
 				state.number = action.payload.number;
+				state._id = action.payload._id;
 				state.id = action.payload.id;
 				state.token = action.payload.token;
 				state.isRegister = true;
@@ -66,13 +69,24 @@ const authSlice = createSlice({
 				state.optUser = action.payload.optUser;
 			})
 			.addCase(logOut.fulfilled, (state) => {
-				state = initialState;
+				state.firstName = null;
+				state.lastName = null;
+				state.email = null;
+				state.number = null;
+				state.token = null;
+				state.isAdmin = false;
+				state.isLoggedIn = false;
+				state.isRegister = false;
+				state.optUser = false;
+				state._id = null;
+				state.id = null;
 			})
 			.addCase(refreshUser.fulfilled, (state, action) => {
 				state.firstName = action.payload.firstName;
 				state.lastName = action.payload.lastName;
 				state.email = action.payload.email;
 				state.number = action.payload.number;
+				state._id = action.payload._id;
 				state.id = action.payload.id;
 				state.token = action.payload.token;
 				state.isRefreshing = false;
@@ -94,7 +108,17 @@ const authSlice = createSlice({
 				state.loading = false;
 			})
 			.addCase(refreshUser.rejected, (state, action) => {
-				state = initialState;
+				state.firstName = null;
+				state.lastName = null;
+				state.number = null;
+				state.email = null;
+				state.isAdmin = false;
+				state.optUser = false;
+				state._id = null;
+				state.id = null;
+				state.token = null;
+				state.isLoggedIn = false;
+				state.isRefreshing = false;
 				state.error = action.payload.error;
 				state.loading = false;
 			});

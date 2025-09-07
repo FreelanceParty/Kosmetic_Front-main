@@ -24,6 +24,7 @@
 		"react-spinners":             "^0.15.0",
 		"react-toastify":             "^11.0.3",
 		"redux":                      "^5.0.1",
+		"redux-persist":              "^6.0.0",
 		"styled-components":          "^6.1.15",
 		"swiper":                     "^11.2.5",
 		"tailwind-styled-components": "^2.2.0",
