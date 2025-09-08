@@ -1,129 +1,90 @@
-import {createSlice} from "@reduxjs/toolkit";
-
-import {logIn, logOut, refreshUser, register} from "./operation";
+import { createSlice } from "@reduxjs/toolkit";
+import { register, logIn, logOut, refreshUser } from "./operation";
 
 const initialState = {
-	firstName:    null,
-	lastName:     null,
-	email:        null,
-	number:       null,
-	token:        null,
-	isLoggedIn:   false,
+	firstName: null,
+	lastName: null,
+	email: null,
+	number: null,
+	token: null,
+	isLoggedIn: false,
 	isRefreshing: false,
-	isRegister:   false,
-	isAdmin:      false,
-	optUser:      false,
-	id:           null,
-	_id:          null,
-	error:        null,
-	loading:      false,
+	isRegister: false,
+	isAdmin: false,
+	optUser: false,
+	_id: null,
 };
+
 const authSlice = createSlice({
-	name:          "auth",
-	initialState:  initialState,
-	reducers:      {},
-	extraReducers: (builder) => {
-		builder
-			.addCase(register.pending, (state) => {
-				state.error = null;
-				state.loading = true;
-			})
-			.addCase(logIn.pending, (state) => {
-				state.error = null;
-				state.loading = true;
-			})
-			.addCase(logOut.pending, (state) => {
-				state.error = null;
-				state.loading = true;
-			})
-			.addCase(refreshUser.pending, (state) => {
-				state.isRefreshing = true;
-				state.error = null;
-				state.loading = true;
-			})
-			.addCase(register.fulfilled, (state, action) => {
-				state.firstName = action.payload.firstName;
-				state.lastName = action.payload.lastName;
-				state.email = action.payload.email;
-				state.number = action.payload.number;
-				state._id = action.payload._id;
-				state.id = action.payload.id;
-				state.token = action.payload.token;
-				state.isRefreshing = false;
-				state.isRegister = true;
-				state.isLoggedIn = true;
-				state.isAdmin = action.payload.isAdmin;
-				state.optUser = action.payload.optUser;
-			})
-			.addCase(logIn.fulfilled, (state, action) => {
-				state.firstName = action.payload.firstName;
-				state.lastName = action.payload.lastName;
-				state.email = action.payload.email;
-				state.number = action.payload.number;
-				state._id = action.payload._id;
-				state.id = action.payload.id;
-				state.token = action.payload.token;
-				state.isRegister = true;
-				state.isLoggedIn = true;
-				state.isAdmin = action.payload.isAdmin;
-				state.optUser = action.payload.optUser;
-			})
-			.addCase(logOut.fulfilled, (state) => {
-				state.firstName = null;
-				state.lastName = null;
-				state.email = null;
-				state.number = null;
-				state.token = null;
-				state.isAdmin = false;
-				state.isLoggedIn = false;
-				state.isRegister = false;
-				state.optUser = false;
-				state._id = null;
-				state.id = null;
-			})
-			.addCase(refreshUser.fulfilled, (state, action) => {
-				state.firstName = action.payload.firstName;
-				state.lastName = action.payload.lastName;
-				state.email = action.payload.email;
-				state.number = action.payload.number;
-				state._id = action.payload._id;
-				state.id = action.payload.id;
-				state.token = action.payload.token;
-				state.isRefreshing = false;
-				state.isRegister = true;
-				state.isLoggedIn = true;
-				state.isAdmin = action.payload.isAdmin;
-				state.optUser = action.payload.optUser;
-			})
-			.addCase(register.rejected, (state, action) => {
-				state.error = action.payload.error;
-				state.loading = false;
-			})
-			.addCase(logIn.rejected, (state, action) => {
-				state.error = action.payload.error;
-				state.loading = false;
-			})
-			.addCase(logOut.rejected, (state, action) => {
-				state.error = action.payload.error;
-				state.loading = false;
-			})
-			.addCase(refreshUser.rejected, (state, action) => {
-				state.firstName = null;
-				state.lastName = null;
-				state.number = null;
-				state.email = null;
-				state.isAdmin = false;
-				state.optUser = false;
-				state._id = null;
-				state.id = null;
-				state.token = null;
-				state.isLoggedIn = false;
-				state.isRefreshing = false;
-				state.error = action.payload.error;
-				state.loading = false;
-			});
-	},
+	name: "auth",
+	initialState: initialState,
+	reducers: {},
+	extraReducers: (builder) =>
+		      builder
+			      .addCase(register.pending, (state, action) => state)
+			      .addCase(register.fulfilled, (state, action) => {
+				      state.firstName = action.payload.firstName;
+				      state.lastName = action.payload.lastName;
+				      state.email = action.payload.email;
+				      state.number = action.payload.number;
+				      state.isAdmin = action.payload.isAdmin;
+				      state.optUser = action.payload.optUser;
+				      state.isRegister = true;
+				      state._id = action.payload._id;
+			      })
+			      .addCase(logIn.fulfilled, (state, action) => {
+				      state.firstName = action.payload.firstName;
+				      state.lastName = action.payload.lastName;
+				      state.email = action.payload.email;
+				      state.number = action.payload.number;
+				      state.isAdmin = action.payload.isAdmin;
+				      state.optUser = action.payload.optUser;
+				      state._id = action.payload._id;
+				      state.isLoggedIn = true;
+				      state.isRegister = true;
+				      state.token = action.payload.token;
+			      })
+			      .addCase(register.rejected, (state, action) => state)
+			      .addCase(logIn.pending, (state, action) => state)
+			      .addCase(logOut.fulfilled, (state) => {
+				      state.firstName = null;
+				      state.lastName = null;
+				      state.email = null;
+				      state.number = null;
+				      state.token = null;
+				      state.isAdmin = false;
+				      state.isLoggedIn = false;
+				      state.isRegister = false;
+				      state.optUser = false;
+				      state._id = null;
+			      })
+			      .addCase(refreshUser.pending, (state, action) => {
+				      state.isRefreshing = true;
+			      })
+			      .addCase(refreshUser.fulfilled, (state, action) => {
+				      state.firstName = action.payload.firstName;
+				      state.lastName = action.payload.lastName;
+				      state.number = action.payload.number;
+				      state.email = action.payload.email;
+				      state.isAdmin = action.payload.isAdmin;
+				      state.optUser = action.payload.optUser;
+				      state._id = action.payload._id;
+				      state.isLoggedIn = true;
+				      state.isRegister = true;
+				      state.isRefreshing = false;
+			      })
+			      .addCase(refreshUser.rejected, (state, action) => {
+				      state.firstName = null;
+				      state.lastName = null;
+				      state.number = null;
+				      state.email = null;
+				      state.isAdmin = false;
+				      state.optUser = false;
+				      state._id = null;
+				      state.token = null;
+				      state.isLoggedIn = false;
+				      state.isRefreshing = false;
+			      }),
 });
 
-export const {setAuth} = authSlice.actions;
 export const authReducer = authSlice.reducer;

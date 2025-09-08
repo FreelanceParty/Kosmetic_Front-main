@@ -1,113 +1,69 @@
-import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import AuthModal from "../AuthModal/AuthModal";
-import {
-	LinkBtn,
-	LogInIcon,
-	DropDown,
-	ListItem,
-	LogOut,
-} from "./user.styled";
+import React, {useState, useRef} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getIsAdmin, getIsLoggedIn} from "../../../redux/auth/selectors";
+import {logOut} from "../../../redux/auth/operation";
+import {DropDown, ListItem, LogOut} from "./user.styled";
 
-const User = () => {
+const User = ({icon, title, onClick, classes}) => {
 	const [showDropdown, setShowDropdown] = useState(false);
-	const [showModal, setShowModal] = useState(false);
-	const [loginOrRegister, setLoginOrRegister] = useState(false);
-	const [isLogin, setIsLogin] = useState(!!localStorage.getItem("token"));
-	const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin") === "true");
+	const isLoggedIn = useSelector(getIsLoggedIn);
+	const isAdmin = useSelector(getIsAdmin)
 
-	useEffect(() => {
-		const handleStorage = () => {
-			setIsLogin(!!localStorage.getItem("token"));
-			setIsAdmin(localStorage.getItem("isAdmin") === "true");
-		};
-		window.addEventListener("storage", handleStorage);
-		return () => window.removeEventListener("storage", handleStorage);
-	}, []);
-
-	const onRegisterSuccess = () => {
-		setLoginOrRegister(true);
-		alert("Ви успішно зареєструвалися, авторизуйтеся");
-	};
-
-	const handleModalEnter = () => {
-		if (!isLogin) {
-			setShowModal(true);
-		}
-	};
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const dropdownRef = useRef(null);
 
 	const handleDropdownEnter = () => {
-		if (isLogin) {
+		if (isLoggedIn) {
 			setShowDropdown(true);
 		}
 	};
 
-	const handleDropdownLeave = () => {
-		setShowDropdown(false);
-	};
-
-	const logoutHandler = () => {
-		localStorage.removeItem("token");
-		localStorage.removeItem("isAdmin");
-		localStorage.removeItem("firstName");
-		setIsLogin(false);
-		setIsAdmin(false);
-		setShowDropdown(false);
-	};
-
-	const handelDropClose = (e) => {
-		if (e.target.tagName === "SECTION") {
-			setShowModal(false);
+	const handleDropdownLeave = (e) => {
+		if (!dropdownRef.current.contains(e.relatedTarget)) {
+			setShowDropdown(false);
 		}
 	};
 
-	useEffect(() => {
-		if (showModal) {
-			document.body.classList.add("modal-open");
-		} else {
-			document.body.classList.remove("modal-open");
-		}
-		return () => document.body.classList.remove("modal-open");
-	}, [showModal]);
+	const logoutDispatch = () => {
+		dispatch(logOut());
+		navigate("/");
+	};
 
 	return (
 		<>
-			<LinkBtn
-				onClick={!isLogin ? handleModalEnter : null}
-				onMouseEnter={isLogin ? handleDropdownEnter : null}
+			<div className={`flex gap-3 items-center cursor-pointer h-[44px] relative ${classes ?? ''}`}
+				onClick={onClick}
+				onMouseEnter={isLoggedIn ? handleDropdownEnter : null}
+				onMouseLeave={isLoggedIn ? handleDropdownLeave : null}
+				ref={dropdownRef}
 			>
-				<LogInIcon/>
-			</LinkBtn>
-
-			{showDropdown && (
-				<DropDown onMouseLeave={handleDropdownLeave}>
-					<ul>
-						{isAdmin && (
-							<ListItem>
-								<Link to="/ordersbyclient">замовлення (адмін)</Link>
-							</ListItem>
-						)}
-						<ListItem>
-							<Link to="/cabinet">особистий кабінет</Link>
-						</ListItem>
-						<ListItem>
-							<Link to="/cabinet/history">історія замовлень</Link>
-						</ListItem>
-						<ListItem>
-							<LogOut onClick={logoutHandler}>вихід</LogOut>
-						</ListItem>
-					</ul>
-				</DropDown>
-			)}
-
-			{showModal && (
-				<AuthModal
-					setShowModal={setShowModal}
-					setIsLogin={setIsLogin}
-					onClose={() => setShowModal(false)}
-					setIsAdmin={setIsAdmin}
+				<img
+					src={require(`../../../assets/icons/header/${icon}.svg`)}
+					alt={icon}
+					className="w-6 lg:w-[18px] h-6 lg:h-[18px]"
 				/>
-			)}
+				<div className="hidden lg:block">{title ?? ''}</div>
+
+				{showDropdown && (
+					<DropDown className="text-nowrap">
+						<ul>
+							{isAdmin && (
+								<ListItem>
+									<Link to="/ordersbyclient">замовлення (адмін)</Link>
+								</ListItem>
+							)}
+							<ListItem>
+								<Link to="/cabinet">особистий кабінет</Link>
+							</ListItem>
+							<ListItem>
+								<LogOut onClick={() => logoutDispatch()}>вихід</LogOut>
+							</ListItem>
+						</ul>
+					</DropDown>
+				)}
+			</div>
 		</>
 	);
 };

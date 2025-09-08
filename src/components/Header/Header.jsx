@@ -1,6 +1,5 @@
 import {useState, useEffect} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {PiShoppingCartFill, PiShoppingCartLight} from "react-icons/pi";
 
 import {useMedia} from "../../utils/hooks/useMedia";
 import Promo from "../Promo/Promo";
@@ -8,14 +7,9 @@ import Promo from "../Promo/Promo";
 import Menu from "../Menu/Menu";
 import SearchForm from "../SearchForm/SearchForm";
 import MobileMenu from "../Menu/MobileMenu/MobileMenu";
-import AuthModal from "../Login/AuthModal/AuthModal";
 import User from "../Login/User/User";
-
-import {ReactComponent as MenuIcon} from "../../assets/icons/header/mob-menu.svg";
-import {ReactComponent as SearchIcon} from "../../assets/icons/header/search.svg";
-import {ReactComponent as CoopIcon} from "../../assets/icons/header/cooperation.svg";
-import {ReactComponent as UserIcon} from "../../assets/icons/header/user.svg";
-import {ReactComponent as BasketIcon} from "../../assets/icons/header/basket.svg";
+import {getIsLoggedIn, getUserFirstName} from "../../redux/auth/selectors";
+import {selectCart} from "../../redux/cart/selectors";
 
 import SlidingSearchForm from "../SlidingSearchForm/SlidingSearchForm";
 import {routeHelper} from "../../utils/helpers/routeHelper";
@@ -23,6 +17,7 @@ import HeaderMenu from "./HeaderMenu";
 import Basket from "../../popups/Basket";
 import {Popup} from "../../popups/Abstracts/Popup";
 import {usePopup} from "../../hooks/usePopup";
+import {useSelector} from "react-redux";
 
 const Header = () => {
 	const {isOpen, content, openPopup, closePopup} = usePopup();
@@ -32,12 +27,12 @@ const Header = () => {
 	const navigate = useNavigate();
 
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
-	const [showAuthModal, setShowAuthModal] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [isLogin, setIsLogin] = useState(false);
-	const [userName, setUserName] = useState("");
-	const [cartItems, setCartItems] = useState([]);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+	const isLoggedIn = useSelector(getIsLoggedIn);
+	const userName = useSelector(getUserFirstName);
+	const cartItems = useSelector(selectCart);
 
 	const navLinks = [
 		{title: "ОБЛИЧЧЯ", href: getCategoryRoute("догляд для обличчя")},
@@ -50,30 +45,11 @@ const Header = () => {
 		{title: "ПРО НАС", href: "/about-us"},
 	];
 
-	// const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
-
-	// Перевірка логіну
-	useEffect(() => {
-		const token = localStorage.getItem("token");
-		const name = localStorage.getItem("firstName");
-		const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-		setIsLogin(!!token);
-		setUserName(name || "");
-		setCartItems(cart);
-	}, []);
-	// console.log(isLogin);
-
 	const handleSearchClick = () => setIsSearchOpen((prev) => !prev);
 
 	const handleUserIconClick = () => {
-		if (!isLogin) {
-			setShowAuthModal(true);
-		} else {
-			localStorage.removeItem("token");
-			localStorage.removeItem("firstName");
-			setIsLogin(false);
-			setUserName("");
+		if ( ! isLoggedIn) {
+			navigate("/authorization");
 		}
 	};
 
@@ -93,7 +69,7 @@ const Header = () => {
 						<div className="text-[#DF4DA0]">BLOSSOM</div>
 					</a>
 					<div className="flex gap-5 lg:gap-[46px] max-h-[44px]">
-						<HeaderMenu icon="user" title="ВХІД" onClick={() => navigate("/cabinet")}/>
+						<User icon="user" title={isLoggedIn ? userName : "ВХІД"} onClick={() => handleUserIconClick()}/>
 						<HeaderMenu icon="basket" title="КОШИК" onClick={() => openPopup(<Basket/>)}/>
 					</div>
 				</div>
@@ -103,9 +79,6 @@ const Header = () => {
 					))}
 				</div>
 			</div>
-			{!isLogin && showAuthModal && (
-				<AuthModal onClose={() => setShowAuthModal(false)}/>
-			)}
 			<Popup isOpen={isOpen} content={content} onClose={closePopup}/>
 			<MobileMenu isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen}/>
 		</>

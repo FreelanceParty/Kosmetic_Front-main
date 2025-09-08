@@ -4,7 +4,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import ProductPage from "./pages/ProductPage/ProductPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
-import {Suspense} from "react";
+import {Suspense, useEffect} from "react";
 import {Loader} from "./components/Loader/Loader";
 import SharedLayout from "./components/SharedLayout/SharedLayout";
 import SearchPage from "./pages/SearchPage/SearchPage";
@@ -22,9 +22,20 @@ import AdminPage from "./pages/AdminPage/AdminPage";
 import {PrivateRoute, PrivateAdminRoute} from "./modules/PrivateRoutes/PrivateRoutse";
 import CooperationPage from "./pages/CooperationPage/CooperationPage";
 import UserPage from "./pages/UserPage/UserPage";
+import SharedLayoutWithoutFooter from "./components/SharedLayoutWithoutFooter/SharedLayoutWithoutFooter";
+import AuthorizationPage from "./pages/Authorization/AuthorizationPage";
+import RegisterOptCabinetPage from "./pages/Authorization/SubPages/RegisterOptCabinetPage";
+import RegisterPersonalCabinetPage from "./pages/Authorization/SubPages/RegisterPersonalCabinetPage";
+import {useDispatch} from "react-redux";
+import {refreshUser} from "./redux/auth/operation";
 
 function App() {
 	const {isMobileScreen} = useMedia();
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(refreshUser());
+	}, [dispatch]);
 	return (
 		<ThemeProvider theme={theme}>
 			<Routes>
@@ -188,14 +199,48 @@ function App() {
 						element={<PrivateAdminRoute component={AdminPage} to="/"/>}
 					/>
 				</Route>
+
 				<Route
-					path="/cabinet"
+					path="/"
 					element={
 						<Suspense fallback={<Loader/>}>
-							<UserPage/>
+							<SharedLayoutWithoutFooter/>
 						</Suspense>
 					}
-				/>
+				>
+					<Route
+						path="/cabinet"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<UserPage/>
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/authorization"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<AuthorizationPage/>
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/reg-opt-cabinet"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<RegisterOptCabinetPage/>
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/reg-personal-cabinet"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<RegisterPersonalCabinetPage/>
+							</Suspense>
+						}
+					/>
+				</Route>
 				{/*
           <Route
             path="userData"

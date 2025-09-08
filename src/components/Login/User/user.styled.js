@@ -89,9 +89,6 @@ export const LogInIcon = styled(IoPersonOutline)`
 
 export const DropDown = styled.div`
 	position:      absolute;
-	top:           78px;
-	right:         0;
-	display:       block;
 	background:    ${(p) => p.theme.colors.white};
 	box-shadow:    0px 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 4px;
@@ -112,13 +109,13 @@ export const DropDown = styled.div`
 	}
 	
 	@media screen and (min-width: 768px) {
-		top: 81px;
+		top: 40px;
 	}
 	@media screen and (min-width: 1024px) {
-		top: 84px;
+		top: 40px;
 	}
 	@media screen and (min-width: 1440px) {
-		top: 88px;
+		top: 40px;
 	}
 `;
 
