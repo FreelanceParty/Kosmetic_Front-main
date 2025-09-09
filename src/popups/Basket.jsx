@@ -6,6 +6,8 @@ import TextArea from "../components/TextArea/TextArea";
 import axios from "axios";
 import NumberInput from "../components/NumberInput/NumberInput";
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const Basket = ({}) => {
 	const [products, setProducts] = useState(null);
 	const [totalAmount, setTotalAmount] = useState(null);
@@ -14,7 +16,7 @@ const Basket = ({}) => {
 		const fetchProduct = async () => {
 			try {
 				const response = await axios.get(
-					`http://localhost:3002/api/goods`
+					`${REACT_APP_API_URL}/goods`
 				);
 				const products = response.data.goods.slice(0, 0);
 				setProducts(products);

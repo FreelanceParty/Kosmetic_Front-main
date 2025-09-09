@@ -2,6 +2,8 @@
 import React, {useState} from "react";
 import axios from "axios";
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const ExelUpload = () => {
 	const [file, setFile] = useState(null);
 
@@ -16,10 +18,7 @@ const ExelUpload = () => {
 		formData.append("file", file);
 
 		try {
-
-			// await axios.post("http://localhost:3000/api/products/import", formData);
-
-			await axios.post("https://kosmetic-back.onrender.com/api/products/import", formData);
+			await axios.post(`${REACT_APP_API_URL}/products/import`, formData);
 			alert("Файл успішно завантажено та оброблено!");
 		} catch (error) {
 			console.error("Помилка при завантаженні файлу:", error);

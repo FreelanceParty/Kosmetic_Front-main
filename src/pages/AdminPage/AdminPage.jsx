@@ -17,6 +17,9 @@ import {
 import AdminFeedbackPage from "./AdminFeedbackPage/AdminFeedbackPage";
 import {AdminEmailSenderPage} from "./AdminEmailSenderPage/AdminEmailSenderPage";
 import ProductsEditPage from "./ProductsEditPage/ProductsEditPage";
+
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const AdminPage = () => {
 	const [orders, setOrders] = useState([]);
 	const [selectedOrder, setSelectedOrder] = useState(null);
@@ -59,10 +62,7 @@ const AdminPage = () => {
 
 	useEffect(() => {
 		axios
-			.get("https://beauty-blossom-backend.onrender.com/api/orders")
-			// коли бек запрацює, треба вказати цей url
-			// .get("https://kosmetic-back.onrender.com/api//orders")
-
+			.get(`${REACT_APP_API_URL}/orders`)
 			.then((response) => {
 				const receivedOrders = response.data;
 

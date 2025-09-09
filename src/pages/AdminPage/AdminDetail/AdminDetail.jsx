@@ -1,16 +1,10 @@
 import React, {useState} from "react";
-import {
-	Button,
-	ButtonCancel,
-	LilistItem,
-	ProductBlock,
-	ProductImage,
-	TableItems,
-	TableTrBlock,
-} from "./AdminDetailStyled";
+import {Button, ButtonCancel, LilistItem, ProductBlock, ProductImage, TableItems, TableTrBlock} from "./AdminDetailStyled";
 import {Table} from "react-bootstrap";
 import axios from "axios";
 import {useEffect} from "react";
+
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const AdminDetail = ({selectedOrder}) => {
 	const [isEditing, setIsEditing] = useState(false);
@@ -51,9 +45,8 @@ const AdminDetail = ({selectedOrder}) => {
 				amount:         editedOrder.amount,
 			};
 
-			// Відправляємо PUT-запит на сервер з `dataToUpdate`
 			const response = await axios.put(
-				`https://kosmetic-back.onrender.com/api/orders/${editedOrder._id}`,
+				`${REACT_APP_API_URL}/orders/${editedOrder._id}`,
 				dataToUpdate
 			);
 

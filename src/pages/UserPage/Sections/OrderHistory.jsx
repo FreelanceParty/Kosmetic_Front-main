@@ -6,6 +6,8 @@ import {useSelector} from "react-redux";
 import {getUserToken, getIsLoggedIn} from "../../../redux/auth/selectors";
 import OrderBlock from "./_elements/OrderBlock";
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const OrderHistory = () => {
 	const tabs = [
 		{id: "all", label: "Усі"},
@@ -21,7 +23,7 @@ const OrderHistory = () => {
 		const fetchOrders = async () => {
 			try {
 				const response = await axios.get(
-					`http://localhost:3002/api/orders/byUser`, {
+					`${REACT_APP_API_URL}/orders/byUser`, {
 						headers: {
 							Authorization: `Bearer ${token}`,
 						},

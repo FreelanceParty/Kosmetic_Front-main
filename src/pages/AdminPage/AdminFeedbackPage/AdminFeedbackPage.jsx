@@ -2,11 +2,13 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {FeedBackBlock} from '../AdminPageStyled';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const AdminFeedbackPage = () => {
 	const [feedbacks, setFeedbacks] = useState([]);
 
 	useEffect(() => {
-		axios.get('https://kosmetic-back.onrender.com/api/feedback')
+		axios.get(`${REACT_APP_API_URL}/feedback`)
 			.then(response => {
 				const receivedFeedbacks = response.data;
 				setFeedbacks(receivedFeedbacks);

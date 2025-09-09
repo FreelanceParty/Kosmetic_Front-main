@@ -16,6 +16,8 @@ import {
 	Ul,
 } from "./AdminEmailSenderPageStyled";
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 export const AdminEmailSenderPage = () => {
 	const [files, setFiles] = useState([]);
 	const [title, setTitle] = useState("");
@@ -65,8 +67,7 @@ export const AdminEmailSenderPage = () => {
 	};
 
 	// const handleSubmit = async (e) => {
-	// "https://kosmetic-back.onrender.com/api/email/sendemail",
-	// "http://localhost:3000/api/email/sendemail",
+	// `${REACT_APP_API_URL}/email/sendemail`,
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -97,7 +98,7 @@ export const AdminEmailSenderPage = () => {
 			}
 
 			await axios.post(
-				"https://kosmetic-back.onrender.com/api/email/sendemail",
+				`${REACT_APP_API_URL}/email/sendemail`,
 				formData,
 				{
 					headers: {
@@ -122,10 +123,7 @@ export const AdminEmailSenderPage = () => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.post(
-					// "http://localhost:3000/api/searchUser",
-
-					"https://beauty-blossom-backend.onrender.com/api/searchUser",
-
+					`${REACT_APP_API_URL}/searchUser`,
 					{
 						filter,
 					}

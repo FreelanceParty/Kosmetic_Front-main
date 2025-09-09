@@ -7,6 +7,8 @@ import {routeHelper} from "../../utils/helpers/routeHelper";
 import Desktop from "./Contents/Desktop";
 import Mobile from "./Contents/Mobile";
 
+const {API_URL} = process.env;
+
 const ProductPage = () => {
 	// todo: додати анімації
 	// todo: залогінений/ ні
@@ -22,7 +24,7 @@ const ProductPage = () => {
 			setLoading(true);
 			try {
 				const response = await axios.get(
-					`https://kosmetic-back.onrender.com/api/products/${id}`
+					`${API_URL}/products/${id}`
 				);
 				setLoading(false);
 				setProduct(response.data);

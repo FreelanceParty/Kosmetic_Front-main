@@ -3,6 +3,8 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import ExelUpload from "./temp.jsx";
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const initialProduct = {
 	name:           "",
 	article:        "",
@@ -34,7 +36,7 @@ const ProductsEditPage = () => {
 
 	const fetchProducts = async () => {
 		try {
-			const res = await axios.get("https://kosmetic-back.onrender.com/api/products?limit=5000");
+			const res = await axios.get(`${REACT_APP_API_URL}/products?limit=5000`);
 			setProducts(res.data.products);
 		} catch (err) {
 			console.error("Помилка при завантаженні товарів:", err);
@@ -43,7 +45,7 @@ const ProductsEditPage = () => {
 
 	const fetchBrands = async () => {
 		try {
-			const res = await axios.get("https://kosmetic-back.onrender.com/api/brands");
+			const res = await axios.get(`${REACT_APP_API_URL}/brands`);
 			const allBrands = res.data.flatMap((item) => item.brandsName);
 			setBrands(allBrands);
 		} catch (err) {
@@ -81,10 +83,10 @@ const ProductsEditPage = () => {
 
 		try {
 			if (editId) {
-				await axios.put(`https://kosmetic-back.onrender.com/api/products/${editId}`, formattedData);
+				await axios.put(`${REACT_APP_API_URL}/products/${editId}`, formattedData);
 				toast.success("Товар успішно оновлено!");
 			} else {
-				await axios.post("https://kosmetic-back.onrender.com/api/products", formattedData);
+				await axios.post(`${REACT_APP_API_URL}/products`, formattedData);
 				toast.success("Товар успішно додано!");
 			}
 			setFormData(initialProduct);
@@ -104,7 +106,7 @@ const ProductsEditPage = () => {
 
 	const handleDelete = async (id) => {
 		try {
-			await axios.delete(`https://kosmetic-back.onrender.com/api/products/${id}`);
+			await axios.delete(`${REACT_APP_API_URL}/products/${id}`);
 			toast.success("Товар успішно видалено!");
 			fetchProducts();
 		} catch (err) {
