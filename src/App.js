@@ -28,6 +28,7 @@ import RegisterOptCabinetPage from "./pages/Authorization/SubPages/RegisterOptCa
 import RegisterPersonalCabinetPage from "./pages/Authorization/SubPages/RegisterPersonalCabinetPage";
 import {useDispatch} from "react-redux";
 import {refreshUser} from "./redux/auth/operation";
+import ForgotPasswordPage from "./pages/Authorization/SubPages/ForgotPasswordPage";
 
 function App() {
 	const {isMobileScreen} = useMedia();
@@ -237,6 +238,14 @@ function App() {
 						element={
 							<Suspense fallback={<Loader/>}>
 								<RegisterPersonalCabinetPage/>
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/forgot-password"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<ForgotPasswordPage/>
 							</Suspense>
 						}
 					/>

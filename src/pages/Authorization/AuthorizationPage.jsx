@@ -56,7 +56,7 @@ const AuthorizationPage = () => {
 						/>
 					</div>
 				</div>
-				<a className="underline cursor-pointer mb-[50px]">Я забула(-в) свій пароль</a>
+				<a onClick={() => navigate('/forgot-password')} className="underline cursor-pointer mb-[50px]">Я забула(-в) свій пароль</a>
 				<Button
 					type="primary"
 					text="УВІЙТИ"
