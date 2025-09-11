@@ -115,7 +115,7 @@ export const DropDown = styled.div`
 		top: 40px;
 	}
 	@media screen and (min-width: 1440px) {
-		top: 40px;
+		top: 20px;
 	}
 `;
 

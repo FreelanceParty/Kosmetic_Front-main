@@ -41,8 +41,8 @@ const UserPage = () => {
 								onClick={() => setActiveTab(tab.id)}
 								className={`${
 									activeTab === tab.id
-										? "bg-[#ffe8f5] text-gray-600"
-										: "bg-[#f6f6f6] text-gray-600 hover:bg-gray-200"
+										? "bg-[#ffe8f5]"
+										: "bg-[#f6f6f6] hover:bg-gray-200"
 								}`}
 							>
 								{tab.label}

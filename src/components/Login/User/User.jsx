@@ -33,7 +33,7 @@ const User = ({icon, title, onClick, classes}) => {
 
 	return (
 		<>
-			<div className={`flex gap-3 items-center cursor-pointer h-[44px] relative ${classes ?? ''}`}
+			<div className={`flex gap-3 items-center cursor-pointer h-full max-h-[44px] relative ${classes ?? ''}`}
 				onClick={onClick}
 				onMouseEnter={isLoggedIn ? handleDropdownEnter : null}
 				onMouseLeave={isLoggedIn ? handleDropdownLeave : null}

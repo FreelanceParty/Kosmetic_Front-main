@@ -58,7 +58,7 @@ const Header = () => {
 			<Promo/>
 			<div className="flex flex-col">
 				<div className="flex justify-around border-b border-[#E8E8E8] py-[10px] lg:py-[25.5px] items-center">
-					<div className="flex gap-5 lg:gap-[46px] max-h-[44px]">
+					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<HeaderMenu icon="mob-menu" classes="flex lg:hidden" onClick={() => setIsMobileMenuOpen(true)}/>
 						<HeaderMenu icon="search" title="ПОШУК" onClick={() => {
 						}}/>
@@ -68,7 +68,7 @@ const Header = () => {
 						<div className="text-[#8F49A3]">BEAUTY</div>
 						<div className="text-[#DF4DA0]">BLOSSOM</div>
 					</a>
-					<div className="flex gap-5 lg:gap-[46px] max-h-[44px]">
+					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<User icon="user" title={isLoggedIn ? userName : "ВХІД"} onClick={() => handleUserIconClick()}/>
 						<HeaderMenu icon="basket" title="КОШИК" onClick={() => openPopup(<Basket/>)}/>
 					</div>
