@@ -45,23 +45,34 @@ const Header = () => {
 		{title: "ПРО НАС", href: "/about-us"},
 	];
 
-	const handleSearchClick = () => setIsSearchOpen((prev) => !prev);
+	useEffect(() => {
+		document.body.classList.toggle("overflow-hidden", isSearchOpen);
+	}, [isSearchOpen]);
+
+	const handleSearchIconClick = () => {
+		setIsSearchOpen((prev) => !prev);
+	}
 
 	const handleUserIconClick = () => {
-		if ( ! isLoggedIn) {
+		if (!isLoggedIn) {
 			navigate("/authorization");
 		}
 	};
 
 	return (
 		<>
+			{isSearchOpen && (
+				<div
+					className="fixed inset-0 bg-black/50 z-10"
+					onClick={() => setIsSearchOpen(false)}
+				/>
+			)}
 			<Promo/>
-			<div className="flex flex-col">
+			<div className="relative flex flex-col z-20 bg-white">
 				<div className="flex justify-around border-b border-[#E8E8E8] py-[10px] lg:py-[25.5px] items-center">
 					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<HeaderMenu icon="mob-menu" classes="flex lg:hidden" onClick={() => setIsMobileMenuOpen(true)}/>
-						<HeaderMenu icon="search" title="ПОШУК" onClick={() => {
-						}}/>
+						<HeaderMenu icon="search" title="ПОШУК" onClick={() => handleSearchIconClick()}/>
 						<HeaderMenu icon="cooperation" title="СПІВПРАЦЯ" classes="hidden lg:flex" onClick={() => navigate("/cooperation")}/>
 					</div>
 					<a href="/" className="flex gap-[6px] font-semibold text-lg lg:text-[36px] leading-[12px] lg:leading-[25px]">
@@ -77,6 +88,9 @@ const Header = () => {
 					{navLinks.map((link, index) => (
 						<a key={index} href={link.href} className={`text-nowrap ${link.styles ?? ''}`}>{link.title}</a>
 					))}
+				</div>
+				<div className={`absolute top-full left-0 w-full z-10 ${isSearchOpen ? "block" : "hidden"}`}>
+					<SearchForm isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen}/>
 				</div>
 			</div>
 			<Popup isOpen={isOpen} content={content} onClose={closePopup}/>
