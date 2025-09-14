@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {Button, ButtonCancel, LilistItem, ProductBlock, ProductImage, TableItems, TableTrBlock} from "./AdminDetailStyled";
-import {Table} from "react-bootstrap";
 import axios from "axios";
 import {useEffect} from "react";
 
@@ -82,7 +81,7 @@ const AdminDetail = ({selectedOrder}) => {
 			</Button>
 			<ProductBlock>
 				{showDetails && (
-					<Table>
+					<div>
 						<tbody>
 						<TableTrBlock>
 							<TableItems>Продукт</TableItems>
@@ -110,11 +109,11 @@ const AdminDetail = ({selectedOrder}) => {
 							);
 						})}
 						</tbody>
-					</Table>
+					</div>
 				)}
 			</ProductBlock>
 
-			<Table>
+			<div>
 				<tbody>
 				<TableTrBlock>
 					<TableItems>Дані замовлення</TableItems>
@@ -248,7 +247,7 @@ const AdminDetail = ({selectedOrder}) => {
 					</TableItems>
 				</tr>
 				</tbody>
-			</Table>
+			</div>
 
 			{isEditing ? (
 				<div>
