@@ -9,7 +9,7 @@ const Button = ({type, text, classes = '', textClasses = '', isDisabled, onClick
 		<div
 			onClick={isDisabled ? null : onClick}
 			className={`
-				flex justify-center items-center text-center w-[306px] h-[51px] rounded-[30px] duration-500 ease-in-out
+				flex justify-center items-center text-center w-[306px] h-[53px] rounded-[30px] duration-500 ease-in-out
 				${isDisabled ? 'opacity-50' : 'cursor-pointer'} 
 				${typeClasses} 
 				${classes}
