@@ -1,5 +1,3 @@
-import {useDispatch} from "react-redux";
-
 import hairCareImage from "../../assets/images/category/hairCare.png";
 import serumImage from "../../assets/images/category/serum.png";
 import creamImage from "../../assets/images/category/cream.png";
@@ -8,27 +6,9 @@ import mascaraForEyelashesImage from "../../assets/images/category/mascaraForEye
 import eyeCreamImage from "../../assets/images/category/eyeCream.png";
 import faceMasksImage from "../../assets/images/category/faceMasks.png";
 import handCreamImage from "../../assets/images/category/handCream.png";
+import {CATEGORIES} from "../../utils/enums/categories";
 
-// import {
-//   Container,
-//   Item,
-//   LinkStyle,
-//   List,
-//   Name,
-//   Title,
-//   WrapImg,
-// } from "./categoryList.styled";
-
-import {
-	CategoriesWrapper,
-	CategoriesTitle,
-	CategoriesGrid,
-	CategoryCard,
-	CategoryImage,
-	CategoryName,
-} from "./categoryList.styled";
-
-import {setFilter} from "../../redux/filter/slice";
+import {useNavigate} from "react-router-dom";
 
 const categoryData = [
 	{
@@ -89,77 +69,27 @@ const categoryData = [
 	},
 ];
 
-const categories = [
-	{
-		image: require("../../assets/images/category/1.png"),
-		name:  "Туш для вій",
-	},
-	{
-		image: require("../../assets/images/category/2.png"),
-		name:  "Догляд для волосся",
-	},
-	{
-		image: require("../../assets/images/category/3.png"),
-		name:  "Крем для обличчя",
-	},
-	{
-		image: require("../../assets/images/category/4.png"),
-		name:  "Зволоження",
-	},
-	{
-		image: require("../../assets/images/category/5.png"),
-		name:  "Сироватки",
-	},
-	{
-		image: require("../../assets/images/category/6.png"),
-		name:  "Маски для обличчя",
-	},
-	{
-		image: require("../../assets/images/category/7.png"),
-		name:  "Крем для очей",
-	},
-	{
-		image: require("../../assets/images/category/8.png"),
-		name:  "Крем для рук",
-	},
-];
 const CategoryList = () => {
-	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	const handleClick = (name) => {
-		dispatch(setFilter(name));
-		window.scrollTo({
-			top:      0,
-			behavior: "smooth",
-		});
-	};
 	return (
-		// <Container>
-		//   <Title>категорії товарів</Title>
-		//   <List>
-		//     {categoryData.map((item) => (
-		//       <Item key={item.id}>
-		//         <LinkStyle to={item.to} onClick={() => handleClick(item.text)}>
-		//           <WrapImg>
-		//             <img src={item.srcImage} alt={item.name} />
-		//           </WrapImg>
-		//           <Name>{item.name}</Name>
-		//         </LinkStyle>
-		//       </Item>
-		//     ))}
-		//   </List>
-		// </Container>
-		<CategoriesWrapper>
-			<CategoriesTitle>Категорії</CategoriesTitle>
-			<CategoriesGrid>
-				{categories.map((cat, idx) => (
-					<CategoryCard key={idx} onClick={() => handleClick(cat.name)}>
-						<CategoryImage src={cat.image} alt={cat.name}/>
-						<CategoryName>{cat.name}</CategoryName>
-					</CategoryCard>
+		<div className="flex flex-col">
+			<div className="flex md:hidden font-semibold text-lg leading-[13px] py-[10.5px] justify-center">
+				КАТЕГОРІЇ
+			</div>
+			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 pt-[23px] md:pt-10 border-t border-[#E8E8E8]">
+				{CATEGORIES.map((category, index) => (
+					<div key={index} className="flex justify-center relative w-[clamp(159px,20vw,298px)] h-[clamp(173px,25vw,323px)] rounded-[8px] cursor-pointer"
+						onClick={() => navigate(category.route)}>
+						<img className="rounded-[8px] w-full h-full" src={category.image} alt="category image"/>
+						<div
+							className="flex items-center justify-center rounded-[27px] bg-white absolute h-[clamp(44px,5vw,50px)] left-[clamp(6px,2vw,30px)] right-[clamp(6px,2vw,30px)] bottom-[clamp(6px,2vw,30px)]">
+							<div className="font-medium text-xs uppercase leading-[17px] text-center">{category.name}</div>
+						</div>
+					</div>
 				))}
-			</CategoriesGrid>
-		</CategoriesWrapper>
+			</div>
+		</div>
 	);
 };
 
