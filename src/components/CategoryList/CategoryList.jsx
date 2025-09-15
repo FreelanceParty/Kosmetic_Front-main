@@ -81,7 +81,7 @@ const CategoryList = () => {
 				{CATEGORIES.map((category, index) => (
 					<div key={index} className="flex justify-center relative w-[clamp(159px,20vw,298px)] h-[clamp(173px,25vw,323px)] rounded-[8px] cursor-pointer"
 						onClick={() => navigate(category.route)}>
-						<img className="rounded-[8px] w-full h-full" src={category.image} alt="category image"/>
+						<img className="rounded-[8px] w-full h-full" src={category.image} alt="category"/>
 						<div
 							className="flex items-center justify-center rounded-[27px] bg-white absolute h-[clamp(44px,5vw,50px)] left-[clamp(6px,2vw,30px)] right-[clamp(6px,2vw,30px)] bottom-[clamp(6px,2vw,30px)]">
 							<div className="font-medium text-xs uppercase leading-[17px] text-center">{category.name}</div>

@@ -16,7 +16,7 @@ const Mobile = ({product}) => {
 		<div className="flex md:hidden w-full flex-col p-5 pb-[60px] text-[#000E55]">
 			<div className="flex flex-col items-center">
 				<div className="w-full flex items-center justify-center mb-6">
-					<img src={product.images} alt="product image"/>
+					<img src={product.images} alt="product"/>
 				</div>
 				<div className="flex flex-col gap-8 w-full">
 					<div className="flex flex-col gap-6">

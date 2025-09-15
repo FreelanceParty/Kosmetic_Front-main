@@ -49,7 +49,7 @@ const OrderBlock = ({order}) => {
 				<div key={index} className="w-full px-10 py-[10px] h-[72px] w-full ">
 					<div className="flex gap-3 h-full w-full">
 						<div className="flex items-center justify-center h-full aspect-square">
-							<img src={item.images} alt="product image"/>
+							<img src={item.images} alt="product"/>
 						</div>
 						<div className="flex gap-5 border-b border-[#E8E8E8] justify-between w-full">
 							<div className="line-clamp-3 text-md w-full min-w-[373px]">{item.name}</div>

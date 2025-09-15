@@ -76,7 +76,7 @@ const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 								className="w-full py-4 md:py-[10px] w-full h-[82px] md:h-[102px] cursor-pointer pr-2 border-b border-[#f6f6f6]">
 								<div className="flex gap-3 w-full h-[58px] md:h-[82px]">
 									<div className="flex items-center justify-center h-[58px] md:h-[72px] aspect-square">
-										<img src={product.images} alt="product image"/>
+										<img src={product.images} alt="product"/>
 									</div>
 									<div className="flex flex-col md:flex-row gap-4 md:gap-5 justify-between w-full">
 										<div className="line-clamp-2 md:line-clamp-3 text-md w-full leading-[15px]">{product.name}</div>

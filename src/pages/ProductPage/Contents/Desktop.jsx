@@ -25,7 +25,7 @@ const Desktop = ({product}) => {
 				<div className="flex flex-col gap-[50px]">
 					<div className="flex gap-10">
 						<div className="flex items-center justify-center w-1/2 aspect-square">
-							<img src={product.images} alt="product image"/>
+							<img src={product.images} alt="product"/>
 						</div>
 						<div className="flex flex-col gap-10 w-1/2">
 							<div className="flex flex-col gap-[30px]">

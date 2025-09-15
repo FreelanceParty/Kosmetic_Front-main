@@ -8,7 +8,7 @@ const ProductCard = ({product}) => {
 		<>
 			<div className="flex sm:hidden flex-col w-[159px] cursor-pointer" onClick={() => navigate('/products/' + product.id)}>
 				<div className="flex items-center justify-center w-full aspect-square">
-					<img src={product.images} alt="product image"/>
+					<img src={product.images} alt="product"/>
 				</div>
 				<div className="flex flex-col gap-4 py-3 px-[10px]">
 					<div className="flex flex-col gap-3">
@@ -45,7 +45,7 @@ const ProductCard = ({product}) => {
 
 			<div className="hidden sm:flex flex-col w-[283px] cursor-pointer" onClick={() => navigate('/product/' + product.id)}>
 				<div className="flex items-center justify-center w-full aspect-square">
-					<img src={product.images} alt="product image"/>
+					<img src={product.images} alt="product"/>
 				</div>
 				<div className="flex flex-col gap-5 py-5 px-3">
 					<div className="flex flex-col gap-4">

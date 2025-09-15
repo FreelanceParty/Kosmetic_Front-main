@@ -1,7 +1,3 @@
-import {useMedia} from "../../utils/hooks/useMedia";
-import {FooterContacts} from "./FooterContacts/FooterContacts";
-import {FooterInformBlock} from "./FooterInformBlock/FooterInformBlock";
-
 import SocialMediaList from "./Sections/SocialMediaList";
 import SocialMediaListMobile from "./Sections/SocialMediaListMobile";
 

@@ -5,7 +5,7 @@ const ProductReview = ({review}) => {
 		<div className="flex flex-col">
 			<div className="flex gap-4 px-4 py-5 rounded-[8px] bg-[#EDF8FF]">
 				<div className="min-h-[80px] min-w-[80px]">
-					<img src={review.product.image} alt="product image" className="rounded-[8px]"/>
+					<img src={review.product.image} alt="product" className="rounded-[8px]"/>
 				</div>
 				<div className="flex flex-col text-md">
 					<div className="line-clamp-1 font-semibold">{review.product.brand}</div>

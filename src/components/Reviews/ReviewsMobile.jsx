@@ -1,9 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import {useNavigate} from "react-router-dom";
-import Button from "../ButtonNew/Button";
-import ReviewSlider from "./_elements/ReviewSlider";
 import ProductReview from "./_elements/ProductReview";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Pagination} from "swiper/modules";
@@ -158,8 +156,7 @@ const reviews = [
 ];
 
 const Reviews = () => {
-	const navigate = useNavigate(); // todo: go to product page
-	const [count, setCount] = useState(3);
+	//const navigate = useNavigate(); // todo: go to product page
 
 	return (
 		<div className="flex md:hidden flex-col border-t border-[#E8E8E8] w-full max-w-[1241px] pb-[60px]">
@@ -176,7 +173,7 @@ const Reviews = () => {
 				>
 					{images.map((image, index) => (
 						<SwiperSlide key={index} className="max-w-fit">
-							<img className="w-[193px] h-[344px]" src={image} alt={"review image"}/>
+							<img className="w-[193px] h-[344px]" src={image} alt="review"/>
 						</SwiperSlide>
 					))}
 				</Swiper>
@@ -188,7 +185,7 @@ const Reviews = () => {
 					pagination={{clickable: true, el: ".custom-product-reviews-pagination"}}
 					className="max-w-md"
 				>
-					{reviews.slice(0, count).map((review, index) => (
+					{reviews.slice(0, 9).map((review, index) => (
 						<SwiperSlide key={index} className="max-w-[306px]">
 							<ProductReview key={index} review={review}/>
 						</SwiperSlide>

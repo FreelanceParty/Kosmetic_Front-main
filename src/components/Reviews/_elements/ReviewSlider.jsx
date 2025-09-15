@@ -54,7 +54,7 @@ const ReviewSlider = () => { // todo: update slider
 									paddingRight: "8px",
 								}}
 							>
-								<img className="w-[193px] h-[344px]" src={image} alt={"review image"}/>
+								<img className="w-[193px] h-[344px]" src={image} alt={"review"}/>
 							</div>
 						))}
 					</div>

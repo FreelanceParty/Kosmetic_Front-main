@@ -60,7 +60,7 @@ const Cooperation = () => {
 				<div className="grid grid-cols-2 gap-2 lg:gap-4 w-full md:w-1/2 max-w-fit max-h-fit">
 					{images.map((image, index) => (
 						<div key={index} className="flex justify-center relative w-full h-full rounded-[3px]">
-							<img className="rounded-[8px] w-full h-full" src={image} alt="category image"/>
+							<img className="rounded-[8px] w-full h-full" src={image} alt="category"/>
 						</div>
 					))}
 				</div>

@@ -60,7 +60,7 @@ const Basket = ({}) => {
 							{products.map((product, index) => (
 								<div key={index} className="flex h-[150px]">
 									<div className="flex items-center justify-center h-full aspect-square">
-										<img src={product.images} alt="product image"/>
+										<img src={product.images} alt="product"/>
 									</div>
 									<div className="flex flex-col gap-[30px] px-4 py-5">
 										<div className="flex gap-[30px]">
