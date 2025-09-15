@@ -1,154 +1,83 @@
-import React, {useEffect, useState} from "react";
-import {
-	Wrapper,
-	Title,
-	SliderRow,
-	AllProductsButton,
-} from "./ProductSlider.styled";
+import React, {useState} from "react";
 import ProductCard from "./ProductCard/ProductCard";
-import {useDispatch, useSelector} from "react-redux";
-import {useMedia} from "../../utils/hooks/useMedia";
-import {
-	selectLoadingByParams,
-	selectProductsByParams,
-} from "../../redux/products/productsSelectors";
-import {fetchProducts} from "../../redux/products/operation";
+import Button from "../ButtonNew/Button";
+import ChevronLeftIcon from "../Icons/ChevronLeftIcon";
+import ChevronRightIcon from "../Icons/ChevronRightIcon";
 
-// const demoProducts = [
-//   {
-//     image: require("../../assets/images/200x200.png"),
-//     sale: true,
-//     newness: false,
-//     brand: "Cosrx",
-//     desc: "Заспокійливий крем",
-//     rating: 3,
-//     reviews: 2,
-//     oldPrice: 350,
-//     newPrice: 299,
-//     amount: 10,
-//   },
-//   {
-//     image: require("../../assets/images/200x200.png"),
-//     sale: true,
-//     newness: false,
-//     brand: "Cosrx",
-//     desc: "Заспокійливий крем",
-//     rating: 3,
-//     reviews: 2,
-//     oldPrice: 350,
-//     newPrice: 299,
-//     amount: 0,
-//   },
-//   {
-//     image: require("../../assets/images/200x200.png"),
-//     sale: true,
-//     newness: false,
-//     brand: "Cosrx",
-//     desc: "Заспокійливий крем",
-//     rating: 3,
-//     reviews: 2,
-//     oldPrice: 350,
-//     newPrice: 299,
-//     amount: 20,
-//   },
-//   {
-//     image: require("../../assets/images/200x200.png"),
-//     sale: false,
-//     newness: true,
-//     brand: "Cosrx",
-//     desc: "Заспокійливий крем",
-//     rating: 3,
-//     reviews: 2,
-//     oldPrice: 350,
-//     newPrice: 299,
-//     amount: 2,
-//   },
-//   {
-//     image: require("../../assets/images/200x200.png"),
-//     sale: true,
-//     newness: false,
-//     brand: "Cosrx",
-//     desc: "Заспокійливий крем",
-//     rating: 3,
-//     reviews: 2,
-//     oldPrice: 350,
-//     newPrice: 299,
-//     amount: 0,
-//   },
-//   {
-//     image: require("../../assets/images/200x200.png"),
-//     sale: true,
-//     newness: false,
-//     brand: "Cosrx",
-//     desc: "Заспокійливий крем",
-//     rating: 3,
-//     reviews: 2,
-//     oldPrice: 350,
-//     newPrice: 299,
-//     amount: 0,
-//   },
-//   {
-//     image: require("../../assets/images/200x200.png"),
-//     sale: true,
-//     newness: false,
-//     brand: "Cosrx",
-//     desc: "Заспокійливий крем",
-//     rating: 3,
-//     reviews: 2,
-//     oldPrice: 350,
-//     newPrice: 299,
-//     amount: 4,
-//   },
-//   {
-//     image: require("../../assets/images/200x200.png"),
-//     sale: false,
-//     newness: true,
-//     brand: "Cosrx",
-//     desc: "Заспокійливий крем",
-//     rating: 3,
-//     reviews: 2,
-//     oldPrice: 350,
-//     newPrice: 299,
-//     amount: 0,
-//   },
-// ];
+const ProductSlider = ({title, products}) => {
+	const [index, setIndex] = useState(0);
 
-const ProductSlider = ({newness, sale, type}) => {
-	const title = type === "sale" ? "BEAUTY ЗНИЖКИ %" : "Новинки";
+	const itemsPerPage = 4;
+	const step = 2;
 
-	const dispatch = useDispatch();
-	const {screenType} = useMedia();
+	const maxIndex = Math.max(0, products.length - itemsPerPage);
 
-	const [params, setParams] = useState({
-		page:    1,
-		limit:   4,
-		newness: !!newness,
-		sale:    !!sale,
-	});
+	const handlePrev = () => setIndex(prev => Math.max(prev - step, 0));
+	const handleNext = () => setIndex(prev => Math.min(prev + step, maxIndex));
 
-	const items = useSelector((state) => selectProductsByParams(state, params));
-	const loading = useSelector((state) => selectLoadingByParams(state, params));
-
-	useEffect(() => {
-		dispatch(fetchProducts(params));
-	}, [dispatch, params]);
+	if (!products || products.length === 0) {
+		return <div>Loading...</div>;
+	}
 
 	return (
-		<Wrapper>
-			<Title>{title}</Title>
+		<div className="flex flex-col gap-10 pt-10 max-w-[1240px] items-center border-t border-[#E8E8E8]">
+			<div className="font-semibold text-center text-[24px] leading-[17px]">{title}</div>
 
-			{loading ? (
-				<p>Завантаження...</p>
-			) : (
-				<SliderRow>
-					{items.map((item) => (
-						<ProductCard key={item.id} {...item} />
-					))}
-				</SliderRow>
-			)}
+			{/* mobile: дві в рядку */}
+			<div className="flex sm:hidden grid grid-cols-2 gap-4 w-fit mx-auto">
+				{products.map((product, idx) => (
+					<ProductCard key={idx} product={product}/>
+				))}
+			</div>
 
-			<AllProductsButton href="/products">Усі товари</AllProductsButton>
-		</Wrapper>
+			{/* desktop */}
+			<div className="hidden sm:flex items-center w-full relative">
+				<button
+					onClick={handlePrev}
+					disabled={index === 0}
+					aria-label="Prev"
+					className="p-2 disabled:opacity-40"
+				>
+					<ChevronLeftIcon classes="cursor-pointer w-[16px] h-[27px]"/>
+				</button>
+
+				<div className="overflow-hidden flex-1">
+					{/* TRACK */}
+					<div
+						className="flex transition-transform duration-500 ease-in-out"
+						style={{
+							width:     `${(products.length / itemsPerPage) * 100}%`,
+							transform: `translateX(-${(index * 100) / products.length}%)`,
+						}}
+					>
+						{products.map((product, idx) => (
+							<div
+								key={idx}
+								style={{
+									width:        `${100 / products.length}%`,
+									flex:         "0 0 auto",
+									paddingLeft:  "8px",
+									paddingRight: "8px",
+								}}
+							>
+								<ProductCard product={product}/>
+							</div>
+						))}
+					</div>
+				</div>
+
+				<button
+					onClick={handleNext}
+					disabled={index >= maxIndex}
+					aria-label="Next"
+					className="p-2 disabled:opacity-40"
+				>
+					<ChevronRightIcon classes="cursor-pointer w-[16px] h-[27px]"/>
+				</button>
+			</div>
+
+			<Button classes="max-w-[177px]" type="primary" text="УСІ ТОВАРИ"/>
+		</div>
 	);
 };
 

@@ -8,7 +8,7 @@ import SocialMediaListMobile from "./Sections/SocialMediaListMobile";
 const Footer = () => {
 	return (
 		<div>
-			<div className="flex flex-col lg:hidden px-4 pt-[60px] pb-10">
+			<div className="flex flex-col lg:hidden px-4 pt-[60px] pb-10 bg-[#F6F6F6]">
 				<div className="flex flex-col pb-8 border-b items-center gap-6">
 					<div className="flex gap-[6px] font-semibold text-[36px]">
 						<div className="text-[#8F49A3]">BEAUTY</div>

@@ -30,7 +30,7 @@ const Cooperation = () => {
 	return (
 		<div className="flex flex-col border-t border-[#E8E8E8] w-full max-w-[1241px]">
 			<div className="font-semibold text-[24px] leading-[17px] text-center py-10">ОПТОВА СПІВПРАЦЯ</div>
-			<div className="flex flex-col md:flex-row p-10 gap-6 items-center">
+			<div className="flex flex-col md:flex-row p-10 gap-6 items-center rounded-[8px] bg-[#f6f6f6]">
 				<div className="flex flex-col gap-6 md:gap-10 w-full md:w-1/2 justify-center">
 					<div className="font-bold md:font-semibold text-md md:text-[clamp(16px,3vw,24px)] leading-[22px] md:leading-[clamp(22px,3vw,34px)] uppercase text-center md:text-left">Шукаєте
 						надійного постачальника корейської косметики?
