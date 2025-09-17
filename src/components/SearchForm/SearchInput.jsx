@@ -1,9 +1,9 @@
 import SearchIcon from "../Icons/SearchIcon";
 import CloseCrossIcon from "../Icons/CloseCrossIcon";
 
-const SearchInput = ({value, onChange, onCloseCrossClick}) => {
+const SearchInput = ({value, onChange, onCloseCrossClick, placeholder, containerClasses, inputClasses}) => {
 	return (
-		<div className="relative w-full py-6">
+		<div className={`relative w-full py-6 ${containerClasses ?? ''}`}>
 			<span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
 			   <SearchIcon classes="w-4 h-4"/>
 			</span>
@@ -17,8 +17,8 @@ const SearchInput = ({value, onChange, onCloseCrossClick}) => {
 			<input
 				value={value}
 				type="text"
-				placeholder="Що ви шукаєте?"
-				className="pl-10 pr-4 py-4 w-full bg-[#f6f6f6] rounded-[20px] focus:outline-none focus:ring-2 focus:ring-blue-500 h-[48px]"
+				placeholder={placeholder ?? "Що ви шукаєте?"}
+				className={`pl-10 pr-4 py-4 w-full bg-[#f6f6f6] rounded-[20px] focus:outline-none focus:ring-2 focus:ring-blue-500 h-[48px] ${inputClasses ?? ''}`}
 				onChange={onChange}
 			/>
 		</div>

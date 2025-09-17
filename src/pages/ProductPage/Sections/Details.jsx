@@ -23,9 +23,9 @@ const Details = ({product}) => {
 				<div className="gap-[67px] flex">
 					{tabs.map((tab, index) => (
 						<div
-							key={tab.id}
+							key={index}
 							onClick={() => setActiveTab(tab.id)}
-							className={`cursor-pointer text-lg font-semibold ${
+							className={`cursor-pointer text-center text-lg font-semibold ${
 								activeTab === tab.id
 									? "text-[#DA469A]"
 									: "text-[#000E55]"
@@ -41,7 +41,7 @@ const Details = ({product}) => {
 			</div>
 			<div className="flex flex-col md:hidden w-full">
 				{tabs.map((tab, index) => (
-					<div key={tab.id} className="flex flex-col gap-6">
+					<div key={index} className="flex flex-col gap-6">
 						<div
 							className={`flex justify-between items-center border-b pt-3 pb-2 w-full font-semibold text-md cursor-pointer
             ${
