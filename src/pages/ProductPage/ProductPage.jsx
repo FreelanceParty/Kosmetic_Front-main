@@ -7,7 +7,7 @@ import {routeHelper} from "../../utils/helpers/routeHelper";
 import Desktop from "./Contents/Desktop";
 import Mobile from "./Contents/Mobile";
 
-const {API_URL} = process.env;
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const ProductPage = () => {
 	// todo: додати анімації
@@ -23,9 +23,7 @@ const ProductPage = () => {
 		const fetchProduct = async () => {
 			setLoading(true);
 			try {
-				const response = await axios.get(
-					`${API_URL}/products/${id}`
-				);
+				const response = await axios.get(`${REACT_APP_API_URL}/goods/${id}`);
 				setLoading(false);
 				setProduct(response.data);
 			} catch (error) {

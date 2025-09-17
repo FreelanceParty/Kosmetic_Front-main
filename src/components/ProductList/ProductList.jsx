@@ -180,11 +180,11 @@ const ProductList = ({param, limit = 4}) => {
 						<Loader/>
 					) : (
 						<List>
-							{items.length > 0
-								? items.map((item) => (
-									<ProductItem key={item.id} product={item}/>
-								))
-								: (loading || error) && <p>Товари не знайдено</p>}
+							{/*{items.length > 0*/}
+							{/*	? items.map((item) => (*/}
+							{/*		<ProductItem key={item.id} product={item}/>*/}
+							{/*	))*/}
+							{/*	: (loading || error) && <p>Товари не знайдено</p>}*/}
 						</List>
 						//   <ProductList items={items} loading={loading} error={error} />
 					)}

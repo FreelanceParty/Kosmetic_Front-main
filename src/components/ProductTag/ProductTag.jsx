@@ -2,13 +2,15 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {FilterWrapper, FilterTitle, FilterLabel} from "./productTag.styled";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const ProductTag = ({selectedTags, onChange}) => {
 	const [groupedTags, setGroupedTags] = useState({});
 
 	useEffect(() => {
 		const fetchTags = async () => {
 			try {
-				const res = await axios.get("/filter-tags/group-tag");
+				const res = await axios.get(`${API_URL}/filter-tags/group-tag`);
 				setGroupedTags(res.data);
 			} catch (error) {
 				console.error("Failed to fetch tags:", error);

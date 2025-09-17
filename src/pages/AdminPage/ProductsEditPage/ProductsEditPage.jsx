@@ -36,7 +36,7 @@ const ProductsEditPage = () => {
 
 	const fetchProducts = async () => {
 		try {
-			const res = await axios.get(`${REACT_APP_API_URL}/products?limit=5000`);
+			const res = await axios.get(`${REACT_APP_API_URL}/goods?limit=5000`);
 			setProducts(res.data.products);
 		} catch (err) {
 			console.error("Помилка при завантаженні товарів:", err);
@@ -83,10 +83,10 @@ const ProductsEditPage = () => {
 
 		try {
 			if (editId) {
-				await axios.put(`${REACT_APP_API_URL}/products/${editId}`, formattedData);
+				await axios.put(`${REACT_APP_API_URL}/goods/${editId}`, formattedData);
 				toast.success("Товар успішно оновлено!");
 			} else {
-				await axios.post(`${REACT_APP_API_URL}/products`, formattedData);
+				await axios.post(`${REACT_APP_API_URL}/goods`, formattedData);
 				toast.success("Товар успішно додано!");
 			}
 			setFormData(initialProduct);
@@ -106,7 +106,7 @@ const ProductsEditPage = () => {
 
 	const handleDelete = async (id) => {
 		try {
-			await axios.delete(`${REACT_APP_API_URL}/products/${id}`);
+			await axios.delete(`${REACT_APP_API_URL}/goods/${id}`);
 			toast.success("Товар успішно видалено!");
 			fetchProducts();
 		} catch (err) {

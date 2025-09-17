@@ -9,7 +9,7 @@ export const Slider = tw.div`
 `;
 
 export const SliderElement = tw.div`
-  rounded-[30px] lg:rounded-none py-[10px] lg:py-4 px-4 lg:px-5 bg-[#f6f6f6] min-w-max cursor-pointer lg:text-lg lg:uppercase
+  rounded-[30px] lg:rounded-[3px] py-[10px] lg:py-4 px-4 lg:px-5 bg-[#f6f6f6] min-w-max cursor-pointer lg:text-lg lg:uppercase
 `;
 
 export const List = tw.ul`

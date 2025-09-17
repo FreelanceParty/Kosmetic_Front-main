@@ -18,7 +18,7 @@ const ExelUpload = () => {
 		formData.append("file", file);
 
 		try {
-			await axios.post(`${REACT_APP_API_URL}/products/import`, formData);
+			await axios.post(`${REACT_APP_API_URL}/goods/import`, formData);
 			alert("Файл успішно завантажено та оброблено!");
 		} catch (error) {
 			console.error("Помилка при завантаженні файлу:", error);

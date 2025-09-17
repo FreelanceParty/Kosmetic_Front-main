@@ -3,39 +3,27 @@ import ProductFeedback from "./_elements/ProductFeedback";
 import {usePopup} from "../../../../hooks/usePopup";
 import {Popup} from "../../../../popups/Abstracts/Popup";
 import CreateProductFeedback from "../../../../popups/CreateProductFeedback";
+import {useEffect, useState} from "react";
+import axios from "axios";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const ProductFeedbacks = ({product}) => {
 	const {isOpen, content, openPopup, closePopup} = usePopup();
+	const [reviews, setReviews] = useState([]);
 
-	const testData = [
-		{
-			id:   1,
-			user: {
-				name: "Дарина",
-			},
-			date: '22.03.2025',
-			rate: 5,
-			text: 'Дуже подобається сироватка, дуже класна текстура та аромат. Добре працює з сухістю, гарно лягає будь який крем',
-		},
-		{
-			id:   2,
-			user: {
-				name: "Olga",
-			},
-			date: '30.06.2024',
-			rate: 4,
-			text: 'Дуже подобається сироватка, дуже класна текстура та аромат. Добре працює з сухістю, гарно лягає будь який крем',
-		},
-		{
-			id:   3,
-			user: {
-				name: "Марія",
-			},
-			date: '02.05.2024',
-			rate: 3,
-			text: 'Дуже подобається сироватка, дуже класна текстура та аромат. Добре працює з сухістю, гарно лягає будь який крем',
-		},
-	];
+	useEffect(() => {
+		const fetchProduct = async () => {
+			try {
+				const response = await axios.get(`${API_URL}/productReviews/forProduct/${product._id}`);
+				console.log(response.data);
+				setReviews(response.data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		fetchProduct();
+	});
 
 	// todo: add feedbacks from db
 	return (
@@ -45,9 +33,9 @@ const ProductFeedbacks = ({product}) => {
 				text="ЗАЛИШИТИ ВІДГУК"
 				onClick={() => openPopup(<CreateProductFeedback product={product}/>)}
 			/>
-			{false ? (
+			{reviews.length > 0 ? (
 				<div className="flex flex-col gap-10">
-					{testData.map((feedback) => (
+					{reviews.map((feedback) => (
 						<ProductFeedback
 							key={feedback.id}
 							feedback={feedback}

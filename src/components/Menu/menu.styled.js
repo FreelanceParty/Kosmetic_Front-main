@@ -1,51 +1,24 @@
 import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import tw from "tailwind-styled-components";
 
-export const MenuNav = styled.nav`
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
+export const MenuNav = tw.nav`
+  flex justify-center align-center
 `;
 
-export const List = styled.ul`
-  display: flex;
-  /* justify-content: space-between; */
-  justify-content: center;
-  align-items: center;
-  /* width: 100%; */
-  /* height: 100%; */
+export const List = tw.ul`
+  flex justify-center align-center
 `;
 
-export const MenuWrapper = styled.nav`
-	background-color: white;
-	border-top:       1px solid #eee;
-	border-bottom:    1px solid #eee;
+export const MenuWrapper = tw.nav`
+	bg-white border-y border-gray-200
+`;
+export const MenuList = tw.div`
+  flex justify-center flex-wrap gap-10
 `;
 
-export const MenuList = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-
-  gap: 40px;
-`;
-
-export const MenuItem = styled(NavLink)`
-  font-size: 14px;
-  font-family: Montserrat;
-  font-weight: 600;
-  line-height: 19.6px;
-  word-wrap: break-word;
-  text-decoration: none;
-  padding: 24px 0;
-
-  color: ${(p) =>
-    p.$highlight ? p.theme.colors.accent_red : p.theme.colors.primary_text};
-  transition: color 0.3s;
-
-  &:hover {
-    color: ${(p) =>
-      p.$highlight ? p.theme.colors.accent_red : p.theme.colors.accent_pink};
-  }
+export const MenuItem = tw(NavLink)`
+  text-sm font-montserrat font-semibold leading-[19.6px] break-words no-underline py-6
+  ${(p) => p.$highlight ? 'text-[theme.colors.accent_red]' : 'text-[theme.colors.primary_text]'}
+  transition-colors duration-300
+  hover:${(p) => p.$highlight ? 'text-[theme.colors.accent_red]' : 'text-[theme.colors.accent_pink]'}
 `;
