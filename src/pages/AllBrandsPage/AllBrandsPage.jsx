@@ -23,7 +23,7 @@ const AllBrandsPage = () => {
 	}, [dispatch]);
 
 	useEffect(() => {
-		if (!brands.items) {
+		if (!brands?.items?.length) {
 			return;
 		}
 
@@ -40,15 +40,9 @@ const AllBrandsPage = () => {
 
 		const allLetters = Object.keys(grouped).sort();
 		setInitLetters(allLetters);
-		setLetters(prevLetters => {
-			if (selectedLetter) {
-				return allLetters.filter(l => l.startsWith(selectedLetter));
-			}
-			return allLetters;
-		});
-	}, [brands.items, selectedLetter]);
+		setLetters(selectedLetter ? allLetters.filter(l => l.startsWith(selectedLetter)) : allLetters);
+	}, [brands?.items, selectedLetter]);
 
-	// Debounce пошуку
 	useEffect(() => {
 		const delayDebounce = setTimeout(() => {
 			if (searchQuery.trim() !== "") {
@@ -66,7 +60,7 @@ const AllBrandsPage = () => {
 
 	const handleCloseCrossClick = () => setSearchQuery("");
 
-	const handleItemClick = brand => navigate("/brands/" + brand.name);
+	const handleItemClick = brand => navigate("/brands/" + encodeURIComponent(brand.name));
 
 	const handleLetterClick = (letter) => {
 		if (selectedLetter === letter) {

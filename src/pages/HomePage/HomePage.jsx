@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import Hero from "../../components/Hero/HeroTrimay/Hero.jsx";
 import CategoryList from "../../components/CategoryList/CategoryList.jsx";
 import ProductSlider from "../../components/ProductSlider/ProductSlider.jsx";
 import Cooperation from "../../components/Cooperation/Cooperation.jsx";
 import Reviews from "../../components/Reviews/Reviews.jsx";
 import axios from "axios";
 import ReviewsMobile from "../../components/Reviews/ReviewsMobile";
+import BestKoreanProducts from "../../components/Banners/BestKoreanProducts";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -27,7 +27,7 @@ const HomePage = () => {
 	}, []);
 	return (
 		<div>
-			<Hero/>
+			<BestKoreanProducts/>
 			<div className="flex flex-col gap-[60px] items-center p-10">
 				<ProductSlider className="hidden sm:flex" title="BEAUTY ЗНИЖКИ %" products={discountProducts}/>
 				<ProductSlider className="hidden sm:flex" title="НОВИНКИ" products={newProducts}/>
