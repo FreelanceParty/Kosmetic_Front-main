@@ -29,6 +29,7 @@ import RegisterPersonalCabinetPage from "./pages/Authorization/SubPages/Register
 import {useDispatch} from "react-redux";
 import {refreshUser} from "./redux/auth/operation";
 import ForgotPasswordPage from "./pages/Authorization/SubPages/ForgotPasswordPage";
+import AboutUsPageMobile from "./pages/AboutUsPage/AboutUsPageMobile";
 
 function App() {
 	const {isMobileScreen} = useMedia();
@@ -151,6 +152,7 @@ function App() {
 						element={
 							<Suspense fallback={<Loader/>}>
 								<AboutUsPage/>
+								<AboutUsPageMobile/>
 							</Suspense>
 						}
 					/>

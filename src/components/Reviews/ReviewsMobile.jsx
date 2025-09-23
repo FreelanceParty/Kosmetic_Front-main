@@ -6,7 +6,6 @@ import ProductReview from "./_elements/ProductReview";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Pagination} from "swiper/modules";
 
-
 const images = [
 	//require("../../assets/images/reviews/1.png"),
 	require("../../assets/images/reviews/2.png"),
@@ -155,7 +154,7 @@ const reviews = [
 	},
 ];
 
-const Reviews = () => {
+const Reviews = ({withProducts = true}) => {
 	//const navigate = useNavigate(); // todo: go to product page
 
 	return (
@@ -178,20 +177,22 @@ const Reviews = () => {
 					))}
 				</Swiper>
 
-				<Swiper
-					modules={[Pagination]}
-					spaceBetween={20}
-					slidesPerView={1.5}
-					pagination={{clickable: true, el: ".custom-product-reviews-pagination"}}
-					className="max-w-md"
-				>
-					{reviews.slice(0, 9).map((review, index) => (
-						<SwiperSlide key={index} className="max-w-[306px]">
-							<ProductReview key={index} review={review}/>
-						</SwiperSlide>
-					))}
-					<div className="custom-product-reviews-pagination flex justify-center mt-6"></div>
-				</Swiper>
+				{withProducts &&
+					<Swiper
+						modules={[Pagination]}
+						spaceBetween={20}
+						slidesPerView={1.5}
+						pagination={{clickable: true, el: ".custom-product-reviews-pagination"}}
+						className="max-w-md"
+					>
+						{reviews.slice(0, 9).map((review, index) => (
+							<SwiperSlide key={index} className="max-w-[306px]">
+								<ProductReview key={index} review={review}/>
+							</SwiperSlide>
+						))}
+						<div className="custom-product-reviews-pagination flex justify-center mt-6"></div>
+					</Swiper>
+				}
 			</div>
 		</div>
 	)
