@@ -4,13 +4,28 @@ import NumberInput from "../../../components/NumberInput/NumberInput";
 import Button from "../../../components/ButtonNew/Button";
 import Details from "../Sections/Details";
 import {useState} from "react";
+import {handleAddToCart,} from "../../../utils/helpers/basket";
 import {useMedia} from "../../../utils/hooks/useMedia";
+import {useDispatch, useSelector} from "react-redux";
+import {getIsLoggedIn} from "../../../redux/auth/selectors";
 
-const Desktop = ({product}) => {
+const Desktop = ({product, isInCart}) => {
+	const isLoggedIn = useSelector(getIsLoggedIn);
+
+	const dispatch = useDispatch();
 	const {getCategoryRoute} = routeHelper();
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [isOptUser, setIsOptUser] = useState(false);
 	const [isAuthorized, setIsAuthorized] = useState(false);
+	const [quantity, setQuantity] = useState(1);
+
+	async function addToCart() {
+		if (isInCart) {
+			// todo: remove from cart
+		} else {
+			await handleAddToCart({product, quantity, dispatch, isLoggedIn})
+		}
+	}
 
 	return (
 		<div className="hidden md:flex w-full justify-center relative">
@@ -58,11 +73,12 @@ const Desktop = ({product}) => {
 								</div>
 							</div>
 							<div className="flex gap-[30px]">
-								<NumberInput/>
+								<NumberInput limit={product.amount} number={quantity} setNumber={setQuantity}/>
 								<Button
-									text="ДОДАТИ У КОШИК"
+									text={isInCart ? `ДОДАНО` : `ДОДАТИ У КОШИК`}
 									type="primary"
 									classes="bg-[#E667A4]"
+									onClick={() => addToCart}
 									isDisabled={product.amount === 0}
 								/>
 							</div>

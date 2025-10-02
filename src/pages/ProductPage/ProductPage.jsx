@@ -6,6 +6,8 @@ import {useMedia} from "../../utils/hooks/useMedia";
 import {routeHelper} from "../../utils/helpers/routeHelper";
 import Desktop from "./Contents/Desktop";
 import Mobile from "./Contents/Mobile";
+import {useSelector} from "react-redux";
+import {selectCart} from "../../redux/cart/selectors";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -19,6 +21,9 @@ const ProductPage = () => {
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [isOptUser, setIsOptUser] = useState(false);
 	const [isAuthorized, setIsAuthorized] = useState(false);
+	const [isInCart, setIsInCart] = useState(false);
+	const productCart = useSelector(selectCart);
+
 	useEffect(() => {
 		const fetchProduct = async () => {
 			setLoading(true);
@@ -45,7 +50,7 @@ const ProductPage = () => {
 				<Loader/>
 			) : (
 				<>
-					<Desktop product={product}/>
+					<Desktop isInCart={isInCart} product={product}/>
 					<Mobile product={product}/>
 				</>
 			)}

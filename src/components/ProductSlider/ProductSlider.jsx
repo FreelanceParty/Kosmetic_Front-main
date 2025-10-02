@@ -22,6 +22,12 @@ const ProductSlider = ({title, products}) => {
 	return (
 		<div className="flex flex-col gap-10 pt-10 max-w-[1240px] items-center border-t border-[#E8E8E8]">
 			<div className="font-semibold text-center text-[24px] leading-[17px]">{title}</div>
+			{/* mobile: дві в рядку */}
+			<div className="flex sm:hidden grid grid-cols-2 gap-4 w-fit mx-auto">
+				{products.map((product, idx) => (
+					<ProductCard key={idx} product={product}/>
+				))}
+			</div>
 			{/* desktop */}
 			<div className="hidden sm:flex items-center w-full relative">
 				<button

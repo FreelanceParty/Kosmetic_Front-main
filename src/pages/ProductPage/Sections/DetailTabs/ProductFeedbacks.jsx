@@ -23,7 +23,7 @@ const ProductFeedbacks = ({product}) => {
 			}
 		};
 		fetchProduct();
-	});
+	}, []);
 
 	// todo: add feedbacks from db
 	return (

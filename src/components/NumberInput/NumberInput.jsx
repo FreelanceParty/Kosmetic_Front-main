@@ -1,7 +1,4 @@
-import {useState} from "react";
-
-const NumberInput = ({limit}) => {
-	const [number, setNumber] = useState(1);
+const NumberInput = ({limit, number, setNumber}) => {
 
 	return (
 		<div className="flex items-center justify-between w-[130px] border rounded-md text-center h-[45px]">

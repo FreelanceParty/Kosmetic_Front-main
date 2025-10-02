@@ -30,6 +30,7 @@ import {useDispatch} from "react-redux";
 import {refreshUser} from "./redux/auth/operation";
 import ForgotPasswordPage from "./pages/Authorization/SubPages/ForgotPasswordPage";
 import AboutUsPageMobile from "./pages/AboutUsPage/AboutUsPageMobile";
+import CartPage from "./pages/CartPage/CartPage";
 
 function App() {
 	const {isMobileScreen} = useMedia();
@@ -248,6 +249,14 @@ function App() {
 						element={
 							<Suspense fallback={<Loader/>}>
 								<ForgotPasswordPage/>
+							</Suspense>
+						}
+					/>
+					<Route
+						path="cart"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<CartPage/>
 							</Suspense>
 						}
 					/>

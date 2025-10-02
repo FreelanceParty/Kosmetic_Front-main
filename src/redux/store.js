@@ -4,6 +4,7 @@ import productsReducer from "./products/productsSlice";
 import searchReducer from "./search/searchSlice";
 import filterSlice from "./filter/slice";
 import brandsReducer from "./brands/brandsSlice";
+import cartReducer from "./cart/slice";
 import {authReducer} from "./auth/slice";
 import storage from "redux-persist/lib/storage";
 import {persistReducer, persistStore} from "redux-persist";
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
 	products: productsReducer,
 	search:   searchReducer,
 	filter:   filterSlice,
+	cart:     cartReducer,
 	brands:   brandsReducer,
 });
 

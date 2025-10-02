@@ -17,8 +17,10 @@ const HomePage = () => {
 		const fetchProduct = async () => {
 			try {
 				const response = await axios.get(`${API_URL}/goods`);
-				setDiscountProducts(response.data.goods.slice(0, 8));
-				setNewProducts(response.data.goods.slice(8, 16));
+				const goods = response.data.goods;
+				const availableProducts = goods.filter(product => product.amount > 0);
+				setDiscountProducts(availableProducts.slice(0, 8));
+				setNewProducts(availableProducts.slice(8, 16));
 			} catch (error) {
 				console.log(error);
 			}
@@ -29,8 +31,8 @@ const HomePage = () => {
 		<div>
 			<BestKoreanProducts/>
 			<div className="flex flex-col gap-[60px] items-center p-10">
-				<ProductSlider className="hidden sm:flex" title="BEAUTY ЗНИЖКИ %" products={discountProducts}/>
-				<ProductSlider className="hidden sm:flex" title="НОВИНКИ" products={newProducts}/>
+				<ProductSlider title="BEAUTY ЗНИЖКИ %" products={discountProducts}/>
+				<ProductSlider title="НОВИНКИ" products={newProducts}/>
 				<CategoryList/>
 				<Cooperation/>
 				<Reviews/>

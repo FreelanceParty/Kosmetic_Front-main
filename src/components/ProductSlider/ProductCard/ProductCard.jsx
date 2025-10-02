@@ -1,12 +1,36 @@
 import RateHearts from "../../RateHearts/RateHearts";
 import {useNavigate} from "react-router-dom";
+import {handleAddToCart} from "../../../utils/helpers/basket";
+import {useDispatch, useSelector} from "react-redux";
+import {getIsLoggedIn} from "../../../redux/auth/selectors";
+import {selectCart} from "../../../redux/cart/selectors";
 
 const ProductCard = ({product}) => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const isLoggedIn = useSelector(getIsLoggedIn);
+	const productCart = useSelector(selectCart);
+
+	const productCartFind = productCart?.find(
+		(item) => +item.id === +product.id
+	);
+
+	console.log(productCartFind)
 	// todo: що робити якщо відгуків немає або число не ціле (3.4)?
+
 	return (
 		<>
-			<div className="flex sm:hidden flex-col w-[159px] cursor-pointer" onClick={() => navigate('/products/' + product.id)}>
+			<div className="flex sm:hidden flex-col w-[159px] cursor-pointer"
+				onClick={(e) => {
+					const el = e.target;
+					const isIcon = el.closest('button');
+					if (isIcon) {
+						el.closest('button').classList.toggle('hidden');
+						handleAddToCart({product, quantity: 1, dispatch, isLoggedIn, event: e});
+					} else {
+						navigate(`/products/${product.id}`);
+					}
+				}}>
 				<div className="flex items-center justify-center w-full aspect-square">
 					<img src={product.images} alt="product"/>
 				</div>
@@ -33,12 +57,14 @@ const ProductCard = ({product}) => {
 								<div className={`font-bold text-sm leading-[10px] ${product.priceOld === undefined ? '' : 'text-[#B90003]'}`}>{product.price} ГРН</div>
 							</div>
 						</div>
-						<img
-							src={require("../../../assets/icons/buy_mobile.svg").default}
-							alt="to cart"
-							width={44}
-							height={44}
-						/>
+						<button>
+							<img
+								src={require("../../../assets/icons/buy_mobile.svg").default}
+								alt="to cart"
+								width={44}
+								height={44}
+							/>
+						</button>
 					</div>
 				</div>
 			</div>

@@ -59,6 +59,14 @@ const Header = () => {
 		}
 	};
 
+	const handleGoToCart = () => {
+		if (isMobileScreen) {
+			navigate("/cart")
+		} else {
+			openPopup(<Basket onClose={closePopup}/>)
+		}
+	}
+
 	return (
 		<>
 			{isSearchOpen && (
@@ -81,7 +89,7 @@ const Header = () => {
 					</a>
 					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<User icon="user" title={isLoggedIn ? userName : "ВХІД"} onClick={() => handleUserIconClick()}/>
-						<HeaderMenu icon="basket" title="КОШИК" onClick={() => openPopup(<Basket/>)}/>
+						<HeaderMenu icon="basket" title="КОШИК" onClick={() => handleGoToCart()}/>
 					</div>
 				</div>
 				<div className="hidden lg:flex justify-center gap-10 font-semibold text-md leading-[10px] py-6">
