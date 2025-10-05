@@ -24,7 +24,7 @@ const Promo = () => {
 	const {isMobileScreen} = useMedia();
 
 	return (
-		<>
+		<div className={`bg-[#FFE8F5]`}>
 			{isMobileScreen && <PromoWrapper style={{height: "28px"}}/>}
 
 			<PromoWrapper className="flex justify-center py-[10px] w-full text-center z-10">
@@ -66,7 +66,7 @@ const Promo = () => {
 					</Swiper>
 				)}
 			</PromoWrapper>
-		</>
+		</div>
 	);
 };
 

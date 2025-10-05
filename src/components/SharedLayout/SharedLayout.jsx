@@ -5,19 +5,20 @@ import Header from "../Header/Header";
 
 import {Loader} from "../Loader/Loader";
 
-import {Bgd} from "./SharedLayout.styled";
 import Footer from "../Footer/Footer";
 
 const SharedLayout = () => {
 	return (
 		<>
 			<Header/>
-			<Bgd>
-				<Suspense fallback={<Loader/>}>
-					<Outlet/>
-				</Suspense>
-			</Bgd>
-			<Footer/>
+			<div className="flex flex-col overflow-y-auto max-h-screen">
+				<div>
+					<Suspense fallback={<Loader/>}>
+						<Outlet/>
+					</Suspense>
+				</div>
+				<Footer/>
+			</div>
 		</>
 	);
 };

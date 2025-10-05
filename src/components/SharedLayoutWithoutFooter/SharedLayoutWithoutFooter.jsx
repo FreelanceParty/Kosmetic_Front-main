@@ -4,17 +4,17 @@ import {Outlet} from "react-router-dom";
 import Header from "../Header/Header";
 import {Loader} from "../Loader/Loader";
 
-import {Bgd} from "./SharedLayoutWithoutFooter.styled";
-
 const SharedLayoutWithoutFooter = () => {
 	return (
 		<>
 			<Header/>
-			<Bgd>
-				<Suspense fallback={<Loader/>}>
-					<Outlet/>
-				</Suspense>
-			</Bgd>
+			<div className="flex flex-col overflow-y-auto max-h-screen">
+				<div>
+					<Suspense fallback={<Loader/>}>
+						<Outlet/>
+					</Suspense>
+				</div>
+			</div>
 		</>
 	);
 };
