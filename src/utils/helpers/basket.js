@@ -1,4 +1,4 @@
-import {addToCart} from "../../redux/cart/slice";
+import {addToCart, removeFromCart} from "../../redux/cart/slice";
 import axios from "axios";
 import scrollToTop from "../../components/ScrollToTop/ScrollToTop";
 
@@ -25,6 +25,19 @@ export const handleAddToCart = async ({product, quantity, dispatch, isLoggedIn})
 				subSubCategory: product.subSubCategory,
 				productId:      product.id,
 			});
+			scrollToTop();
+		}
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const handleRemoveFromCart = async ({product, dispatch, isLoggedIn}) => {
+	dispatch(removeFromCart({...product}));
+
+	try {
+		if (isLoggedIn) {
+			await axios.delete(`/basket/${product.id}`);
 			scrollToTop();
 		}
 	} catch (e) {

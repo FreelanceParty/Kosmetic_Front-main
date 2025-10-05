@@ -1,28 +1,37 @@
 import {selectCart} from "../../redux/cart/selectors";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import EmptyBasketIcon from "../../components/Icons/EmptyBasketIcon";
-import React, {useState} from "react";
+import React from "react";
 import Button from "../../components/ButtonNew/Button";
 import NumberInput from "../../components/NumberInput/NumberInput";
 import DeleteIcon from "../../components/Icons/DeleteIcon";
+import {handleRemoveFromCart} from "../../utils/helpers/basket";
+import {getIsLoggedIn} from "../../redux/auth/selectors";
+import {addToCart} from "../../redux/cart/slice";
 
 const CartPage = () => {
+	const dispatch = useDispatch();
+
+	const isLoggedIn = useSelector(getIsLoggedIn);
 	const cartItems = useSelector(selectCart);
 
-	console.log(cartItems)
-	const [quantities, setQuantities] = useState(
-		() => cartItems.map((product) => product.quantity)
+	const totalAmount = cartItems.reduce(
+		(sum, item) => sum + item.price * item.quantity,
+		0
 	);
-	const [totalAmount, setTotalAmount] = useState(cartItems.reduce((sum, item) => sum + item.price, 0));
 
-	const updateQuantity = (index, value) => {
-		setQuantities(prev =>
-			prev.map((q, i) => (i === index ? value : q))
-		);
-	};
+	function updateQuantity(product, value) {
+		if (value >= 1) {
+			dispatch(addToCart({...product, quantity: value}));
+		}
+	}
+
+	function removeFromCart(product) {
+		handleRemoveFromCart({product, dispatch, isLoggedIn});
+	}
 
 	return (
-		<div className="flex flex-col px-5">
+		<div className="flex flex-col pt-5">
 			<div className="font-semibold text-lg leading-[13px] text-center py-[10px] border-b border-[#f6f6f6]">
 				КОШИК
 			</div>
@@ -44,8 +53,8 @@ const CartPage = () => {
 					</div>
 				</div>
 			) : (
-				<div className="flex flex-col justify-between">
-					<div className="flex flex-col gap-5 overflow-y-auto">
+				<div className="flex flex-col h-[calc(100vh-185px)] mt-5">
+					<div className="flex flex-col gap-5 px-5 overflow-y-auto flex-1">
 						<div className="text-xs">
 							<span className="text-[#E667A4]">Увага! </span>
 							Ваша корзина автоматично анулюється через 10 днів.
@@ -62,8 +71,8 @@ const CartPage = () => {
 											{product.name}
 										</div>
 										<div className="flex justify-between items-center">
-											<NumberInput number={quantities[index]} setNumber={value => updateQuantity(index, value)} limit={product.amount}/>
-											<DeleteIcon/>
+											<NumberInput number={product.quantity} setNumber={value => updateQuantity(product, value)} limit={product.amount}/>
+											<DeleteIcon onClick={() => removeFromCart(product)}/>
 										</div>
 										<div className="text-md font-semibold leading-[11px]">
 											{product.price} ГРН

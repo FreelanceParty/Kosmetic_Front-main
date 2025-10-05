@@ -15,7 +15,6 @@ const ProductCard = ({product}) => {
 		(item) => +item.id === +product.id
 	);
 
-	console.log(productCartFind)
 	// todo: що робити якщо відгуків немає або число не ціле (3.4)?
 
 	return (
@@ -43,7 +42,7 @@ const ProductCard = ({product}) => {
 						<div className="font-semibold text-xs leading-[8px] uppercase">{product.brand}</div>
 						<div className="font-normal text-xs line-clamp-3 leading-[15px]">{product.name}</div>
 					</div>
-					<div className="flex justify-between">
+					<div className="flex justify-between h-[44px]">
 						<div className="flex flex-col justify-between">
 							{product.amount > 0 ? (
 								<div className="text-[#007504] text-[10px] leading-[7px]">В наявності</div>
@@ -57,14 +56,16 @@ const ProductCard = ({product}) => {
 								<div className={`font-bold text-sm leading-[10px] ${product.priceOld === undefined ? '' : 'text-[#B90003]'}`}>{product.price} ГРН</div>
 							</div>
 						</div>
-						<button>
-							<img
-								src={require("../../../assets/icons/buy_mobile.svg").default}
-								alt="to cart"
-								width={44}
-								height={44}
-							/>
-						</button>
+						{!productCartFind &&
+							<button>
+								<img
+									src={require("../../../assets/icons/buy_mobile.svg").default}
+									alt="to cart"
+									width={44}
+									height={44}
+								/>
+							</button>
+						}
 					</div>
 				</div>
 			</div>
