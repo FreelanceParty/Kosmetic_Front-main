@@ -11,7 +11,7 @@ const SharedLayout = () => {
 	return (
 		<>
 			<Header/>
-			<div className="flex flex-col overflow-y-auto max-h-screen">
+			<div className="flex flex-col overflow-y-auto h-[calc(100vh-110px)] md:h-[calc(100vh-85px)] lg:h-[calc(100vh-180px)]">
 				<div>
 					<Suspense fallback={<Loader/>}>
 						<Outlet/>

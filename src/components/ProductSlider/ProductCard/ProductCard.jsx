@@ -72,7 +72,8 @@ const ProductCard = ({product}) => {
 
 			<div className="hidden sm:flex flex-col w-[283px] cursor-pointer" onClick={() => navigate('/products/' + product.id)}>
 				<div className="flex items-center justify-center w-full aspect-square">
-					<img src={product.images} alt="product"/>
+					<img className="max-h-[283px] max-w-[283px]"
+						src={product.images} alt="product"/>
 				</div>
 				<div className="flex flex-col gap-5 py-5 px-3">
 					<div className="flex flex-col gap-4">
