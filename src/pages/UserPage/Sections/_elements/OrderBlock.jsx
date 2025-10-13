@@ -29,10 +29,10 @@ const OrderBlock = ({order}) => {
 	}
 
 	return (
-		<div className="flex flex-col max-w-[731px] border border-[#E8E8E8]">
+		<div className="flex flex-col max-w-[731px] border-b md:border border-[#E8E8E8]">
 			<div className="flex p-5 justify-between items-center w-full cursor-pointer" onClick={() => toggleOrder()}>
 				<div className="flex flex-col gap-5">
-					<div className="text-md leading-[11px]">Замовлення №{order.orderNumber}, {formatDate(order.createdAt)}</div>
+					<div className="text-md leading-[14px]">Замовлення №{order.orderNumber}, {formatDate(order.createdAt)}</div>
 					<div className={`font-semibold text-md leading-[11px] text-[${getOrderStatusColor(order.status)}]`}>{order.status}</div>
 				</div>
 				<div className="flex gap-[100px] items-center">
@@ -41,7 +41,7 @@ const OrderBlock = ({order}) => {
 						<div className="font-semibold text-md leading-[11px]">{order.amount} грн</div>
 					</div>
 					<div className={`transition-transform duration-300 ${isOpen ? 'rotate-0' : 'rotate-180'}`}>
-					<ChevronIcon />
+						<ChevronIcon/>
 					</div>
 				</div>
 			</div>

@@ -82,7 +82,7 @@ const OrderHistory = () => {
 		<>
 			{orders.length === 0
 				? <div className="flex flex-col gap-[50px]">
-					<div className="flex flex-col gap-4">
+					<div className="hidden md:flex flex-col gap-4">
 						<div className="font-semibold text-lg leading-[13px]">ІСТОРІЯ ЗАМОВЛЕНЬ</div>
 						<div className="border-t border-[#E8E8E8]"/>
 					</div>
@@ -94,12 +94,12 @@ const OrderHistory = () => {
 					<Button
 						type="primary"
 						text="ВПЕРЕД ЗА ПОКУПКАМИ"
-						classes="h-[53px] w-[409px]"
+						classes="h-[53px] w-full max-w-[409px]"
 					/>
 				</div>
 
 				: <div className="flex flex-col max-h-[70vh]">
-					<div className="flex flex-col gap-4 mb-6 h-full">
+					<div className="hidden md:flex flex-col gap-4 mb-6 h-full">
 						<div className="font-semibold text-lg leading-[13px]">ІСТОРІЯ ЗАМОВЛЕНЬ</div>
 						<div className="border-t border-[#E8E8E8]"/>
 					</div>

@@ -12,13 +12,13 @@ const ContactInfo = () => {
 
 	return (
 		<div className="flex flex-col">
-			<div className="flex flex-col gap-4 mb-6">
+			<div className="hidden md:flex flex-col gap-4 mb-6">
 				<div className="font-semibold text-lg leading-[13px]">КОНТАКТНА ІНФОРМАЦІЯ</div>
 				<div className="border-t border-[#E8E8E8]"/>
 			</div>
-			<div className="flex flex-col gap-[30px] mb-10 max-w-[545px]">
-				<div className="flex justify-between">
-					<div className="text-lg">EMAIL<span className="text-[#E667A4]">*</span></div>
+			<div className="flex flex-col gap-4 md:gap-[30px] mb-6 md:mb-10 max-w-[545px]">
+				<div className="flex flex-col md:flex-row justify-between gap-2 md:gap-0">
+					<div className="text-sm md:text-lg">EMAIL<span className="text-[#E667A4]">*</span></div>
 					<Input
 						type="email"
 						value={email}
@@ -26,8 +26,8 @@ const ContactInfo = () => {
 						onChange={(e) => setEmail(e.target.value)}
 					/>
 				</div>
-				<div className="flex justify-between">
-					<div className="text-lg">ІМ'Я<span className="text-[#E667A4]">*</span></div>
+				<div className="flex flex-col md:flex-row justify-between gap-2 md:gap-0">
+					<div className="text-sm md:text-lg">ІМ'Я<span className="text-[#E667A4]">*</span></div>
 					<Input
 						type="text"
 						value={firstName}
@@ -35,8 +35,8 @@ const ContactInfo = () => {
 						onChange={(e) => setFirstName(e.target.value)}
 					/>
 				</div>
-				<div className="flex justify-between">
-					<div className="text-lg">ПРІЗВИЩЕ<span className="text-[#E667A4]">*</span></div>
+				<div className="flex flex-col md:flex-row justify-between gap-2 md:gap-0">
+					<div className="text-sm md:text-lg">ПРІЗВИЩЕ<span className="text-[#E667A4]">*</span></div>
 					<Input
 						type="text"
 						value={lastName}
@@ -44,8 +44,8 @@ const ContactInfo = () => {
 						onChange={(e) => setLastName(e.target.value)}
 					/>
 				</div>
-				<div className="flex justify-between">
-					<div className="text-lg">ТЕЛЕФОН<span className="text-[#E667A4]">*</span></div>
+				<div className="flex flex-col md:flex-row justify-between gap-2 md:gap-0">
+					<div className="text-sm md:text-lg">ТЕЛЕФОН<span className="text-[#E667A4]">*</span></div>
 					<Input
 						type="text"
 						value={number}
@@ -57,7 +57,7 @@ const ContactInfo = () => {
 			<Button
 				type="primary"
 				text="ЗБЕРЕГТИ ЗМІНИ"
-				classes="h-[53px] max-w-[227px]"
+				classes="h-[53px] w-full max-w-[409px] md:max-w-[227px]"
 			/>
 		</div>
 	);

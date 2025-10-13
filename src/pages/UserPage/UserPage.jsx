@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Container, Slider, SliderElement} from "../CooperationPage/CooperationPage.styled";
+import {Container, Slider, SliderElement} from "./UserPage.styled";
 import OrderHistory from "./Sections/OrderHistory";
 import ContactInfo from "./Sections/ContactInfo";
 import ChangePassword from "./Sections/ChangePassword";
@@ -26,7 +26,7 @@ const UserPage = () => {
 							activeTab === tab.id
 								? "bg-[#ffe8f5] text-gray-600"
 								: "bg-[#f6f6f6] text-gray-600 hover:bg-gray-200"
-						} ${index === 0 ? "ml-5" : ""} ${index === tabs.length - 1 ? "mr-5" : ""}`}
+						} ${index === 0 ? "ml-0 md:ml-5" : ""} ${index === tabs.length - 1 ? "mr-0 md:mr-5" : ""}`}
 					>
 						{tab.label}
 					</SliderElement>
