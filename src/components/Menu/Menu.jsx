@@ -3,7 +3,7 @@ import {MenuWrapper, MenuItem, MenuList} from "./menu.styled";
 import MultiLevelMenu from "./MultiLevelMenu/MultiLevelMenu";
 
 export const menu = [
-	{text: "ОБЛИЧЧЯ", to: "/katehoriji"},
+	{text: "ОБЛИЧЧЯ", to: "/katehoriji/faceCare"},
 	{text: "ВОЛОССЯ", to: "/katehoriji/hairCare"},
 	{text: "МАКІЯЖ", to: "/katehoriji/makeup"},
 	{text: "ТІЛО", to: "/katehoriji/bodyCare"},

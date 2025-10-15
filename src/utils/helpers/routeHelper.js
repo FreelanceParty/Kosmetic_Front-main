@@ -1,27 +1,49 @@
 export function routeHelper() {
 
+	const categories = [
+		{
+			name:  "Догляд для обличчя",
+			route: "/katehoriji/faceCare",
+		},
+		{
+			name:  "Догляд для волосся",
+			route: "/katehoriji/hairCare",
+		},
+		{
+			name:  "Догляд для тіла",
+			route: "/katehoriji/bodyCare",
+		},
+		{
+			name:  "Макіяж",
+			route: "/katehoriji/makeup",
+		},
+		{
+			name:  "Набори",
+			route: "/katehoriji/folds",
+		},
+		// todo:
+		{
+			name:  "Захист від сонця",
+			route: "/katehoriji",
+		},
+		{
+			name:  "Аксесуари для догляду",
+			route: "/katehoriji",
+		},
+		{
+			name:  "Пробники",
+			route: "/katehoriji",
+		},
+	];
+
 	const getCategoryRoute = (category) => {
 		category = category.toLowerCase().trim();
-		switch (category) {
-			case "догляд для волосся":
-				return "/katehoriji/hairCare";
-			case "догляд для тіла":
-				return "/katehoriji/bodyCare";
-			case "макіяж":
-				return "/katehoriji/makeup";
-			case "набори":
-				return "/katehoriji/folds";
-
-			case "догляд для обличчя":
-				return "/katehoriji/";
-			case "захист від сонця":
-				return "/katehoriji/";
-			case "аксесуари для догляду":
-				return "/katehoriji/";
-			case "пробники":
-				return "/katehoriji/";
-		}
+		return categories.find(cat => cat.name.toLowerCase().trim() === category).route;
 	};
 
-	return {getCategoryRoute};
+	const getCategoryByRoute = (route) => {
+		return categories.find(category => category.route === route).name;
+	};
+
+	return {getCategoryRoute, getCategoryByRoute};
 }

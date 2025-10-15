@@ -70,7 +70,7 @@ const AuthorizationPage = () => {
 
 	return (
 		<div className="flex flex-col lg:flex-row gap-10 lg:gap-0 justify-center items-center px-5 md:px-[100px]">
-			<div className="flex flex-col px-[40px] xl:px-[70px] pt-[130px] items-center">
+			<div className="flex flex-col px-[40px] xl:px-[70px] pt-20 md:pt-[130px] items-center">
 				<div className="flex flex-col gap-10 mb-[34px] w-[350px] md:w-[409px]">
 					<div className="font-semibold text-lg leading-[19px] uppercase">
 						Зареєстровані?<br/>
@@ -108,7 +108,7 @@ const AuthorizationPage = () => {
 					isDisabled={!isValidEmail}
 				/>
 			</div>
-			<div className="flex flex-col gap-[38px] px-[40px] xl:px-[70px] py-[130px] w-fit bg-[#F6F6F6]">
+			<div className="flex flex-col gap-[38px] px-[40px] xl:px-[70px] py-20 md:py-[130px] w-fit bg-[#F6F6F6]">
 				<div className="font-semibold text-lg leading-[19px] uppercase">
 					Це ваш перший візит?<br/>
 					Зареєструйся
@@ -117,8 +117,8 @@ const AuthorizationPage = () => {
 					<Button
 						type="secondary"
 						text="СТВОРИТИ ОПТОВИЙ КАБІНЕТ"
-						classes="h-[53px] w-full max-w-[350px] md:max-w-[425px]"
-						textClasses="font-medium text-lg"
+						classes="h-[53px] w-full max-w-[425px] px-2"
+						textClasses="font-medium text-sm md:text-lg"
 						onClick={() => navigate("/reg-opt-cabinet")}
 					/>
 					<div className="flex gap-2 items-center">
@@ -130,8 +130,8 @@ const AuthorizationPage = () => {
 					<Button
 						type="secondary"
 						text="СТВОРИТИ РОЗДРІБНИЙ КАБІНЕТ"
-						classes="h-[53px] w-[425px]"
-						textClasses="font-medium text-lg"
+						classes="h-[53px] w-full max-w-[425px] px-2"
+						textClasses="font-medium text-sm md:text-lg"
 						onClick={() => navigate("/reg-personal-cabinet")}
 					/>
 					<div className="flex gap-2 items-center">

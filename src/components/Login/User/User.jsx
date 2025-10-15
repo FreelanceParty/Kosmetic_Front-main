@@ -28,6 +28,7 @@ const User = ({icon, title, onClick, classes}) => {
 
 	const logoutDispatch = () => {
 		dispatch(logOut());
+		setShowDropdown(false);
 		navigate("/");
 	};
 
