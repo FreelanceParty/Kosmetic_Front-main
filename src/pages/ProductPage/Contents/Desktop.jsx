@@ -7,10 +7,15 @@ import {useState} from "react";
 import {handleAddToCart,} from "../../../utils/helpers/basket";
 import {useMedia} from "../../../utils/hooks/useMedia";
 import {useDispatch, useSelector} from "react-redux";
-import {getIsLoggedIn} from "../../../redux/auth/selectors";
+import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../../redux/auth/selectors";
+import {trackAddToCart} from "../../../ads/AdEvents";
 
 const Desktop = ({product, isInCart}) => {
 	const isLoggedIn = useSelector(getIsLoggedIn);
+	const userEmail = useSelector(getUserEmail);
+	const userFirstName = useSelector(getUserFirstName);
+	const userLastName = useSelector(getUserLastName);
+	const userNumber = useSelector(getUserNumber);
 
 	const dispatch = useDispatch();
 	const {getCategoryRoute} = routeHelper();
@@ -24,6 +29,11 @@ const Desktop = ({product, isInCart}) => {
 			// todo: remove from cart
 		} else {
 			await handleAddToCart({product, quantity, dispatch, isLoggedIn})
+			try {
+				trackAddToCart(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber})
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	}
 

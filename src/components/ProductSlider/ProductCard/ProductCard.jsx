@@ -2,14 +2,20 @@ import RateHearts from "../../RateHearts/RateHearts";
 import {useNavigate} from "react-router-dom";
 import {handleAddToCart} from "../../../utils/helpers/basket";
 import {useDispatch, useSelector} from "react-redux";
-import {getIsLoggedIn} from "../../../redux/auth/selectors";
+import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../../redux/auth/selectors";
 import {selectCart} from "../../../redux/cart/selectors";
+import {trackAddToCart} from "../../../ads/AdEvents";
 
 const ProductCard = ({product}) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const productCart = useSelector(selectCart);
+
+	const userEmail = useSelector(getUserEmail);
+	const userFirstName = useSelector(getUserFirstName);
+	const userLastName = useSelector(getUserLastName);
+	const userNumber = useSelector(getUserNumber);
 
 	const productCartFind = productCart?.find(
 		(item) => +item.id === +product.id
@@ -26,6 +32,11 @@ const ProductCard = ({product}) => {
 					if (isIcon) {
 						el.closest('button').classList.toggle('hidden');
 						handleAddToCart({product, quantity: 1, dispatch, isLoggedIn, event: e});
+						try {
+							trackAddToCart(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber})
+						} catch (e) {
+							console.log(e);
+						}
 					} else {
 						navigate(`/products/${product.id}`);
 					}
