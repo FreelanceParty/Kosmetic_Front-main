@@ -8,4 +8,4 @@ export const getIsRefreshing = (state) => state.auth.isRefreshing;
 export const getIsRegister = (state) => state.auth.isRegister;
 export const getIsAdmin = (state) => state.auth.isAdmin;
 export const getOptUser = (state) => state.auth.optUser;
-export const getUserId = (state) => state.auth.id;
+export const getUserId = (state) => state.auth._id;

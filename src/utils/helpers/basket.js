@@ -2,12 +2,14 @@ import {addToCart, removeFromCart} from "../../redux/cart/slice";
 import axios from "axios";
 import scrollToTop from "../../components/ScrollToTop/ScrollToTop";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export const handleAddToCart = async ({product, quantity, dispatch, isLoggedIn}) => {
 	dispatch(addToCart({...product, quantity}));
 
 	try {
 		if (isLoggedIn) {
-			await axios.post(`/basket`, {
+			await axios.post(`${API_URL}/basket`, {
 				name:           product.name,
 				article:        product.article,
 				code:           product.code,

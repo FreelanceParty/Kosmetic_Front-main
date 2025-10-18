@@ -6,9 +6,11 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 export const token = {
 	set(token) {
 		axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+		localStorage.setItem("token", token);
 	},
 	unset() {
-		axios.defaults.headers.common.Authorization = "";
+		delete axios.defaults.headers.common.Authorization;
+		localStorage.removeItem("token");
 	},
 };
 
@@ -64,13 +66,11 @@ export const refreshUser = createAsyncThunk(
 		}
 
 		try {
-			const {data} = await axios.get(`${REACT_APP_API_URL}/auth/current`, {
-				headers: {
-					Authorization: `Bearer ${persistedToken}`,
-				},
-			});
+			axios.defaults.headers.common.Authorization = `Bearer ${persistedToken}`;
+			const {data} = await axios.get(`${REACT_APP_API_URL}/auth/current`);
 			return data;
 		} catch (error) {
+			token.unset();
 			return thunkAPI.rejectWithValue(error.message);
 		}
 	}
