@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {logIn} from "../../redux/auth/operation";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const AuthorizationPage = () => {
 	const navigate = useNavigate();
@@ -23,24 +23,20 @@ const AuthorizationPage = () => {
 		password: "",
 	});
 
-	const validateEmail = (email) => {
-		const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-		return re.test(email);
-	};
-
 	function handleEmailChange(e) {
 		setIsShowEmailError(false);
 		const {name, value} = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-		const isValidEmail = validateEmail(formData.email);
-		setIsValidEmail(isValidEmail);
+		setFormData((prev) => ({...prev, [name]: value,}));
+	}
+
+	useEffect(() => {
+		const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+		const isValidEmail = re.test(formData.email);
 		if (!isValidEmail) {
 			setErrorMessage(wrongFormatMessage);
 		}
-	}
+		setIsValidEmail(isValidEmail);
+	}, [formData.email])
 
 	function handleInputBlur() {
 		if (!isValidEmail) {
