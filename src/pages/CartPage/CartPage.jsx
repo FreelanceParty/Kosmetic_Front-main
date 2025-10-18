@@ -8,9 +8,11 @@ import DeleteIcon from "../../components/Icons/DeleteIcon";
 import {handleRemoveFromCart} from "../../utils/helpers/basket";
 import {getIsLoggedIn} from "../../redux/auth/selectors";
 import {addToCart} from "../../redux/cart/slice";
+import {useNavigate} from "react-router-dom";
 
 const CartPage = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const cartItems = useSelector(selectCart);
@@ -72,7 +74,7 @@ const CartPage = () => {
 										</div>
 										<div className="flex justify-between items-center">
 											<NumberInput number={product.quantity} setNumber={value => updateQuantity(product, value)} limit={product.amount}/>
-											<DeleteIcon onClick={() => removeFromCart(product)}/>
+											<DeleteIcon onClick={() => removeFromCart(product)} classes="cursor-pointer"/>
 										</div>
 										<div className="text-md font-semibold leading-[11px]">
 											{product.price} ГРН
@@ -91,6 +93,7 @@ const CartPage = () => {
 							type={"primary"}
 							text={"ОФОРМИТИ ЗАМОВЛЕННЯ"}
 							classes={"w-full max-w-[335px] mx-auto bg-[#E667A4]"}
+							onClick={() => navigate("/order")}
 						/>
 					</div>
 				</div>

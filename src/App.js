@@ -31,6 +31,7 @@ import {refreshUser} from "./redux/auth/operation";
 import ForgotPasswordPage from "./pages/Authorization/SubPages/ForgotPasswordPage";
 import AboutUsPageMobile from "./pages/AboutUsPage/AboutUsPageMobile";
 import CartPage from "./pages/CartPage/CartPage";
+import OrderPlacementPage from "./pages/OrderPlacementPage/OrderPlacementPage";
 
 function App() {
 	const {isMobileScreen} = useMedia();
@@ -190,14 +191,6 @@ function App() {
 							</Suspense>
 						}
 					/>
-					{/* <Route
-            path="order"
-            element={
-              <Suspense fallback={<Loader />}>
-                <OrderPlacement />
-              </Suspense>
-            }
-          /> */}
 					<Route
 						path="ordersbyclient"
 						element={<PrivateAdminRoute component={AdminPage} to="/"/>}
@@ -257,6 +250,14 @@ function App() {
 						element={
 							<Suspense fallback={<Loader/>}>
 								<CartPage/>
+							</Suspense>
+						}
+					/>
+					<Route
+						path="order"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<OrderPlacementPage/>
 							</Suspense>
 						}
 					/>
