@@ -1,7 +1,7 @@
 import {useState} from "react";
 import CheckMarkIcon from "../Icons/CheckMarkIcon";
 
-const Checkbox = ({label, defaultChecked = false, onChange}) => {
+const Checkbox = ({label, labelClasses, defaultChecked = false, onChange}) => {
 	const [isChecked, setIsChecked] = useState(defaultChecked);
 
 	const handleChange = (e) => {
@@ -20,10 +20,10 @@ const Checkbox = ({label, defaultChecked = false, onChange}) => {
 			/>
 
 			<span className="grid place-items-center w-5 h-5 rounded-md border border-blue-900 text-transparent peer-checked:text-pink-400">
-        <CheckMarkIcon/>
-      </span>
+		        <CheckMarkIcon/>
+			</span>
 
-			<span>{label}</span>
+			<span className={labelClasses ?? ''}>{label}</span>
 		</label>
 	);
 };

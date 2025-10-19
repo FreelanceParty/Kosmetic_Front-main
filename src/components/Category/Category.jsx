@@ -6,8 +6,66 @@ import ProductCard from "../../components/ProductSlider/ProductCard/ProductCard"
 import Paginator from "../../components/Paginator";
 import {useLocation} from "react-router-dom";
 import {routeHelper} from "../../utils/helpers/routeHelper";
+import Filter from "./_elements/Filter";
+import BrandFilter from "./_elements/BrandFilter";
+import PriceFilter from "./_elements/PriceFilter";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+const defaultFilters = [
+	{
+		order:   1,
+		id:      'new-and-offers',
+		title:   'Новинки / Акції',
+		options: [
+			{
+				id:    'new',
+				title: 'Новинки',
+			},
+			{
+				id:    'sale',
+				title: 'SALE',
+				style: 'text-[#B90003]',
+			},
+		],
+	},
+];
+
+const hairFilters = [
+	{
+		order:   2,
+		id:      'head-skin-type',
+		title:   'Тип шкіри голови',
+		options: [],
+	},
+	{
+		order:   3,
+		id:      'purpose',
+		title:   'Призначення',
+		options: [],
+	},
+];
+
+const faceFilters = [
+	{
+		order:   2,
+		id:      'skin-type',
+		title:   'Тип шкіри',
+		options: [],
+	},
+	{
+		order:   3,
+		id:      'purpose',
+		title:   'Призначення',
+		options: [],
+	},
+	{
+		order:   4,
+		id:      'spf-type',
+		title:   'Тип SPF',
+		options: [],
+	},
+];
 
 const sortOptions = [
 	{
@@ -63,6 +121,9 @@ const Category = () => {
 	);
 	const [isSortOpen, setSortOpen] = useState(false);
 
+	const [filters, setFilters] = useState(defaultFilters);
+	const [brands, setBrands] = useState([]);
+
 	function handleSortOptionChange(optionId) {
 		setSelectedSortOption(optionId);
 		localStorage.setItem('selectedSortOption', optionId);
@@ -90,7 +151,7 @@ const Category = () => {
 			case 'available-count-desc':
 				sorted.sort((a, b) => (b.amount || 0) - (a.amount || 0));
 				break;
-				// todo: how to sort
+			// todo: how to sort
 			//case 'best-sellers':
 			//	sorted.sort((a, b) => (b.sales || 0) - (a.sales || 0));
 			//	break;
@@ -112,7 +173,9 @@ const Category = () => {
 	}
 
 	useEffect(() => {
-		if (!initialProducts) return;
+		if (!initialProducts) {
+			return;
+		}
 
 		let items = chosenSubCategory
 			? initialProducts.filter(p => p.subCategory === chosenSubCategory)
@@ -159,15 +222,45 @@ const Category = () => {
 				setInitialProducts(products);
 				setFilteredItems(products);
 				const subCategories = [...new Set(products.map(p => p.subCategory).filter(Boolean))].sort();
+				const subSubCategories = [...new Set(products.map(p => p.subSubCategory).filter(Boolean))].sort();
+				const brands = [...new Set(products.map(p => p.brand).filter(Boolean))].sort();
+				const brandObjects = getOptionsFromTitles(brands);
+				const subCategoryObjects = getOptionsFromTitles(subCategories);
+				const subSubCategoryObjects = getOptionsFromTitles(subSubCategories);
+				setBrands(brandObjects);
 				setSubCategories(subCategories);
 				setCurrentPageItems(products.slice(0, pageSize))
 				setTotalPages(Math.ceil(products.length / pageSize));
+				if (category === 'Догляд для волосся') {
+					hairFilters[0].options = subSubCategoryObjects;
+					hairFilters[1].options = subCategoryObjects;
+					const merged = [...defaultFilters, ...hairFilters];
+					merged.sort((a, b) => a.order - b.order);
+					setFilters(merged);
+				} else if (category === 'Догляд для обличчя') {
+					faceFilters[0].options = subSubCategoryObjects;
+					faceFilters[1].options = subCategoryObjects;
+					const merged = [...defaultFilters, ...faceFilters];
+					merged.sort((a, b) => a.order - b.order);
+					setFilters(merged);
+				}
 			} catch (error) {
 				console.log(error);
 			}
 		};
 		fetchProducts();
 	}, [category]);
+
+	function getOptionsFromTitles(titles) {
+		return titles.map(title => ({
+			title: title,
+			id:    title
+				       .toLowerCase()
+				       .trim()
+				       .replace(/\s+/g, '_')
+				       .replace(/[^\w_]/g, '')
+		}));
+	}
 
 	return (
 		<div className="flex flex-col gap-8 md:gap-10 mx-auto w-full max-w-[1440px] pt-2 px-5">
@@ -213,12 +306,13 @@ const Category = () => {
 			</div>
 			<div className="flex gap-6">
 				<div className="hidden md:flex flex-col min-w-[335px] max-w-[335px]">
-					{[...Array(10)].map((_, index) => (
-						<div key={index} className="flex justify-between items-center h-11 border-b px-[10px]">
-							<div className="font-medium">ФІЛЬТР {index}</div>
-							<ChevronRightIcon className="w-3 h-3"/>
-						</div>
+					{filters.map((filter, index) => (
+						<Filter key={index} title={filter.title} options={filter.options}/>
 					))}
+					{brands.length > 0 &&
+						<BrandFilter title={"Бренди"} options={brands}/>
+					}
+					<PriceFilter title={'Ціна'}/>
 				</div>
 				{category !== null && (
 					<div className="flex flex-col gap-10">
