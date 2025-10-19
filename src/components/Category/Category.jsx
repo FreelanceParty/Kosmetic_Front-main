@@ -9,6 +9,37 @@ import {routeHelper} from "../../utils/helpers/routeHelper";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
+const sortOptions = [
+	{
+		id:    'default',
+		label: 'За замовчуванням',
+	},
+	{
+		id:    'best-sellers',
+		label: 'Бестселери',
+	},
+	{
+		id:    'title-asc',
+		label: 'За назвою A-Z',
+	},
+	{
+		id:    'title-desc',
+		label: 'За назвою Z-A',
+	},
+	{
+		id:    'price-asc',
+		label: 'За ціною (зростання)',
+	},
+	{
+		id:    'price-desc',
+		label: 'За ціною (зменшення)',
+	},
+	{
+		id:    'available-count-desc',
+		label: 'Товари в наявності',
+	},
+];
+
 const Category = () => {
 	const {getCategoryByRoute} = routeHelper();
 	const navigate = useNavigate();
@@ -27,6 +58,52 @@ const Category = () => {
 	const [filteredItems, setFilteredItems] = useState(null);
 	const [chosenSubCategory, setChosenSubCategory] = useState(null);
 
+	const [selectedSortOption, setSelectedSortOption] = useState(
+		localStorage.getItem('selectedSortOption') ?? 'default'
+	);
+	const [isSortOpen, setSortOpen] = useState(false);
+
+	function handleSortOptionChange(optionId) {
+		setSelectedSortOption(optionId);
+		localStorage.setItem('selectedSortOption', optionId);
+		setSortOpen(false);
+
+		if (!filteredItems) {
+			return;
+		}
+
+		let sorted = [...filteredItems];
+
+		switch (optionId) {
+			case 'title-asc':
+				sorted.sort((a, b) => a.name.localeCompare(b.name));
+				break;
+			case 'title-desc':
+				sorted.sort((a, b) => b.name.localeCompare(a.name));
+				break;
+			case 'price-asc':
+				sorted.sort((a, b) => a.price - b.price);
+				break;
+			case 'price-desc':
+				sorted.sort((a, b) => b.price - a.price);
+				break;
+			case 'available-count-desc':
+				sorted.sort((a, b) => (b.amount || 0) - (a.amount || 0));
+				break;
+				// todo: how to sort
+			//case 'best-sellers':
+			//	sorted.sort((a, b) => (b.sales || 0) - (a.sales || 0));
+			//	break;
+			default:
+				sorted = [...initialProducts];
+				break;
+		}
+
+		setFilteredItems(sorted);
+		setCurrentPageItems(sorted.slice(0, pageSize));
+		setPage(1);
+	}
+
 	function goToPage(pageNumber) {
 		const start = (pageNumber - 1) * pageSize;
 		const end = start + pageSize;
@@ -35,16 +112,40 @@ const Category = () => {
 	}
 
 	useEffect(() => {
-		if (!initialProducts) {
-			return;
-		}
-		const items = chosenSubCategory
+		if (!initialProducts) return;
+
+		let items = chosenSubCategory
 			? initialProducts.filter(p => p.subCategory === chosenSubCategory)
 			: initialProducts;
 
-		setFilteredItems(items);
-		setCurrentPageItems(items.slice(0, pageSize));
-		setTotalPages(Math.ceil(items.length / pageSize));
+		// застосовуємо поточне сортування
+		let sorted = [...items];
+		switch (selectedSortOption) {
+			case 'title-asc':
+				sorted.sort((a, b) => a.name.localeCompare(b.name));
+				break;
+			case 'title-desc':
+				sorted.sort((a, b) => b.name.localeCompare(a.name));
+				break;
+			case 'price-asc':
+				sorted.sort((a, b) => a.price - b.price);
+				break;
+			case 'price-desc':
+				sorted.sort((a, b) => b.price - a.price);
+				break;
+			case 'available-count-desc':
+				sorted.sort((a, b) => (b.amount || 0) - (a.amount || 0));
+				break;
+			//case 'best-sellers':
+			//	sorted.sort((a, b) => (b.sales || 0) - (a.sales || 0));
+			//	break;
+			default:
+				break;
+		}
+
+		setFilteredItems(sorted);
+		setCurrentPageItems(sorted.slice(0, pageSize));
+		setTotalPages(Math.ceil(sorted.length / pageSize));
 		setPage(1);
 	}, [chosenSubCategory]);
 
@@ -84,10 +185,30 @@ const Category = () => {
 					<div>Фільтри</div>
 					<div className="border-l border-gray-700 h-full"></div>
 				</div>
-				<div className="gap-[10px] items-center text-[#000E55] text-sm flex h-6">
+				<div onClick={() => {
+					setSortOpen(prev => !prev)
+				}} className="relative gap-[10px] items-center text-[#000E55] text-sm flex h-6 cursor-pointer">
 					<div className="border-l border-gray-700 h-full"></div>
-					<div>Сортувати ></div>
+					<div>Сортувати</div>
+					<ChevronRightIcon classes="w-3 h-3"/>
 					<div className="border-l border-gray-700 h-full"></div>
+					{isSortOpen &&
+						<div className="absolute top-full right-0 w-fit z-10 flex flex-col py-4 bg-white shadow-2xl cursor-default">
+							{sortOptions.map(option => (
+								<div
+									key={option.id}
+									className={`py-2 px-4 truncate cursor-pointer ${
+										selectedSortOption === option.id
+											? 'bg-[#FFE8F5]'
+											: 'hover:bg-gray-100'
+									}`}
+									onClick={() => handleSortOptionChange(option.id)}
+								>
+									{option.label}
+								</div>
+							))}
+						</div>
+					}
 				</div>
 			</div>
 			<div className="flex gap-6">
