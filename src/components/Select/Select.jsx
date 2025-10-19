@@ -65,14 +65,17 @@ const Select = ({
 					)}
 
 					{options.length > 0 ? (
-						options.map((option) => (
-							<div
-								key={option.id}
-								onClick={() => handleSelect(option)}
-								className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-							>
-								{option.label}
-							</div>
+						options.map((option, idx) => (
+							<>
+								<div
+									key={option.id}
+									onClick={() => handleSelect(option)}
+									className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
+								>
+									{option.label}
+								</div>
+								{idx < options.length - 1 && <hr className="mx-4"/>}
+							</>
 						))
 					) : (
 						<div className="py-2 px-4 text-gray-400 text-sm">
