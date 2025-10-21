@@ -15,8 +15,7 @@ const ProductFeedbacks = ({product}) => {
 	useEffect(() => {
 		const fetchProduct = async () => {
 			try {
-				const response = await axios.get(`${API_URL}/productReviews/forProduct/${product._id}`);
-				console.log(response.data);
+				const response = await axios.get(`${API_URL}/productReviews/forProduct/${product.id}`);
 				setReviews(response.data);
 			} catch (error) {
 				console.log(error);
@@ -25,19 +24,18 @@ const ProductFeedbacks = ({product}) => {
 		fetchProduct();
 	}, []);
 
-	// todo: add feedbacks from db
 	return (
 		<div className="flex flex-col gap-10 w-fit">
 			<Button
 				type="secondary"
 				text="ЗАЛИШИТИ ВІДГУК"
-				onClick={() => openPopup(<CreateProductFeedback product={product}/>)}
+				onClick={() => openPopup(<CreateProductFeedback product={product} closePopup={closePopup}/>)}
 			/>
 			{reviews.length > 0 ? (
 				<div className="flex flex-col gap-10">
-					{reviews.map((feedback) => (
+					{reviews.map((feedback, index) => (
 						<ProductFeedback
-							key={feedback.id}
+							key={index}
 							feedback={feedback}
 						/>
 					))}

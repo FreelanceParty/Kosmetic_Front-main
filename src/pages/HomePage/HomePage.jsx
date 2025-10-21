@@ -13,6 +13,33 @@ const HomePage = () => {
 	const [discountProducts, setDiscountProducts] = useState([]);
 	const [newProducts, setNewProducts] = useState([]);
 
+	const [productReviews, setProductReviews] = useState([]);
+
+	useEffect(() => {
+		const fetchReviews = async () => {
+			try {
+				const response = await axios.get(`${API_URL}/productReviews`);
+				const reviews = response.data;
+
+				const shuffled = [...reviews].sort(() => 0.5 - Math.random());
+				const randomReviews = shuffled.slice(0, 9);
+
+				const reviewsWithProducts = await Promise.all(
+					randomReviews.map(async (review) => {
+						const productResponse = await axios.get(`${API_URL}/goods/${review.productId}`);
+						return {...review, product: productResponse.data};
+					})
+				);
+
+				setProductReviews(reviewsWithProducts);
+			} catch (e) {
+				console.error(e);
+			}
+		};
+
+		fetchReviews();
+	}, []);
+
 	useEffect(() => {
 		const fetchProduct = async () => {
 			try {
@@ -35,8 +62,8 @@ const HomePage = () => {
 				<ProductSlider title="НОВИНКИ" products={newProducts}/>
 				<CategoryList/>
 				<Cooperation/>
-				<Reviews/>
-				<ReviewsMobile/>
+				<Reviews reviews={productReviews}/>
+				<ReviewsMobile reviews={productReviews}/>
 			</div>
 		</div>
 	);

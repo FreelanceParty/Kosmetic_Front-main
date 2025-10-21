@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../../redux/auth/selectors";
 import {trackAddToCart} from "../../../ads/AdEvents";
 
-const Desktop = ({product, isInCart}) => {
+const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}) => {
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const userEmail = useSelector(getUserEmail);
 	const userFirstName = useSelector(getUserFirstName);
@@ -57,8 +57,8 @@ const Desktop = ({product, isInCart}) => {
 								<div className="font-semibold text-[36px]">{product.name}</div>
 								<a className="underline cursor-pointer font-medium text-lg max-w-fit" href={`/brands/${product.brand}`}>{product.brand}</a>
 								<div className="flex gap-3">
-									<RateHearts heartSize={14} count={3}/>
-									<div className="font-normal text-xs">1 відгук</div>
+									<RateHearts heartSize={14} count={averageRating}/>
+									<div className="font-normal text-xs">{reviewsCount}</div>
 								</div>
 								<div className="flex gap-4 items-end">
 									<div className="flex flex-col gap-4">
@@ -109,6 +109,7 @@ const Desktop = ({product, isInCart}) => {
 					</div>
 					<Details
 						product={product}
+						reviewsCount={reviewsLength}
 					/>
 				</div>
 				<div className="flex flex-col gap-10 py-10 border-t">

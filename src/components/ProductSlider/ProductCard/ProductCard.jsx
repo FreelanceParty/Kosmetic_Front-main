@@ -5,6 +5,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../../redux/auth/selectors";
 import {selectCart} from "../../../redux/cart/selectors";
 import {trackAddToCart} from "../../../ads/AdEvents";
+import {useEffect, useState} from "react";
+import axios from "axios";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const ProductCard = ({product}) => {
 	const navigate = useNavigate();
@@ -17,11 +21,46 @@ const ProductCard = ({product}) => {
 	const userLastName = useSelector(getUserLastName);
 	const userNumber = useSelector(getUserNumber);
 
+	const [averageRating, setAverageRating] = useState(0);
+	const [reviewsCount, setReviewsCount] = useState('');
+
+	useEffect(() => {
+		const fetchReviews = async () => {
+			function getReviewWord(count) {
+				if (count % 100 >= 11 && count % 100 <= 19) {
+					return 'відгуків';
+				}
+				switch (count % 10) {
+					case 1:
+						return 'відгук';
+					case 2:
+					case 3:
+					case 4:
+						return 'відгуки';
+					default:
+						return 'відгуків';
+				}
+			}
+
+			try {
+				const response = await axios.get(`${API_URL}/productReviews/forProduct/${product.id}`);
+				const reviews = response.data;
+				const count = reviews.length;
+				const totalRating = reviews.reduce((acc, review) => acc + review.rate, 0);
+				const average = totalRating / count;
+				setAverageRating(Math.ceil(average));
+				setReviewsCount(`${count} ${getReviewWord(count)}`);
+			} catch (error) {
+				console.error('Failed to fetch reviews:', error);
+			}
+		};
+
+		fetchReviews();
+	}, [product._id]);
+
 	const productCartFind = productCart?.find(
 		(item) => +item.id === +product.id
 	);
-
-	// todo: що робити якщо відгуків немає або число не ціле (3.4)?
 
 	return (
 		<>
@@ -47,8 +86,8 @@ const ProductCard = ({product}) => {
 				<div className="flex flex-col gap-4 py-3 px-[10px]">
 					<div className="flex flex-col gap-3">
 						<div className="flex gap-[6px] leading-[12px]">
-							<RateHearts count={3} heartSize={12}/>
-							<div className="font-normal text-[10px]">1 відгук</div>
+							<RateHearts count={averageRating} heartSize={12}/>
+							<div className="font-normal text-[10px]">{reviewsCount}</div>
 						</div>
 						<div className="font-semibold text-xs leading-[8px] uppercase">{product.brand}</div>
 						<div className="font-normal text-xs line-clamp-3 leading-[15px]">{product.name}</div>
@@ -89,8 +128,8 @@ const ProductCard = ({product}) => {
 				<div className="flex flex-col gap-5 py-5 px-3">
 					<div className="flex flex-col gap-4">
 						<div className="flex gap-3">
-							<RateHearts count={3}/>
-							<div className="font-normal text-xs">1 відгук</div>
+							<RateHearts count={averageRating}/>
+							<div className="font-normal text-xs">{reviewsCount}</div>
 						</div>
 						<div className="font-semibold text-sm leading-[11px] uppercase">{product.brand}</div>
 					</div>

@@ -5,13 +5,12 @@ import Composition from "./DetailTabs/Composition";
 import ProductFeedbacks from "./DetailTabs/ProductFeedbacks";
 import {useState} from "react";
 
-const Details = ({product}) => {
-	// todo: кількість відгуків
+const Details = ({product, reviewsCount}) => {
 	const tabs = [
 		{id: "description", label: "ОПИС ПРОДУКТУ", component: <Description product={product}/>},
 		{id: "using", label: "СПОСІБ ЗАСТОСУВАННЯ", component: <Using product={product}/>},
 		{id: "composition", label: "СКЛАД", component: <Composition product={product}/>},
-		{id: "reviews", label: "ВІДГУКИ (x)", component: <ProductFeedbacks product={product}/>},
+		{id: "reviews", label: `ВІДГУКИ ${reviewsCount !== 0 ? `(${reviewsCount})` : ''}`, component: <ProductFeedbacks product={product}/>},
 	];
 
 	const [activeTab, setActiveTab] = useState("description");

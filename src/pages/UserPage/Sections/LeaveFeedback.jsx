@@ -1,9 +1,29 @@
 import Button from "../../../components/ButtonNew/Button";
 import TextArea from "../../../components/TextArea/TextArea";
 import React, {useState} from "react";
+import {toast} from "react-toastify";
+import axios from "axios";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const LeaveFeedback = () => {
 	const [feedbackText, setFeedbackText] = useState("");
+
+	const handleSubmit = async () => {
+		if (feedbackText.length < 2) {
+			toast.error("Закоротке повідомлення!");
+			return;
+		}
+		const response = await axios.post(`${API_URL}/feedback`, {feedbacks: feedbackText});
+		if (response.status !== 201) {
+			throw new Error(
+				response.data.message || "Помилка створення відгуку"
+			);
+		}
+		setFeedbackText("");
+		toast.success('Відгук доданий!');
+	};
+
 	return (
 		<div className="flex flex-col">
 			<div className="hidden md:flex flex-col gap-4 mb-6">
@@ -28,6 +48,9 @@ const LeaveFeedback = () => {
 				type="primary"
 				text="ЗАЛИШИТИ ВІДГУК"
 				classes="h-[53px] w-[249px]"
+				onClick={() => {
+					handleSubmit()
+				}}
 			/>
 		</div>
 	);

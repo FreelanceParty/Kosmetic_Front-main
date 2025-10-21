@@ -6,7 +6,7 @@ import Details from "../Sections/Details";
 import {useState} from "react";
 import {useMedia} from "../../../utils/hooks/useMedia";
 
-const Mobile = ({product}) => {
+const Mobile = ({product, reviewsLength, reviewsCount, averageRating}) => {
 	const {getCategoryRoute} = routeHelper();
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [isOptUser, setIsOptUser] = useState(false);
@@ -23,8 +23,8 @@ const Mobile = ({product}) => {
 						<div className="flex justify-between items-center">
 							<a className="underline cursor-pointer font-medium text-lg max-w-fit" href={`/brands/${product.brand}`}>{product.brand}</a>
 							<div className="flex gap-3">
-								<RateHearts heartSize={14} count={3}/>
-								<div className="font-normal text-xs">1 відгук</div>
+								<RateHearts heartSize={14} count={averageRating}/>
+								<div className="font-normal text-xs">{reviewsCount}</div>
 							</div>
 						</div>
 						<div className="font-semibold text-[20px]">{product.name}</div>
@@ -76,6 +76,7 @@ const Mobile = ({product}) => {
 				</div>
 				<Details
 					product={product}
+					reviewsCount={reviewsLength}
 				/>
 			</div>
 			<div className="flex flex-col gap-10 py-10 border-t">
