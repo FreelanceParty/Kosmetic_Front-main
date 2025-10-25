@@ -63,7 +63,7 @@ const Basket = ({onClose}) => {
 								<div className="flex flex-col gap-[30px] px-4 py-5">
 									<div className="flex gap-[30px]">
 										<div className="text-md line-clamp-2">{product.name}</div>
-										<div className="font-semibold text-xl whitespace-nowrap">{product.price} ГРН</div>
+										<div className="font-semibold text-xl whitespace-nowrap">{isOptUser ? product.priceOPT : product.price} ГРН</div>
 									</div>
 									<div className="flex justify-between items-center">
 										<NumberInput number={product.quantity} setNumber={value => updateQuantity(product, value)} limit={product.amount}/>

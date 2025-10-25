@@ -4,11 +4,14 @@ import SearchInput from "./SearchInput";
 import {CATEGORIES} from "../../utils/enums/categories";
 import CategoryIcon from "../Icons/CategoryIcon";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {getOptUser} from "../../redux/auth/selectors";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 	const navigate = useNavigate();
+	const isOptUser = useSelector(getOptUser);
 
 	const [searchQuery, setSearchQuery] = useState("");
 	const [foundCategories, setFoundCategories] = useState([]);
@@ -80,7 +83,7 @@ const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 									</div>
 									<div className="flex flex-col md:flex-row gap-4 md:gap-5 justify-between w-full">
 										<div className="line-clamp-2 md:line-clamp-3 text-md w-full leading-[15px]">{product.name}</div>
-										<div className="font-semibold text-md leading-[11px] my-auto whitespace-nowrap">{product.price} грн</div>
+										<div className="font-semibold text-md leading-[11px] my-auto whitespace-nowrap">{isOptUser ? product.priceOPT : product.price} грн</div>
 									</div>
 								</div>
 							</div>

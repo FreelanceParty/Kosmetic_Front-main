@@ -6,21 +6,27 @@ import Button from "../../components/ButtonNew/Button";
 import NumberInput from "../../components/NumberInput/NumberInput";
 import DeleteIcon from "../../components/Icons/DeleteIcon";
 import {handleRemoveFromCart} from "../../utils/helpers/basket";
-import {getIsLoggedIn} from "../../redux/auth/selectors";
+import {getIsLoggedIn, getOptUser} from "../../redux/auth/selectors";
 import {addToCart} from "../../redux/cart/slice";
 import {useNavigate} from "react-router-dom";
 
 const CartPage = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const isOptUser = useSelector(getOptUser);
 
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const cartItems = useSelector(selectCart);
 
-	const totalAmount = cartItems.reduce(
-		(sum, item) => sum + item.price * item.quantity,
-		0
-	);
+	const totalAmount = isOptUser
+		? cartItems.reduce(
+			(total, item) => total + item.priceOPT * item.quantity,
+			0
+		)
+		: cartItems.reduce(
+			(total, item) => total + item.price * item.quantity,
+			0
+		);
 
 	function updateQuantity(product, value) {
 		if (value >= 1) {
@@ -77,7 +83,7 @@ const CartPage = () => {
 											<DeleteIcon onClick={() => removeFromCart(product)} classes="cursor-pointer"/>
 										</div>
 										<div className="text-md font-semibold leading-[11px]">
-											{product.price} ГРН
+											{isOptUser ? product.priceOPT : product.price} ГРН
 										</div>
 									</div>
 								</div>

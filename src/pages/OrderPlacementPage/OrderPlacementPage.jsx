@@ -273,7 +273,7 @@ const OrderPlacementPage = () => {
 											<div className="text-[13px] line-clamp-4 w-full leading-[15px]">{product.name}</div>
 											<div className="flex justify-between">
 												<div className="text-md">{product.quantity} шт.</div>
-												<div className="font-semibold text-md">{product.price} грн</div>
+												<div className="font-semibold text-md">{isOptUser ? product.priceOPT : product.price} грн</div>
 											</div>
 										</div>
 									</div>
@@ -321,7 +321,7 @@ const OrderPlacementPage = () => {
 									<div className="flex gap-5 py-[10px] px-3 items-center">
 										<div className="text-[13px] line-clamp-3 w-3/5 leading-[15px]">{product.name}</div>
 										<div className="text-md w-1/5 text-center">{product.quantity} шт.</div>
-										<div className="font-semibold text-md w-1/5 text-end">{product.price} грн</div>
+										<div className="font-semibold text-md w-1/5 text-end">{isOptUser ? product.priceOPT : product.price} грн</div>
 									</div>
 								</div>
 							))}

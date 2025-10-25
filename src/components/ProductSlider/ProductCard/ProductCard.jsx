@@ -2,7 +2,7 @@ import RateHearts from "../../RateHearts/RateHearts";
 import {useNavigate} from "react-router-dom";
 import {handleAddToCart} from "../../../utils/helpers/basket";
 import {useDispatch, useSelector} from "react-redux";
-import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../../redux/auth/selectors";
+import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber, getOptUser} from "../../../redux/auth/selectors";
 import {selectCart} from "../../../redux/cart/selectors";
 import {trackAddToCart} from "../../../ads/AdEvents";
 import {useEffect, useState} from "react";
@@ -15,6 +15,9 @@ const ProductCard = ({product}) => {
 	const dispatch = useDispatch();
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const productCart = useSelector(selectCart);
+	const isOptUser = useSelector(getOptUser);
+	const [price, setPrice] = useState(0);
+	const [priceOld, setPriceOld] = useState(0);
 
 	const userEmail = useSelector(getUserEmail);
 	const userFirstName = useSelector(getUserFirstName);
@@ -23,6 +26,16 @@ const ProductCard = ({product}) => {
 
 	const [averageRating, setAverageRating] = useState(0);
 	const [reviewsCount, setReviewsCount] = useState('');
+
+	useEffect(() => {
+		if (isOptUser) {
+			setPrice(product.priceOPT);
+			setPriceOld(product.priceOldOPT);
+		} else {
+			setPrice(product.price);
+			setPriceOld(product.priceOld);
+		}
+	}, [isOptUser])
 
 	useEffect(() => {
 		const fetchReviews = async () => {
@@ -99,11 +112,11 @@ const ProductCard = ({product}) => {
 							) : (
 								<div className="text-[#B90003] text-[10px] leading-[7px] truncate">Немає в наявності</div>
 							)}
-							<div className={`flex flex-col h-[27px] ${product.priceOld !== undefined ? 'justify-between' : 'justify-end'}`}>
-								{product.priceOld !== undefined && (
-									<div className="font-normal text-[10px] line-through leading-[7px]">{product.priceOld} ГРН</div>
+							<div className={`flex flex-col h-[27px] ${priceOld !== undefined ? 'justify-between' : 'justify-end'}`}>
+								{priceOld !== undefined && (
+									<div className="font-normal text-[10px] line-through leading-[7px]">{priceOld} ГРН</div>
 								)}
-								<div className={`font-bold text-sm leading-[10px] ${product.priceOld === undefined ? '' : 'text-[#B90003]'}`}>{product.price} ГРН</div>
+								<div className={`font-bold text-sm leading-[10px] ${priceOld === undefined ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
 							</div>
 						</div>
 						{!productCartFind &&
@@ -143,11 +156,11 @@ const ProductCard = ({product}) => {
 							)}
 							<div>Роздрібна ціна</div>
 						</div>
-						<div className={`flex flex-col ${product.priceOld !== undefined ? 'justify-between' : 'justify-end'}`}>
-							{product.priceOld !== undefined && (
-								<div className="font-normal text-sm line-through leading-[10px]">{product.priceOld} ГРН</div>
+						<div className={`flex flex-col ${priceOld !== undefined ? 'justify-between' : 'justify-end'}`}>
+							{priceOld !== undefined && (
+								<div className="font-normal text-sm line-through leading-[10px]">{priceOld} ГРН</div>
 							)}
-							<div className={`font-bold text-md leading-[11px] ${product.priceOld === undefined ? '' : 'text-[#B90003]'}`}>{product.price} ГРН</div>
+							<div className={`font-bold text-md leading-[11px] ${priceOld === undefined ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
 						</div>
 					</div>
 				</div>

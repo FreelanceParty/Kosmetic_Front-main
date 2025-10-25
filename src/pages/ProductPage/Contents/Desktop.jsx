@@ -3,15 +3,16 @@ import {routeHelper} from "../../../utils/helpers/routeHelper";
 import NumberInput from "../../../components/NumberInput/NumberInput";
 import Button from "../../../components/ButtonNew/Button";
 import Details from "../Sections/Details";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {handleAddToCart,} from "../../../utils/helpers/basket";
 import {useMedia} from "../../../utils/hooks/useMedia";
 import {useDispatch, useSelector} from "react-redux";
-import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../../redux/auth/selectors";
+import {getIsLoggedIn, getOptUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../../redux/auth/selectors";
 import {trackAddToCart} from "../../../ads/AdEvents";
 
 const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}) => {
 	const isLoggedIn = useSelector(getIsLoggedIn);
+	const isOptUser = useSelector(getOptUser);
 	const userEmail = useSelector(getUserEmail);
 	const userFirstName = useSelector(getUserFirstName);
 	const userLastName = useSelector(getUserLastName);
@@ -20,9 +21,20 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}
 	const dispatch = useDispatch();
 	const {getCategoryRoute} = routeHelper();
 	const [isAdmin, setIsAdmin] = useState(false);
-	const [isOptUser, setIsOptUser] = useState(false);
 	const [isAuthorized, setIsAuthorized] = useState(false);
 	const [quantity, setQuantity] = useState(1);
+	const [price, setPrice] = useState(0);
+	const [priceOld, setPriceOld] = useState(0);
+
+	useEffect(() => {
+		if (isOptUser) {
+			setPrice(product.priceOPT);
+			setPriceOld(product.priceOldOPT);
+		} else {
+			setPrice(product.price);
+			setPriceOld(product.priceOld);
+		}
+	}, [isOptUser])
 
 	async function addToCart() {
 		if (isInCart) {
@@ -62,10 +74,10 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}
 								</div>
 								<div className="flex gap-4 items-end">
 									<div className="flex flex-col gap-4">
-										{product.priceOld !== null && (
-											<div className="font-normal text-md line-through">{product.priceOld} ГРН</div>
+										{priceOld !== null && (
+											<div className="font-normal text-md line-through">{priceOld} ГРН</div>
 										)}
-										<div className={`font-bold text-2xl ${product.priceOld === null ? '' : 'text-[#B90003]'}`}>{product.price} ГРН</div>
+										<div className={`font-bold text-2xl ${priceOld === null ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
 									</div>
 									<div className="font-normal text-lg">Роздрібна ціна</div>
 								</div>

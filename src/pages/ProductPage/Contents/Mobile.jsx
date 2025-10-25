@@ -3,14 +3,28 @@ import {routeHelper} from "../../../utils/helpers/routeHelper";
 import NumberInput from "../../../components/NumberInput/NumberInput";
 import Button from "../../../components/ButtonNew/Button";
 import Details from "../Sections/Details";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useMedia} from "../../../utils/hooks/useMedia";
+import {useSelector} from "react-redux";
+import {getOptUser} from "../../../redux/auth/selectors";
 
 const Mobile = ({product, reviewsLength, reviewsCount, averageRating}) => {
 	const {getCategoryRoute} = routeHelper();
 	const [isAdmin, setIsAdmin] = useState(false);
-	const [isOptUser, setIsOptUser] = useState(false);
+	const isOptUser = useSelector(getOptUser);
 	const [isAuthorized, setIsAuthorized] = useState(false);
+	const [price, setPrice] = useState(0);
+	const [priceOld, setPriceOld] = useState(0);
+
+	useEffect(() => {
+		if (isOptUser) {
+			setPrice(product.priceOPT);
+			setPriceOld(product.priceOldOPT);
+		} else {
+			setPrice(product.price);
+			setPriceOld(product.priceOld);
+		}
+	}, [isOptUser])
 
 	return (
 		<div className="flex md:hidden w-full flex-col p-5 pb-[60px] text-[#000E55]">
@@ -32,10 +46,10 @@ const Mobile = ({product, reviewsLength, reviewsCount, averageRating}) => {
 					<div className="flex flex-col gap-6">
 						<div className="flex justify-between items-center">
 							<div className="flex flex-col gap-4">
-								{product.priceOld !== null && (
-									<div className="font-normal text-md line-through">{product.priceOld} ГРН</div>
+								{priceOld !== null && (
+									<div className="font-normal text-md line-through">{priceOld} ГРН</div>
 								)}
-								<div className={`font-bold text-2xl ${product.priceOld === null ? '' : 'text-[#B90003]'}`}>{product.price} ГРН</div>
+								<div className={`font-bold text-2xl ${priceOld === null ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
 								<div className="font-normal text-lg">Роздрібна ціна</div>
 							</div>
 							<NumberInput/>
