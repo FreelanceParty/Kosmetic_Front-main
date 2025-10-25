@@ -9,94 +9,10 @@ import {routeHelper} from "../../utils/helpers/routeHelper";
 import Filter from "./_elements/Filter";
 import BrandFilter from "./_elements/BrandFilter";
 import PriceFilter from "./_elements/PriceFilter";
+import {sortOptions} from "../../utils/helpers/sort";
+import {defaultFilters, hairFilters, faceFilters} from "../../utils/helpers/filter";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
-
-const defaultFilters = [
-	{
-		order:   1,
-		id:      'new-and-offers',
-		title:   'Новинки / Акції',
-		options: [
-			{
-				id:    'new',
-				title: 'Новинки',
-			},
-			{
-				id:    'sale',
-				title: 'SALE',
-				style: 'text-[#B90003]',
-			},
-		],
-	},
-];
-
-const hairFilters = [
-	{
-		order:   2,
-		id:      'head-skin-type',
-		title:   'Тип шкіри голови',
-		options: [],
-	},
-	{
-		order:   3,
-		id:      'purpose',
-		title:   'Призначення',
-		options: [],
-	},
-];
-
-const faceFilters = [
-	{
-		order:   2,
-		id:      'skin-type',
-		title:   'Тип шкіри',
-		options: [],
-	},
-	{
-		order:   3,
-		id:      'purpose',
-		title:   'Призначення',
-		options: [],
-	},
-	{
-		order:   4,
-		id:      'spf-type',
-		title:   'Тип SPF',
-		options: [],
-	},
-];
-
-const sortOptions = [
-	{
-		id:    'default',
-		label: 'За замовчуванням',
-	},
-	{
-		id:    'best-sellers',
-		label: 'Бестселери',
-	},
-	{
-		id:    'title-asc',
-		label: 'За назвою A-Z',
-	},
-	{
-		id:    'title-desc',
-		label: 'За назвою Z-A',
-	},
-	{
-		id:    'price-asc',
-		label: 'За ціною (зростання)',
-	},
-	{
-		id:    'price-desc',
-		label: 'За ціною (зменшення)',
-	},
-	{
-		id:    'available-count-desc',
-		label: 'Товари в наявності',
-	},
-];
 
 const Category = () => {
 	const {getCategoryByRoute} = routeHelper();
