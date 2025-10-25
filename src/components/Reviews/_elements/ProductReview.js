@@ -1,6 +1,9 @@
 import RateHearts from "../../RateHearts/RateHearts";
+import {useNavigate} from "react-router-dom";
 
 const ProductReview = ({review}) => {
+	const navigate = useNavigate();
+
 	const formatDate = (dateString) => {
 		const date = new Date(dateString);
 		const day = String(date.getDate()).padStart(2, '0');
@@ -11,7 +14,7 @@ const ProductReview = ({review}) => {
 
 	return (
 		<div className="flex flex-col">
-			<div className="flex gap-4 px-4 py-5 rounded-[8px] bg-[#EDF8FF]">
+			<div className="flex gap-4 px-4 py-5 rounded-[8px] bg-[#EDF8FF] cursor-pointer" onClick={() => navigate(`/products/${review.product.id}`)}>
 				<div className="w-full h-full max-w-[80px] max-h-[80px]">
 					<img src={review.product.images} alt="product" className="rounded-[8px]"/>
 				</div>
