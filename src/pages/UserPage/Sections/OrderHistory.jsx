@@ -118,13 +118,18 @@ const OrderHistory = () => {
 							</SliderElement>
 						))}
 					</Slider>
-					<div className="flex flex-col gap-[10px] overflow-y-auto mb-[60px]">
-						{currentPageItems.map((order, index) => (
-							<OrderBlock
-								key={index}
-								order={order}
-							/>
-						))}
+					<div className="flex flex-col gap-4 md:gap-[10px] overflow-y-auto mb-[60px] max-w-[731px]">
+						{currentPageItems.length === 0
+							?
+							<div>Немає замовлень</div>
+							:
+							currentPageItems.map((order, index) => (
+								<OrderBlock
+									key={index}
+									order={order}
+								/>
+							))
+						}
 					</div>
 					{totalPages > 1 &&
 						<Paginator
