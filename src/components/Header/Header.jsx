@@ -18,6 +18,7 @@ import Basket from "../../popups/Basket";
 import {Popup} from "../../popups/Abstracts/Popup";
 import {usePopup} from "../../hooks/usePopup";
 import {useSelector} from "react-redux";
+import Logo from "../Logo/Logo";
 
 const Header = () => {
 	const {isOpen, content, openPopup, closePopup} = usePopup();
@@ -77,16 +78,13 @@ const Header = () => {
 			)}
 			<Promo/>
 			<div className="relative flex flex-col z-20 bg-white">
-				<div className="flex justify-around border-b border-[#E8E8E8] py-[10px] lg:py-[25.5px] items-center">
+				<div className="flex justify-around border-b border-[#E8E8E8] py-[10px] lg:py-5 items-center">
 					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<HeaderMenu icon="mob-menu" classes="flex lg:hidden" onClick={() => setIsMobileMenuOpen(true)}/>
 						<HeaderMenu icon="search" title="ПОШУК" onClick={() => handleSearchIconClick()}/>
 						<HeaderMenu icon="cooperation" title="СПІВПРАЦЯ" classes="hidden lg:flex" onClick={() => navigate("/cooperation")}/>
 					</div>
-					<a href="/" className="flex gap-[6px] font-semibold text-lg lg:text-[36px] leading-[12px] lg:leading-[25px]">
-						<div className="text-[#8F49A3]">BEAUTY</div>
-						<div className="text-[#DF4DA0]">BLOSSOM</div>
-					</a>
+					<Logo/>
 					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<User icon="user" title={isLoggedIn ? userName : "ВХІД"} onClick={() => handleUserIconClick()}/>
 						<HeaderMenu icon="basket" title="КОШИК" onClick={() => handleGoToCart()}/>

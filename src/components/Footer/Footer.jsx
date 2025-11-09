@@ -1,5 +1,6 @@
 import SocialMediaList from "./Sections/SocialMediaList";
 import SocialMediaListMobile from "./Sections/SocialMediaListMobile";
+import Logo from "../Logo/Logo";
 
 const Footer = () => {
 	return (
@@ -7,8 +8,7 @@ const Footer = () => {
 			<div className="flex flex-col lg:hidden px-4 pt-[60px] pb-10 bg-[#F6F6F6]">
 				<div className="flex flex-col pb-8 border-b items-center gap-6">
 					<div className="flex gap-[6px] font-semibold text-[36px]">
-						<div className="text-[#8F49A3]">BEAUTY</div>
-						<div className="text-[#DF4DA0]">BLOSSOM</div>
+						<Logo/>
 					</div>
 					<SocialMediaListMobile/>
 				</div>
@@ -55,10 +55,7 @@ const Footer = () => {
 					</div>
 				</div>
 				<div className="flex flex-col gap-5 items-center justify-center h-[135px] border-t border-[#B2B2B2]">
-					<div className="flex gap-[6px] font-semibold text-[36px]">
-						<div className="text-[#8F49A3]">BEAUTY</div>
-						<div className="text-[#DF4DA0]">BLOSSOM</div>
-					</div>
+					<Logo/>
 					<div className="text-sm">Всі права захищені. {new Date().getFullYear()}</div>
 				</div>
 			</div>
