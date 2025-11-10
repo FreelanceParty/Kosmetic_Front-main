@@ -19,7 +19,7 @@ import NoProducts from "./pages/NoProducts/NoProducts";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import {useMedia} from "./utils/hooks/useMedia";
 import AdminPage from "./pages/AdminPage/AdminPage";
-import {PrivateRoute, PrivateAdminRoute} from "./modules/PrivateRoutes/PrivateRoutse";
+import {PrivateRoute, PrivateAdminRoute} from "./modules/PrivateRoutes/PrivateRoutes";
 import CooperationPage from "./pages/CooperationPage/CooperationPage";
 import UserPage from "./pages/UserPage/UserPage";
 import SharedLayoutWithoutFooter from "./components/SharedLayoutWithoutFooter/SharedLayoutWithoutFooter";
@@ -192,7 +192,7 @@ function App() {
 						}
 					/>
 					<Route
-						path="ordersbyclient"
+						path="admin-panel"
 						element={<PrivateAdminRoute component={AdminPage} to="/"/>}
 					/>
 				</Route>

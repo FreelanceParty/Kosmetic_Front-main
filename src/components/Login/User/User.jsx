@@ -54,8 +54,8 @@ const User = ({icon, title, onClick, classes}) => {
 			{showDropdown && (
 				<DropDown className="flex flex-col top-full -right-6 divide-y">
 					{isAdmin && (
-						<div className={`py-2 px-4 truncate cursor-pointer hover:bg-[#FFE8F5]`} onClick={() => navigate("/ordersbyclient")}>
-							замовлення (адмін)
+						<div className={`py-2 px-4 truncate cursor-pointer hover:bg-[#FFE8F5]`} onClick={() => navigate("/admin-panel")}>
+							панель адміністратора
 						</div>
 					)}
 					<div className={`py-2 px-4 truncate cursor-pointer hover:bg-[#FFE8F5]`} onClick={() => navigate("/cabinet")}>

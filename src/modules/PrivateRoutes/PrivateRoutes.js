@@ -1,4 +1,6 @@
 import {Navigate} from 'react-router-dom';
+import {useSelector} from "react-redux";
+import {getIsAdmin} from "../../redux/auth/selectors";
 
 export const PrivateRoute = ({component: Component, ...rest}) => {
 	const token = localStorage.getItem("token");
@@ -6,10 +8,9 @@ export const PrivateRoute = ({component: Component, ...rest}) => {
 };
 
 export const PrivateAdminRoute = ({component: Component, ...rest}) => {
-	const token = localStorage.getItem("token");
-	const isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
+	const isAdmin = useSelector(getIsAdmin);
 
-	return token && isAdmin
+	return isAdmin
 		? <Component/>
 		: <Navigate to="/login" {...rest} />;
 };

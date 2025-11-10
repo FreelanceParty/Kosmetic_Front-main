@@ -129,7 +129,7 @@ const AllBrandsPage = () => {
 							{groupedBrands[letter]?.map(brand => (
 								<div
 									key={brand.name}
-									className="font-medium text-md leading-[11px] cursor-pointer uppercase"
+									className="font-medium text-md leading-[13px] cursor-pointer uppercase"
 									onClick={() => handleItemClick(brand)}
 								>
 									{brand.name}
