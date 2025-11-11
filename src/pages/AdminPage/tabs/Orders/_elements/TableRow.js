@@ -1,3 +1,7 @@
+import React, {useEffect, useRef, useState} from "react";
+import StatusOptions from "./StatusOptions";
+import TableCell from "./TableCell";
+import EditIcon from "../../../../../components/Icons/EditIcon";
 const getStatusClass = (status) => {
 	switch (status) {
 		case "Новий":
@@ -18,17 +22,44 @@ const getStatusClass = (status) => {
 }
 
 const TableRow = ({order}) => {
+	const [isStatusOpen, setIsStatusOpen] = useState(false);
 	const statusClass = getStatusClass(order.status);
+	const statusRef = useRef(null);
+
+	useEffect(() => {
+		function handleClickOutside(event) {
+			if (statusRef.current && !statusRef.current.contains(event.target)) {
+				setIsStatusOpen(false);
+			}
+		}
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [statusRef]);
+
 	return (
-		<tr className="h-[42px]">
-			<td className=" pl-[14px]">{order.orderNumber}</td>
-			<td className=" pl-[14px]">{`${order.firstName} ${order.lastName}`}</td>
-			<td className={`${statusClass} pl-[14px]`}>{order.status}</td>
-			<td className=" pl-[14px]">{order.createdAt.substr(0, 10)}</td>
-			<td className=" pl-[14px]">{order.amount.toFixed(2)}</td>
-			<td className=" pl-[14px]">{order.paymentMethod}</td>
-			<td className=" pl-[14px]">edit</td>
-		</tr>
+		<>
+			<TableCell title={order.orderNumber}/>
+			<TableCell title={`${order.firstName} ${order.lastName}`}/>
+			<div ref={statusRef} className={`flex items-center h-[42px] relative px-[14px] ${statusClass}`}>
+				<div className="flex justify-between items-center cursor-pointer h-full w-full" onClick={() => setIsStatusOpen(!isStatusOpen)}>
+					<div>{order.status}</div>
+					<div>+</div>
+				</div>
+				{isStatusOpen && (
+					<StatusOptions selected={order.status}/>
+				)}
+			</div>
+			<TableCell title={order.createdAt.substr(0, 10)}/>
+			<TableCell title={order.amount.toFixed(2)}/>
+			<TableCell title={order.paymentMethod}/>
+			<div className={`flex items-center justify-center h-[42px]`}>
+				<div className="flex items-center justify-center h-[30px] w-[30px] rounded-full bg-gray-200 cursor-pointer">
+					<EditIcon classes="h-2 w-2"/>
+				</div>
+			</div>
+		</>
 	)
 }
 export default TableRow;
