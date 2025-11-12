@@ -5,6 +5,8 @@ import Paginator from "../../../../components/Paginator";
 import TableCell from "./_elements/TableCell";
 import ChevronIcon from "../../../../components/Icons/ChevronIcon";
 import StatusOptions from "./_elements/StatusOptions";
+import Input from "../../../../components/Input/Input";
+import SearchIcon from "../../../../components/Icons/SearchIcon";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -19,6 +21,17 @@ const Orders = () => {
 	const [isStatusFilterOpen, setStatusFilterOpen] = useState(false);
 	const [statusFilter, setStatusFilter] = useState(null);
 	const [dateFilter, setDateFilter] = useState(null);
+	const [searchText, setSearchText] = useState('');
+
+	const [selectedOrderId, setSelectedOrderId] = useState(null);
+
+	const handleRowClick = (orderId) => {
+		if (selectedOrderId === orderId) {
+			setSelectedOrderId(null);
+		} else {
+			setSelectedOrderId(orderId);
+		}
+	};
 
 	function goToPage(pageNumber) {
 		const start = (pageNumber - 1) * pageSize;
@@ -57,6 +70,9 @@ const Orders = () => {
 				if (dateFilter) {
 					//filtered = filtered.filter(order => new Date(order.createdAt) >= new Date(dateFilter));
 				}
+				const fullName = order => `${order.firstName} ${order.lastName}`.toLowerCase();
+				const trimmedSearchText = searchText.toLowerCase().trim();
+				filtered = filtered.filter(order => fullName(order).includes(trimmedSearchText) || order.orderNumber.includes(trimmedSearchText));
 				setFilteredItems(filtered);
 				setTotalPages(Math.ceil(filtered.length / pageSize));
 				setCurrentPageOrders(filtered.slice(0, pageSize));
@@ -66,7 +82,7 @@ const Orders = () => {
 			}
 		}
 		applyFilters();
-	}, [statusFilter, dateFilter])
+	}, [statusFilter, dateFilter, searchText])
 
 	return (
 		<>
@@ -87,20 +103,38 @@ const Orders = () => {
 							)}
 						</div>
 						<div>date</div>
-						<div>search</div>
+						<div className="relative w-[221px]">
+							<input
+								type="text"
+								placeholder="Ім'я чи номер замовлення"
+								onChange={(e) => setSearchText(e.target.value)}
+								onBlur={(e) => setSearchText(e.target.value)}
+								className="!h-[36px] !w-[221px] bg-white rounded-xl font-medium text-[13px] leading-[16px] border pl-8"
+							/>
+							<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+								<SearchIcon classes="w-3 h-3"/>
+							</div>
+						</div>
 					</div>
 					<div className="flex flex-col gap-10 items-center">
-						<div className="grid gap-y-[1px] grid-cols-[165px_230px_182px_148px_140px_208px_110px] max-w-full overflow-x-auto">
-							<TableCell title="Номер замовлення" classes="font-bold"/>
-							<TableCell title="Покупець" classes="font-bold"/>
-							<TableCell title="Статус" classes="font-bold"/>
-							<TableCell title="Дата" classes="font-bold"/>
-							<TableCell title="Загальна сума" classes="font-bold"/>
-							<TableCell title="Фін статус" classes="font-bold"/>
-							<TableCell title="Редагувати" classes="font-bold px-auto"/>
+						<div className="flex flex-col gap-[1px] max-w-full overflow-x-auto">
+							<div className="grid grid-cols-[165px_230px_182px_148px_140px_208px_110px] font-bold">
+								<TableCell title="Номер замовлення"/>
+								<TableCell title="Покупець"/>
+								<TableCell title="Статус"/>
+								<TableCell title="Дата"/>
+								<TableCell title="Загальна сума"/>
+								<TableCell title="Фін статус"/>
+								<TableCell title="Редагувати" classes="px-auto"/>
+							</div>
 							{currentPageOrders.length > 0 ? (
-								currentPageOrders.map((order, index) => (
-									<TableRow key={index} order={order}/>
+								currentPageOrders.map((order) => (
+									<TableRow
+										key={order.orderNumber}
+										order={order}
+										isSelected={order.orderNumber === selectedOrderId}
+										onRowClick={handleRowClick}
+									/>
 								))
 							) : (
 								<div className="col-span-full py-5 text-center text-gray-500 font-medium">
