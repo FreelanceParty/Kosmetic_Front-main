@@ -7,6 +7,7 @@ import {selectCart} from "../../../redux/cart/selectors";
 import {trackAddToCart} from "../../../ads/AdEvents";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import Tag from "./_elements/Tag";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -93,8 +94,14 @@ const ProductCard = ({product}) => {
 						navigate(`/products/${product.id}`);
 					}
 				}}>
-				<div className="flex items-center justify-center w-full aspect-square">
+				<div className="relative flex items-center justify-center w-full aspect-square">
 					<img src={product.images} alt="product"/>
+					{(product.sale || product.new) &&
+						<div className="absolute top-3 right-0 flex flex-col gap-3 z-10">
+							{product.sale && <Tag isSale={true}/>}
+							{product.new && <Tag isSale={false}/>}
+						</div>
+					}
 				</div>
 				<div className="flex flex-col gap-4 py-3 px-[10px]">
 					<div className="flex flex-col gap-3">
@@ -134,9 +141,14 @@ const ProductCard = ({product}) => {
 			</div>
 
 			<div className="hidden sm:flex flex-col w-[283px] cursor-pointer" onClick={() => navigate('/products/' + product.id)}>
-				<div className="flex items-center justify-center w-full aspect-square">
-					<img className="max-h-[283px] max-w-[283px]"
-						src={product.images} alt="product"/>
+				<div className="relative flex items-center justify-center w-full aspect-square">
+					<img className="max-h-[283px] max-w-[283px]" src={product.images} alt="product"/>
+					{(product.sale || product.new) &&
+						<div className="absolute top-4 right-0 flex flex-col gap-4 z-10">
+							{product.sale && <Tag isSale={true}/>}
+							{product.new && <Tag isSale={false}/>}
+						</div>
+					}
 				</div>
 				<div className="flex flex-col gap-5 py-5 px-3">
 					<div className="flex flex-col gap-4">

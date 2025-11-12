@@ -9,6 +9,7 @@ import {useMedia} from "../../../utils/hooks/useMedia";
 import {useDispatch, useSelector} from "react-redux";
 import {getIsLoggedIn, getOptUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../../redux/auth/selectors";
 import {trackAddToCart} from "../../../ads/AdEvents";
+import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 
 const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}) => {
 	const isLoggedIn = useSelector(getIsLoggedIn);
@@ -61,8 +62,14 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}
 				</div>
 				<div className="flex flex-col gap-[50px]">
 					<div className="flex gap-10">
-						<div className="flex items-center justify-center w-1/2 aspect-square">
+						<div className="relative flex items-center justify-center w-1/2 aspect-square">
 							<img src={product.images} alt="product"/>
+							{(product.sale || product.new) &&
+								<div className="absolute top-6 right-0 flex flex-col gap-6 z-10">
+									{product.sale && <Tag isSale={true}/>}
+									{product.new && <Tag isSale={false}/>}
+								</div>
+							}
 						</div>
 						<div className="flex flex-col gap-10 w-1/2">
 							<div className="flex flex-col gap-[30px]">

@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import {useMedia} from "../../../utils/hooks/useMedia";
 import {useSelector} from "react-redux";
 import {getOptUser} from "../../../redux/auth/selectors";
+import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 
 const Mobile = ({product, reviewsLength, reviewsCount, averageRating}) => {
 	const {getCategoryRoute} = routeHelper();
@@ -29,8 +30,14 @@ const Mobile = ({product, reviewsLength, reviewsCount, averageRating}) => {
 	return (
 		<div className="flex md:hidden w-full flex-col p-5 pb-[60px] text-[#000E55]">
 			<div className="flex flex-col items-center">
-				<div className="w-full flex items-center justify-center mb-6">
+				<div className="relative w-full flex items-center justify-center mb-6">
 					<img src={product.images} alt="product"/>
+					{(product.sale || product.new) &&
+						<div className="absolute top-4 right-0 flex flex-col gap-4 z-10">
+							{product.sale && <Tag isSale={true}/>}
+							{product.new && <Tag isSale={false}/>}
+						</div>
+					}
 				</div>
 				<div className="flex flex-col gap-8 w-full">
 					<div className="flex flex-col gap-6">

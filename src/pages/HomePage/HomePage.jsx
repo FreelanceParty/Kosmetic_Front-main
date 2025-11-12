@@ -46,8 +46,10 @@ const HomePage = () => {
 				const response = await axios.get(`${API_URL}/goods`);
 				const goods = response.data.goods;
 				const availableProducts = goods.filter(product => product.amount > 0);
-				setDiscountProducts(availableProducts.slice(0, 8));
-				setNewProducts(availableProducts.slice(8, 16));
+				const discountProducts = availableProducts.filter(product => product.sale === true);
+				const newProducts = availableProducts.filter(product => product.new === true);
+				setDiscountProducts(discountProducts.slice(0, 8));
+				setNewProducts(newProducts.slice(8, 16));
 			} catch (error) {
 				console.log(error);
 			}
