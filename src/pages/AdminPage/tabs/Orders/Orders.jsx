@@ -5,8 +5,8 @@ import Paginator from "../../../../components/Paginator";
 import TableCell from "./_elements/TableCell";
 import ChevronIcon from "../../../../components/Icons/ChevronIcon";
 import StatusOptions from "./_elements/StatusOptions";
-import Input from "../../../../components/Input/Input";
 import SearchIcon from "../../../../components/Icons/SearchIcon";
+import RightArrowAltIcon from "../../../../components/Icons/RightArrowAltIcon";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -20,7 +20,8 @@ const Orders = () => {
 
 	const [isStatusFilterOpen, setStatusFilterOpen] = useState(false);
 	const [statusFilter, setStatusFilter] = useState(null);
-	const [dateFilter, setDateFilter] = useState(null);
+	const [dateFromFilter, setDateFromFilter] = useState(null);
+	const [dateToFilter, setDateToFilter] = useState(null);
 	const [searchText, setSearchText] = useState('');
 
 	const [selectedOrderId, setSelectedOrderId] = useState(null);
@@ -67,8 +68,11 @@ const Orders = () => {
 				if (statusFilter) {
 					filtered = initialOrders.filter(order => order.status === statusFilter)
 				}
-				if (dateFilter) {
-					//filtered = filtered.filter(order => new Date(order.createdAt) >= new Date(dateFilter));
+				if (dateFromFilter) {
+					filtered = filtered.filter(order => new Date(order.createdAt) >= new Date(dateFromFilter));
+				}
+				if (dateToFilter) {
+					filtered = filtered.filter(order => new Date(order.createdAt) <= new Date(dateToFilter));
 				}
 				const fullName = order => `${order.firstName} ${order.lastName}`.toLowerCase();
 				const trimmedSearchText = searchText.toLowerCase().trim();
@@ -82,7 +86,7 @@ const Orders = () => {
 			}
 		}
 		applyFilters();
-	}, [statusFilter, dateFilter, searchText])
+	}, [statusFilter, dateFromFilter, dateToFilter, searchText])
 
 	return (
 		<>
@@ -91,7 +95,7 @@ const Orders = () => {
 				:
 				<div className="flex flex-col gap-8">
 					<div className="flex gap-5 mx-auto">
-						<div className="relative flex justify-between items-center h-[36px] w-[180px] px-[10px] border rounded-xl cursor-pointer"
+						<div className="relative flex justify-between items-center h-9 w-[180px] px-[10px] border rounded-xl cursor-pointer"
 							onClick={() => setStatusFilterOpen(!isStatusFilterOpen)}
 						>
 							<div className={`font-medium text-[13px] leading-[16px] ${!statusFilter && 'opacity-50'}`}>
@@ -102,14 +106,30 @@ const Orders = () => {
 								<StatusOptions setStatus={setStatusFilter} selected={statusFilter} classes="top-[105%]"/>
 							)}
 						</div>
-						<div>date</div>
+						<div className="flex gap-3 items-center">
+							<input
+								id="date-from-input"
+								type="date"
+								onChange={(e) => setDateFromFilter(e.target.value)}
+								value={dateFromFilter}
+								className="p-2 border border-gray-300 rounded h-9 w-[118px]"
+							/>
+							<RightArrowAltIcon/>
+							<input
+								id="date-to-input"
+								type="date"
+								onChange={(e) => setDateToFilter(e.target.value)}
+								value={dateToFilter}
+								className="p-2 border border-gray-300 rounded h-9 w-[118px]"
+							/>
+						</div>
 						<div className="relative w-[221px]">
 							<input
 								type="text"
 								placeholder="Ім'я чи номер замовлення"
 								onChange={(e) => setSearchText(e.target.value)}
 								onBlur={(e) => setSearchText(e.target.value)}
-								className="!h-[36px] !w-[221px] bg-white rounded-xl font-medium text-[13px] leading-[16px] border pl-8"
+								className="!h-9 !w-[221px] bg-white rounded-xl font-medium text-[13px] leading-[16px] border pl-8"
 							/>
 							<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 								<SearchIcon classes="w-3 h-3"/>
