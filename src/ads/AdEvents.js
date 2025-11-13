@@ -2,8 +2,8 @@ import axios from "axios";
 import {v4 as uuidv4} from 'uuid';
 import CryptoJS from "crypto-js";
 
-const TELEGRAM_BOT_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
-const TELEGRAM_CHAT_ID = process.env.REACT_APP_TELEGRAM_CHAT_ID;
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 // todo: add other events
 export const trackPageView = async (userSelectors = {}) => {
