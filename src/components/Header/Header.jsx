@@ -47,7 +47,11 @@ const Header = () => {
 	];
 
 	useEffect(() => {
-		document.body.classList.toggle("overflow-hidden", isSearchOpen);
+		if (isSearchOpen) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "";
+		}
 	}, [isSearchOpen]);
 
 	const handleSearchIconClick = () => {

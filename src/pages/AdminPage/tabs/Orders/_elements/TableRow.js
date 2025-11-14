@@ -44,7 +44,7 @@ const TableRow = ({order, isSelected, onRowClick}) => {
 
 	return (
 		<div
-			onClick={() => onRowClick(order.orderNumber)}
+			onClick={() => onRowClick(order)}
 			className={`grid grid-cols-[165px_230px_182px_148px_140px_208px_110px] ${selectionClasses}`}
 		>
 			<TableCell title={order.orderNumber}/>
