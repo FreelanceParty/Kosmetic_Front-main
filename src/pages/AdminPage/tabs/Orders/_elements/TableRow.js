@@ -2,6 +2,12 @@ import React, {useEffect, useRef, useState} from "react";
 import StatusOptions from "./StatusOptions";
 import TableCell from "./TableCell";
 import EditIcon from "../../../../../components/Icons/EditIcon";
+import axios from "axios";
+import {toast} from "react-toastify";
+import MiniChevronIcon from "../../../../../components/Icons/MiniChevronIcon";
+
+const API_URL = process.env.REACT_APP_API_URL;
+
 const getStatusClass = (status) => {
 	switch (status) {
 		case "Новий":
@@ -21,9 +27,11 @@ const getStatusClass = (status) => {
 	}
 }
 
-const TableRow = ({order, isSelected, onRowClick}) => {
+const TableRow = ({order, isSelected, onRowClick, onEditClick}) => {
 	const [isStatusOpen, setIsStatusOpen] = useState(false);
-	const statusClass = getStatusClass(order.status);
+	const [selectedStatus, setSelectedStatus] = useState(order.status);
+	const [statusClass, setStatusClass] = useState(getStatusClass(order.status));
+
 	const statusRef = useRef(null);
 	const selectionClasses = isSelected
 		? 'bg-[#FFE8F5]'
@@ -42,27 +50,42 @@ const TableRow = ({order, isSelected, onRowClick}) => {
 		};
 	}, [statusRef]);
 
+	useEffect(() => {
+		const updateOrderStatus = async () => {
+			try {
+				await axios.patch(`${API_URL}/orders/${order._id}/status`, {status: selectedStatus});
+			} catch (e) {
+				toast.error(e);
+			}
+		}
+		if (isStatusOpen) {
+			updateOrderStatus();
+			setIsStatusOpen(false);
+		}
+		setStatusClass(getStatusClass(selectedStatus));
+	}, [selectedStatus]);
+
 	return (
 		<div
-			onClick={() => onRowClick(order)}
+			onClick={() => onRowClick(order.orderNumber)}
 			className={`grid grid-cols-[165px_230px_182px_148px_140px_208px_110px] ${selectionClasses}`}
 		>
 			<TableCell title={order.orderNumber}/>
 			<TableCell title={`${order.firstName} ${order.lastName}`}/>
-			<div ref={statusRef} className={`flex items-center h-[42px] relative px-[14px] ${statusClass}`} onClick={(e) => e.stopPropagation()}>
-				<div className="flex justify-between items-center cursor-pointer h-full w-full" onClick={() => setIsStatusOpen(!isStatusOpen)}>
-					<div>{order.status}</div>
-					<div>+</div>
+			<div ref={statusRef} className={`flex items-center h-[42px] relative ${statusClass}`} onClick={(e) => e.stopPropagation()}>
+				<div className="flex justify-between items-center cursor-pointer h-full w-full px-[14px]" onClick={() => setIsStatusOpen(!isStatusOpen)}>
+					<div className="text-[13px] leading-[9px]">{selectedStatus}</div>
+					<MiniChevronIcon classes={`transition-all ${isStatusOpen ? 'rotate-180' : ''}`}/>
 				</div>
 				{isStatusOpen && (
-					<StatusOptions selected={order.status}/>
+					<StatusOptions selected={selectedStatus} setStatus={setSelectedStatus} withNoSelected={false}/>
 				)}
 			</div>
 			<TableCell title={order.createdAt.substr(0, 10)}/>
 			<TableCell title={order.amount.toFixed(2)}/>
 			<TableCell title={order.paymentMethod}/>
 			<div className={`flex items-center justify-center h-[42px] ${selectionClasses}`}>
-				<div className={`flex items-center justify-center h-[30px] w-[30px] rounded-full bg-gray-200 cursor-pointer`}>
+				<div className={`flex items-center justify-center h-[30px] w-[30px] rounded-full bg-gray-200 cursor-pointer`} onClick={onEditClick}>
 					<EditIcon classes="h-2 w-2"/>
 				</div>
 			</div>
