@@ -22,8 +22,9 @@ const Checkbox = ({label, labelClasses, defaultChecked = false, onChange}) => {
 			<span className="grid place-items-center w-5 h-5 rounded-md border border-blue-900 text-transparent peer-checked:text-pink-400">
 		        <CheckMarkIcon/>
 			</span>
-
-			<span className={labelClasses ?? ''}>{label}</span>
+			{label &&
+				<span className={labelClasses ?? ''}>{label}</span>
+			}
 		</label>
 	);
 };

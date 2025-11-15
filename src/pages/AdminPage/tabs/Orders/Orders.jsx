@@ -7,10 +7,14 @@ import ChevronIcon from "../../../../components/Icons/ChevronIcon";
 import StatusOptions from "./_elements/StatusOptions";
 import SearchIcon from "../../../../components/Icons/SearchIcon";
 import RightArrowAltIcon from "../../../../components/Icons/RightArrowAltIcon";
+import {usePopup} from "../../../../hooks/usePopup";
+import {Side} from "../../../../popups/Abstracts/Side";
+import OrderDetails from "../../../../popups/Side/OrderDetails/OrderDetails";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Orders = () => {
+	const {isOpen, content, openPopup, closePopup} = usePopup();
 	const [initialOrders, setInitialOrders] = useState([]);
 	const [filteredItems, setFilteredItems] = useState([]);
 	const [currentPageOrders, setCurrentPageOrders] = useState([]);
@@ -154,6 +158,7 @@ const Orders = () => {
 										order={order}
 										isSelected={order.orderNumber === selectedOrderId}
 										onRowClick={handleRowClick}
+										onEditClick={() => openPopup(<OrderDetails order={order}/>)}
 									/>
 								))
 							) : (
@@ -169,6 +174,7 @@ const Orders = () => {
 								onChange={(newPage) => goToPage(newPage)}
 							/>}
 					</div>
+					<Side isOpen={isOpen} headerText={"ДАНІ ЗАМОВЛЕННЯ"} content={content} onClose={closePopup}/>
 				</div>
 			}
 		</>
