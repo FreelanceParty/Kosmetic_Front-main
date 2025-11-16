@@ -73,32 +73,32 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}
 						</div>
 						<div className="flex flex-col gap-10 w-1/2">
 							<div className="flex flex-col gap-[30px]">
-								<div className="font-semibold text-[36px]">{product.name}</div>
-								<a className="underline cursor-pointer font-medium text-lg max-w-fit" href={`/brands/${product.brand}`}>{product.brand}</a>
-								<div className="flex gap-3">
+								<div className="font-semibold text-[36px] leading-[46px]">{product.name}</div>
+								<a className="underline cursor-pointer font-medium text-lg max-w-fit leading-[13px]" href={`/brands/${product.brand}`}>{product.brand}</a>
+								<div className="flex gap-3 items-center">
 									<RateHearts heartSize={14} count={averageRating}/>
-									<div className="font-normal text-xs">{reviewsCount}</div>
+									<div className="font-normal text-xs leading-[8px]">{reviewsCount}</div>
 								</div>
 								<div className="flex gap-4 items-end">
 									<div className="flex flex-col gap-4">
-										{priceOld !== null && (
-											<div className="font-normal text-md line-through">{priceOld} ГРН</div>
+										{priceOld && (
+											<div className="font-normal text-md line-through leading-[11px]">{priceOld} ГРН</div>
 										)}
-										<div className={`font-bold text-2xl ${priceOld === null ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
+										<div className={`font-bold text-2xl leading-[17px] ${priceOld ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
 									</div>
-									<div className="font-normal text-lg">Роздрібна ціна</div>
+									<div className="font-normal text-lg leading-[13px]">Роздрібна ціна</div>
 								</div>
 								<div className="border-b"></div>
 								<div className="flex gap-4 font-normal text-sm">
 									{product.amount > 0 ? (
-										<div className="text-[#007504]">В наявності</div>
+										<div className="text-[#007504] leading-[13px]">В наявності</div>
 									) : (
-										<div className="text-[#B90003]">Немає в наявності</div>
+										<div className="text-[#B90003] leading-[13px]">Немає в наявності</div>
 									)}
 									<div className="border-[#000E55] border-l"></div>
-									<div>Код: {product.code}</div>
+									<div className="leading-[11px]">Код: {product.code}</div>
 									<div className="border-[#000E55] border-l"></div>
-									<div>Артикул: {product.article}</div>
+									<div className="leading-[11px]">Артикул: {product.article}</div>
 								</div>
 							</div>
 							<div className="flex gap-[30px]">
@@ -111,9 +111,7 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}
 									isDisabled={product.amount === 0}
 								/>
 							</div>
-							{isAuthorized ? (
-								<div/>
-							) : (
+							{!isAuthorized && (
 								<div className="flex gap-3 items-center">
 									<img
 										src={require("../../../assets/icons/star_percentage.svg").default}

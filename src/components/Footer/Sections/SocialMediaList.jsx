@@ -1,10 +1,11 @@
 const SocialMediaList = () => {
+	// todo: links
 	const items = [
-		{icon: 'insta', title: 'ІНСТА', link: '', src: require(`../../../assets/icons/insta.svg`).default},
-		{icon: 'teleg', title: 'ОПТ', link: '', src: require(`../../../assets/icons/teleg.svg`).default},
-		{icon: 'teleg', title: 'ДРОП', link: '', src: require(`../../../assets/icons/teleg.svg`).default},
-		{icon: 'viber', title: 'ОПТ', link: '', src: require(`../../../assets/icons/viber.svg`).default},
-		{icon: 'viber', title: 'ДРОП', link: '', src: require(`../../../assets/icons/viber.svg`).default},
+		{icon: 'insta', title: 'BEAUTY_BLOSSOM_UA', link: '', src: require(`../../../assets/icons/insta.svg`).default},
+		{icon: 'teleg', title: 'ДЛЯ ОПТОВИХ КЛІЄНТІВ', link: '', src: require(`../../../assets/icons/teleg.svg`).default},
+		{icon: 'teleg', title: 'ДРОПШИПІНГ', link: '', src: require(`../../../assets/icons/teleg.svg`).default},
+		{icon: 'viber', title: 'ДЛЯ ОПТОВИХ КЛІЄНТІВ', link: '', src: require(`../../../assets/icons/viber.svg`).default},
+		{icon: 'viber', title: 'ДРОПШИПІНГ', link: '', src: require(`../../../assets/icons/viber.svg`).default},
 	];
 
 	return (
@@ -25,7 +26,7 @@ const SocialMediaList = () => {
 							width={16}
 							height={16}
 						/>
-						<div className="font-medium text-md">{item.title}</div>
+						<div className="font-medium text-md leading-[10px]">{item.title}</div>
 					</div>
 				))}
 			</div>
