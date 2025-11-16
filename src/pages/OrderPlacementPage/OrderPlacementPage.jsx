@@ -137,7 +137,7 @@ const OrderPlacementPage = () => {
 				setIsValidForm(false);
 				return;
 			}
-		} else if (formData.deliveryMethod === "Доставка на відділення Нової Пошти") {
+		} else if (formData.deliveryMethod === "Доставка на відділення") {
 			if (!formData.warehouse) {
 				showErrorMessage("Будь ласка, виберіть відділення НП", withErrorMessage);
 				setIsValidForm(false);

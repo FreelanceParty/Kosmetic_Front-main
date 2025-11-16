@@ -1,12 +1,20 @@
-const EditableField = ({title, value, isEdit}) => {
+import FieldInput from "./FieldInput";
+
+const EditableField = ({type, name, title, value, setValue, isEdit, containerClasses, options}) => {
 	return (
-		<div className="flex flex-col gap-2 w-full">
+		<div className={`flex flex-col gap-2 w-full ${containerClasses ?? ''}`}>
 			<div className="font-semibold text-xs leading-2 text-[#B2B2B2]">{title}</div>
 			{isEdit
 				?
-				<div>editable {value}</div>
+				<FieldInput
+					type={type}
+					name={name}
+					value={value}
+					setValue={setValue}
+					options={options}
+				/>
 				:
-				<div className="font-medium text-sm">{value}</div>
+				<div className="flex items-center font-medium text-sm truncate text-wrap min-h-[30px]">{value}</div>
 			}
 		</div>
 	)

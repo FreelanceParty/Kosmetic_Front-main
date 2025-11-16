@@ -1,10 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, {cloneElement, useEffect, useState} from "react";
+import EditIcon from "../../components/Icons/EditIcon";
+import AcceptIcon from "../../components/Icons/AcceptIcon";
+import DeclineIcon from "../../components/Icons/DeclineIcon";
 
-export function Side({ headerText, isOpen, content, onClose }) {
+export function Side({headerText, isOpen, content, onClose}) {
 	const [shouldRender, setShouldRender] = useState(isOpen);
 	const [isTransitioning, setIsTransitioning] = useState(isOpen);
+	const [isEdit, setIsEdit] = useState(false);
+	const [onAccept, setAccept] = useState(() => () => {
+	});
+	const [onDecline, setDecline] = useState(() => () => {
+	});
 
 	const TRANSITION_DURATION = 300;
+
+	function handleAccept() {
+		onAccept();
+		setIsEdit(false);
+	}
+
+	function handleDecline() {
+		onDecline();
+		setIsEdit(false);
+	}
 
 	useEffect(() => {
 		if (isOpen) {
@@ -66,11 +84,24 @@ export function Side({ headerText, isOpen, content, onClose }) {
 				className={panelClasses}
 				onClick={handleContentClick}
 			>
-				<div className="flex items-center h-[46px] border-b border-[#64759B]">
+				<div className="flex items-center justify-between h-[46px] border-b border-[#64759B] pr-6">
 					<div className="font-bold text-[13px] leading-[9px]">{headerText}</div>
+					{isEdit ? (
+						<div className="flex gap-[10px]">
+							<AcceptIcon classes={"cursor-pointer"} onClick={handleAccept}/>
+							<DeclineIcon classes={"cursor-pointer"} onClick={handleDecline}/>
+						</div>
+					) : (
+						<EditIcon classes="h-4 w-4 hover:text-pink-500 cursor-pointer mx-[7px]" onClick={() => setIsEdit(true)}/>
+					)}
 				</div>
 				<div className="overflow-y-auto flex-grow pt-6">
-					{content}
+					{content && cloneElement(content, {
+						isEdit,
+						setIsEdit,
+						setOnAccept:  setAccept,
+						setOnDecline: setDecline,
+					})}
 				</div>
 			</div>
 		</div>

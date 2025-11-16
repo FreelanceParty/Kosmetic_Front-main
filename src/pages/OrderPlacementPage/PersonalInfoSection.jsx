@@ -268,7 +268,7 @@ const PersonalInfoSection = ({
 					      title="Варіанти доставки"
 					      options={[
 						      {id: COURIER_DELIVERY_TYPE, label: "Доставка кур'єром"},
-						      {id: POST_OFFICE_DELIVERY_TYPE, label: "Доставка на відділення Нової Пошти"},
+						      {id: POST_OFFICE_DELIVERY_TYPE, label: "Доставка на відділення"},
 					      ]}
 					      onSelect={(option) => {
 						      setDeliveryType(option.id);
