@@ -4,10 +4,6 @@ export const sortOptions = [
 		label: 'За замовчуванням',
 	},
 	{
-		id:    'best-sellers',
-		label: 'Бестселери',
-	},
-	{
 		id:    'title-asc',
 		label: 'За назвою A-Z',
 	},

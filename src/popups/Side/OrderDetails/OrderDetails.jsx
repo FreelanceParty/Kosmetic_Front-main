@@ -6,36 +6,33 @@ import {toast} from "react-toastify";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const OrderDetails = ({order, isEdit, setOnAccept, setOnDecline}) => {
-	const [initialData, setInitialData] = useState({
-		orderNumber:    order.orderNumber,
-		createdAt:      order.createdAt,
-		status:         order.status,
-		comments:       order.comments,
-		firstName:      order.firstName,
-		lastName:       order.lastName,
-		number:         order.number,
-		email:          order.email,
-		deliveryMethod: order.deliveryMethod,
-		city:           order.city,
-		address:        order.address,
-		building:       order.building,
-		apartment:      order.apartment,
-		warehouse:      order.warehouse,
-		// -----------------------------
-		paymentMethod: order.paymentMethod,
-		amount:        order.amount,
-		isOptUser:     order.isOptUser,
-		orderedItems:  order.orderedItems,
-	});
+const OrderDetails = ({orderId, isEdit, setOnAccept, setOnDecline}) => {
+	const [order, setOrder] = useState(null);
+	const [editableData, setEditableData] = useState(null);
 
-	const [editableData, setEditableData] = useState({...initialData});
+	useEffect(() => {
+		function fetchOrder() {
+			try {
+				axios.get(`${API_URL}/orders/${orderId}`).then(response => {
+					setOrder(response.data);
+					setEditableData(response.data);
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+
+		if (order === null) {
+			fetchOrder();
+		}
+	}, [orderId])
 
 	const handleSave = async () => {
 		try {
-			const response = await axios.put(`${API_URL}/orders/${order._id}`, editableData);
+			const response = await axios.put(`${API_URL}/orders/${orderId}`, editableData);
 			if (response.status === 200) {
-				setInitialData(response.data);
+				setOrder(response.data);
+				setEditableData(response.data);
 				toast.success("Замовлення оновлено");
 			} else {
 				toast.error("Сталась помилка");
@@ -45,9 +42,8 @@ const OrderDetails = ({order, isEdit, setOnAccept, setOnDecline}) => {
 		}
 	};
 
-	// todo: перший натиск після оновлення невірно встановлює
 	const handleReset = () => {
-		setEditableData(initialData);
+		setEditableData(order);
 	};
 
 	const handleFieldChange = (key, value) => {
@@ -67,6 +63,7 @@ const OrderDetails = ({order, isEdit, setOnAccept, setOnDecline}) => {
 	}, [setOnAccept, setOnDecline, editableData]);
 
 	return (
+		order &&
 		<div className="flex flex-col gap-5">
 			<div className="flex gap-8">
 				<div className="flex flex-col gap-3 w-[300px]">
@@ -102,8 +99,9 @@ const OrderDetails = ({order, isEdit, setOnAccept, setOnDecline}) => {
 					</div>
 				</div>
 			</div>
-			<ProductsTable products={order.orderedItems}/>
+			<ProductsTable orderId={orderId} products={order.orderedItems}/>
 		</div>
+
 	)
 }
 

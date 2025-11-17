@@ -1,10 +1,26 @@
 import Checkbox from "../../../../components/Inputs/Checkbox";
-const ProductsTable = ({products}) => {
+import axios from "axios";
+
+const API_URL = process.env.REACT_APP_API_URL;
+
+const ProductsTable = ({orderId, products}) => {
 	const colWidths = {
 		price:    "79px",
 		quantity: "89px",
 		amount:   "88px"
 	};
+
+	const updateProductCheck = async (productId, isChecked) => {
+		try {
+			const response = await axios.patch(`${API_URL}/orders/${orderId}/checked`, {
+				productId: productId,
+				isChecked: isChecked,
+			});
+			console.log(response)
+		} catch (e) {
+			console.log(e)
+		}
+	}
 
 	return (
 		<div className="text-[13px] max-w-[736px]">
@@ -28,7 +44,7 @@ const ProductsTable = ({products}) => {
 					{products.map((product) => (
 						<tr key={product.productId} className="flex items-center h-[70px]">
 							<td className="flex gap-[10px] max-w-[480px]">
-								<Checkbox/>
+								<Checkbox defaultChecked={product.isChecked} onChange={(isChecked) => updateProductCheck(product.productId, isChecked)}/>
 								<img className="w-[50px] h-[50px]" src={product.images} alt="product"/>
 								<div className="w-full line-clamp-3">{product.name}</div>
 							</td>

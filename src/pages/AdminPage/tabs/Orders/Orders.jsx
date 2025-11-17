@@ -158,7 +158,7 @@ const Orders = () => {
 										order={order}
 										isSelected={order.orderNumber === selectedOrderId}
 										onRowClick={handleRowClick}
-										onEditClick={() => openPopup(<OrderDetails order={order}/>)}
+										onEditClick={() => openPopup(<OrderDetails orderId={order._id}/>)}
 									/>
 								))
 							) : (

@@ -67,10 +67,6 @@ const Category = () => {
 			case 'available-count-desc':
 				sorted.sort((a, b) => (b.amount || 0) - (a.amount || 0));
 				break;
-			// todo: how to sort
-			//case 'best-sellers':
-			//	sorted.sort((a, b) => (b.sales || 0) - (a.sales || 0));
-			//	break;
 			default:
 				sorted = [...initialProducts];
 				break;
@@ -97,7 +93,6 @@ const Category = () => {
 			? initialProducts.filter(p => p.subCategory === chosenSubCategory)
 			: initialProducts;
 
-		// застосовуємо поточне сортування
 		let sorted = [...items];
 		switch (selectedSortOption) {
 			case 'title-asc':
@@ -115,9 +110,6 @@ const Category = () => {
 			case 'available-count-desc':
 				sorted.sort((a, b) => (b.amount || 0) - (a.amount || 0));
 				break;
-			//case 'best-sellers':
-			//	sorted.sort((a, b) => (b.sales || 0) - (a.sales || 0));
-			//	break;
 			default:
 				break;
 		}
