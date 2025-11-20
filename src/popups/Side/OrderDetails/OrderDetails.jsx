@@ -65,15 +65,15 @@ const OrderDetails = ({orderId, isEdit, setOnAccept, setOnDecline}) => {
 	return (
 		order &&
 		<div className="flex flex-col gap-5">
-			<div className="flex gap-8">
-				<div className="flex flex-col gap-3 w-[300px]">
+			<div className="flex flex-col sm:flex-row gap-3 sm:gap-8">
+				<div className="flex flex-col gap-3 w-full sm:w-[300px]">
 					<EditableField isEdit={isEdit} title="Номер замовлення" value={editableData.orderNumber} setValue={(e) => handleFieldChange('orderNumber', e.target.value)}/>
 					<EditableField isEdit={isEdit} title="Створено" value={editableData.createdAt.split('T')[0]} setValue={(e) => handleFieldChange('createdAt', e.target.value)}/>
 					<EditableField isEdit={isEdit} name="status" type="select" title="Статус" value={editableData.status} setValue={(status) => handleFieldChange('status', status)}/>
-					<EditableField isEdit={isEdit} type="textarea" title="Коментар" value={editableData.comments} setValue={(e) => handleFieldChange('comments', e.target.value ?? '')}/>
+					<EditableField containerClasses="hidden sm:flex" isEdit={isEdit} type="textarea" title="Коментар" value={editableData.comments} setValue={(e) => handleFieldChange('comments', e.target.value ?? '')}/>
 				</div>
 
-				<div className="flex flex-col gap-3 w-[380px]">
+				<div className="flex flex-col gap-3 w-full sm:w-[380px]">
 					<div className="grid grid-cols-2 gap-2">
 						<EditableField isEdit={isEdit} title="Ім'я покупця" value={editableData.firstName} setValue={(e) => handleFieldChange('firstName', e.target.value)}/>
 						<EditableField isEdit={isEdit} title="Прізвище покупця" value={editableData.lastName} setValue={(e) => handleFieldChange('lastName', e.target.value)}/>
@@ -97,6 +97,7 @@ const OrderDetails = ({orderId, isEdit, setOnAccept, setOnDecline}) => {
 							<EditableField isEdit={isEdit} title="Відділення/Поштомат" value={editableData.warehouse} setValue={(e) => handleFieldChange('warehouse', e.target.value)}/>
 						}
 					</div>
+					<EditableField containerClasses="sm:hidden flex" isEdit={isEdit} type="textarea" title="Коментар" value={editableData.comments} setValue={(e) => handleFieldChange('comments', e.target.value ?? '')}/>
 				</div>
 			</div>
 			<ProductsTable orderId={orderId} products={order.orderedItems}/>

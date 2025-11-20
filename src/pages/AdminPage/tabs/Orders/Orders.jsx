@@ -1,15 +1,13 @@
-import TableRow from "./_elements/TableRow";
+import TableRow from "./_elements/Desktop/TableRow";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Paginator from "../../../../components/Paginator";
-import TableCell from "./_elements/TableCell";
-import ChevronIcon from "../../../../components/Icons/ChevronIcon";
-import StatusOptions from "./_elements/StatusOptions";
-import SearchIcon from "../../../../components/Icons/SearchIcon";
-import RightArrowAltIcon from "../../../../components/Icons/RightArrowAltIcon";
+import TableCell from "./_elements/Desktop/TableCell";
 import {usePopup} from "../../../../hooks/usePopup";
 import {Side} from "../../../../popups/Abstracts/Side";
 import OrderDetails from "../../../../popups/Side/OrderDetails/OrderDetails";
+import Filters from "./_elements/Filters";
+import OrderCard from "./_elements/Mobile/OrderCard";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -97,51 +95,21 @@ const Orders = () => {
 			{initialOrders.length === 0 ?
 				<div>Loading...</div>
 				:
-				<div className="flex flex-col gap-8">
-					<div className="flex gap-5 mx-auto">
-						<div className="relative flex justify-between items-center h-9 w-[180px] px-[10px] border rounded-xl cursor-pointer"
-							onClick={() => setStatusFilterOpen(!isStatusFilterOpen)}
-						>
-							<div className={`font-medium text-[13px] leading-[16px] ${!statusFilter && 'opacity-50'}`}>
-								{statusFilter ?? 'Статус'}
-							</div>
-							<ChevronIcon/>
-							{isStatusFilterOpen && (
-								<StatusOptions setStatus={setStatusFilter} selected={statusFilter} classes="top-[105%]"/>
-							)}
-						</div>
-						<div className="flex gap-3 items-center">
-							<input
-								id="date-from-input"
-								type="date"
-								onChange={(e) => setDateFromFilter(e.target.value)}
-								value={dateFromFilter}
-								className="p-2 border border-gray-300 rounded h-9 w-[118px]"
-							/>
-							<RightArrowAltIcon/>
-							<input
-								id="date-to-input"
-								type="date"
-								onChange={(e) => setDateToFilter(e.target.value)}
-								value={dateToFilter}
-								className="p-2 border border-gray-300 rounded h-9 w-[118px]"
-							/>
-						</div>
-						<div className="relative w-[221px]">
-							<input
-								type="text"
-								placeholder="Ім'я чи номер замовлення"
-								onChange={(e) => setSearchText(e.target.value)}
-								onBlur={(e) => setSearchText(e.target.value)}
-								className="!h-9 !w-[221px] bg-white rounded-xl font-medium text-[13px] leading-[16px] border pl-8"
-							/>
-							<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-								<SearchIcon classes="w-3 h-3"/>
-							</div>
-						</div>
-					</div>
+				<div className="flex flex-col gap-8 px-5">
+					<Filters
+						isStatusFilterOpen={isStatusFilterOpen}
+						statusFilter={statusFilter}
+						setStatusFilter={setStatusFilter}
+						dateFromFilter={dateFromFilter}
+						setDateFromFilter={setDateFromFilter}
+						dateToFilter={dateToFilter}
+						setDateToFilter={setDateToFilter}
+						searchText={searchText}
+						setSearchText={setSearchText}
+						setStatusFilterOpen={setStatusFilterOpen}
+					/>
 					<div className="flex flex-col gap-10 items-center">
-						<div className="flex flex-col gap-[1px] max-w-full overflow-x-auto">
+						<div className="hidden md:flex flex-col gap-[1px] max-w-full overflow-x-auto">
 							<div className="grid grid-cols-[165px_230px_182px_148px_140px_208px_110px] font-bold">
 								<TableCell title="Номер замовлення"/>
 								<TableCell title="Покупець"/>
@@ -158,6 +126,21 @@ const Orders = () => {
 										order={order}
 										isSelected={order.orderNumber === selectedOrderId}
 										onRowClick={handleRowClick}
+										onEditClick={() => openPopup(<OrderDetails orderId={order._id}/>)}
+									/>
+								))
+							) : (
+								<div className="col-span-full py-5 text-center text-gray-500 font-medium">
+									Не знайдено замовлень по фільтру.
+								</div>
+							)}
+						</div>
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+							{currentPageOrders.length > 0 ? (
+								currentPageOrders.map((order) => (
+									<OrderCard
+										key={order.orderNumber}
+										order={order}
 										onEditClick={() => openPopup(<OrderDetails orderId={order._id}/>)}
 									/>
 								))

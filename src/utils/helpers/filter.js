@@ -52,3 +52,36 @@ export const faceFilters = [
 		options: [],
 	},
 ];
+
+export const statusFilters = [
+	{
+		order:   1,
+		id:    'new',
+		title: 'Новий',
+	},
+	{
+		order:   2,
+		id:    'accepted',
+		title: 'Прийняте в роботу',
+	},
+	{
+		order:   3,
+		id:    'collecting',
+		title: 'Збирається',
+	},
+	{
+		order:   4,
+		id:    'collected',
+		title: 'Зібрано',
+	},
+	{
+		order:   5,
+		id:    'sent',
+		title: 'Відправлено',
+	},
+	{
+		order:   6,
+		id:    'cancelled',
+		title: 'Відміна',
+	},
+];

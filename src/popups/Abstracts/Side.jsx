@@ -2,6 +2,7 @@ import React, {cloneElement, useEffect, useState} from "react";
 import EditIcon from "../../components/Icons/EditIcon";
 import AcceptIcon from "../../components/Icons/AcceptIcon";
 import DeclineIcon from "../../components/Icons/DeclineIcon";
+import CloseCrossIcon from "../../components/Icons/CloseCrossIcon";
 
 export function Side({headerText, isOpen, content, onClose}) {
 	const [shouldRender, setShouldRender] = useState(isOpen);
@@ -62,8 +63,8 @@ export function Side({headerText, isOpen, content, onClose}) {
 	};
 
 	const panelClasses = `
-        flex flex-col bg-white w-full max-w-[860px] h-[95vh] shadow-2xl 
-        rounded-l-[10px] px-6 pb-[14px] 
+        flex flex-col bg-white w-full max-w-[860px] h-full sm:h-[95vh] shadow-2xl 
+        sm:rounded-l-[10px] pl-6 sm:pr-6 sm:pb-[14px] 
         transform transition-transform duration-400 ease-in-out
         ${isTransitioning ? 'translate-x-0' : 'translate-x-full'} 
     `;
@@ -92,10 +93,13 @@ export function Side({headerText, isOpen, content, onClose}) {
 							<DeclineIcon classes={"cursor-pointer"} onClick={handleDecline}/>
 						</div>
 					) : (
-						<EditIcon classes="h-4 w-4 hover:text-pink-500 cursor-pointer mx-[7px]" onClick={() => setIsEdit(true)}/>
+						<div className="flex gap-[10px]">
+							<EditIcon classes="h-4 w-4 hover:text-pink-500 cursor-pointer mx-[7px]" onClick={() => setIsEdit(true)}/>
+							<CloseCrossIcon classes="cursor-pointer" onClick={onClose}/>
+						</div>
 					)}
 				</div>
-				<div className="overflow-y-auto flex-grow pt-6">
+				<div className="overflow-y-auto flex-grow pt-6 pr-6 sm:pr-0">
 					{content && cloneElement(content, {
 						isEdit,
 						setIsEdit,

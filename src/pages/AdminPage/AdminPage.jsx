@@ -15,15 +15,15 @@ const AdminPage = () => {
 	const [activeTab, setActiveTab] = useState("orders");
 
 	return (
-		<div className="flex flex-col gap-[50px] w-full max-w-[1183px] items-center py-10 mx-auto">
-			<div className="flex flex-col gap-8 w-full">
+		<div className="flex flex-col gap-6 md:gap-[50px] w-full max-w-[1183px] items-center py-10 mx-auto">
+			<div className="flex flex-col gap-5 md:gap-8 w-full">
 				<div className="text-center text-lg font-semibold leading-[13px]">ПАНЕЛЬ АДМІНІСТРАТОРА</div>
 				<Slider>
 					{tabs.map((tab) => (
 						<SliderElement
 							key={tab.id}
 							onClick={() => setActiveTab(tab.id)}
-							className={`leading-[13px] text-gray-600 ${tab.styles} ${
+							className={`text-gray-600 ${tab.styles} ${
 								activeTab === tab.id
 									? "bg-[#ffe8f5] "
 									: "bg-[#f6f6f6] hover:bg-gray-200"

@@ -14,7 +14,7 @@ const EditableField = ({type, name, title, value, setValue, isEdit, containerCla
 					options={options}
 				/>
 				:
-				<div className="flex items-center font-medium text-sm truncate text-wrap min-h-[30px]">{value}</div>
+				<div className={`flex items-center font-medium text-sm truncate text-wrap ${value ? 'min-h-[30px]' : '' }`}>{value}</div>
 			}
 		</div>
 	)

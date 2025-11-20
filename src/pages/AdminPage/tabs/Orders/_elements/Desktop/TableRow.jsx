@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
-import StatusOptions from "./StatusOptions";
+import StatusOptions from "../StatusOptions";
 import TableCell from "./TableCell";
-import EditIcon from "../../../../../components/Icons/EditIcon";
+import EditIcon from "../../../../../../components/Icons/EditIcon";
 import axios from "axios";
 import {toast} from "react-toastify";
-import MiniChevronIcon from "../../../../../components/Icons/MiniChevronIcon";
+import MiniChevronIcon from "../../../../../../components/Icons/MiniChevronIcon";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
