@@ -64,7 +64,7 @@ export function Side({headerText, isOpen, content, onClose}) {
 
 	const panelClasses = `
         flex flex-col bg-white w-full max-w-[860px] h-full sm:h-[95vh] shadow-2xl 
-        sm:rounded-l-[10px] pl-6 sm:pr-6 sm:pb-[14px] 
+        sm:rounded-l-[10px]
         transform transition-transform duration-400 ease-in-out
         ${isTransitioning ? 'translate-x-0' : 'translate-x-full'} 
     `;
@@ -85,7 +85,7 @@ export function Side({headerText, isOpen, content, onClose}) {
 				className={panelClasses}
 				onClick={handleContentClick}
 			>
-				<div className="flex items-center justify-between h-[46px] border-b border-[#64759B] pr-6">
+				<div className="flex items-center justify-between h-[46px] border-b border-[#64759B] mx-6 max-w-[736px]">
 					<div className="font-bold text-[13px] leading-[9px]">{headerText}</div>
 					{isEdit ? (
 						<div className="flex gap-[10px]">
@@ -99,7 +99,7 @@ export function Side({headerText, isOpen, content, onClose}) {
 						</div>
 					)}
 				</div>
-				<div className="overflow-y-auto flex-grow pt-6 pr-6 sm:pr-0">
+				<div className="overflow-y-auto flex-grow pt-6">
 					{content && cloneElement(content, {
 						isEdit,
 						setIsEdit,
