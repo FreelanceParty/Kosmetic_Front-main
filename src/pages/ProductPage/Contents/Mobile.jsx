@@ -53,10 +53,10 @@ const Mobile = ({product, reviewsLength, reviewsCount, averageRating}) => {
 					<div className="flex flex-col gap-6">
 						<div className="flex justify-between items-center">
 							<div className="flex flex-col gap-4">
-								{priceOld !== null && (
+								{priceOld && (
 									<div className="font-normal text-md line-through">{priceOld} ГРН</div>
 								)}
-								<div className={`font-bold text-2xl ${priceOld === null ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
+								<div className={`font-bold text-2xl ${priceOld ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
 								<div className="font-normal text-lg">Роздрібна ціна</div>
 							</div>
 							<NumberInput/>

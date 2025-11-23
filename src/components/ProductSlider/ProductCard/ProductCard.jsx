@@ -119,11 +119,11 @@ const ProductCard = ({product}) => {
 							) : (
 								<div className="text-[#B90003] text-[10px] leading-[7px] truncate">Немає в наявності</div>
 							)}
-							<div className={`flex flex-col h-[27px] ${priceOld !== undefined ? 'justify-between' : 'justify-end'}`}>
-								{priceOld !== undefined && (
+							<div className={`flex flex-col h-[27px] ${priceOld ? 'justify-between' : 'justify-end'}`}>
+								{priceOld && (
 									<div className="font-normal text-[10px] line-through leading-[7px]">{priceOld} ГРН</div>
 								)}
-								<div className={`font-bold text-sm leading-[10px] ${priceOld === undefined ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
+								<div className={`font-bold text-sm leading-[10px] ${priceOld ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
 							</div>
 						</div>
 						{!productCartFind &&
@@ -168,11 +168,11 @@ const ProductCard = ({product}) => {
 							)}
 							<div>Роздрібна ціна</div>
 						</div>
-						<div className={`flex flex-col ${priceOld !== undefined ? 'justify-between' : 'justify-end'}`}>
-							{priceOld !== undefined && (
+						<div className={`flex flex-col ${priceOld ? 'justify-between' : 'justify-end'}`}>
+							{priceOld && (
 								<div className="font-normal text-sm line-through leading-[10px]">{priceOld} ГРН</div>
 							)}
-							<div className={`font-bold text-md leading-[11px] ${priceOld === undefined ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
+							<div className={`font-bold text-md leading-[11px] ${!priceOld ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
 						</div>
 					</div>
 				</div>

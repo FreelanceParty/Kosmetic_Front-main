@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import ChevronRightIcon from "../../components/Icons/ChevronRightIcon";
 import axios from "axios";
 import ProductCard from "../../components/ProductSlider/ProductCard/ProductCard";
 import Paginator from "../../components/Paginator";
-import {useLocation} from "react-router-dom";
 import {routeHelper} from "../../utils/helpers/routeHelper";
 import Filter from "./_elements/Filter";
 import BrandFilter from "./_elements/BrandFilter";
 import PriceFilter from "./_elements/PriceFilter";
 import {sortOptions} from "../../utils/helpers/sort";
-import {defaultFilters, hairFilters, faceFilters} from "../../utils/helpers/filter";
+import {defaultFilters, faceFilters, hairFilters} from "../../utils/helpers/filter";
+import {combinedSortComparator} from "../../utils/helpers/sort";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -51,26 +51,14 @@ const Category = () => {
 
 		let sorted = [...filteredItems];
 
-		switch (optionId) {
-			case 'title-asc':
-				sorted.sort((a, b) => a.name.localeCompare(b.name));
-				break;
-			case 'title-desc':
-				sorted.sort((a, b) => b.name.localeCompare(a.name));
-				break;
-			case 'price-asc':
-				sorted.sort((a, b) => a.price - b.price);
-				break;
-			case 'price-desc':
-				sorted.sort((a, b) => b.price - a.price);
-				break;
-			case 'available-count-desc':
-				sorted.sort((a, b) => (b.amount || 0) - (a.amount || 0));
-				break;
-			default:
-				sorted = [...initialProducts];
-				break;
+		if (optionId === 'default') {
+			sorted = [...initialProducts];
+			sorted = chosenSubCategory
+				? sorted.filter(p => p.subCategory === chosenSubCategory)
+				: sorted;
 		}
+
+		sorted.sort((a, b) => combinedSortComparator(a, b, optionId));
 
 		setFilteredItems(sorted);
 		setCurrentPageItems(sorted.slice(0, pageSize));
@@ -94,31 +82,13 @@ const Category = () => {
 			: initialProducts;
 
 		let sorted = [...items];
-		switch (selectedSortOption) {
-			case 'title-asc':
-				sorted.sort((a, b) => a.name.localeCompare(b.name));
-				break;
-			case 'title-desc':
-				sorted.sort((a, b) => b.name.localeCompare(a.name));
-				break;
-			case 'price-asc':
-				sorted.sort((a, b) => a.price - b.price);
-				break;
-			case 'price-desc':
-				sorted.sort((a, b) => b.price - a.price);
-				break;
-			case 'available-count-desc':
-				sorted.sort((a, b) => (b.amount || 0) - (a.amount || 0));
-				break;
-			default:
-				break;
-		}
+		sorted.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
 
 		setFilteredItems(sorted);
 		setCurrentPageItems(sorted.slice(0, pageSize));
 		setTotalPages(Math.ceil(sorted.length / pageSize));
 		setPage(1);
-	}, [chosenSubCategory]);
+	}, [chosenSubCategory, initialProducts, selectedSortOption]);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -194,7 +164,7 @@ const Category = () => {
 					<ChevronRightIcon classes="w-3 h-3"/>
 					<div className="border-l border-gray-700 h-full"></div>
 					{isSortOpen &&
-						<div className="absolute top-full right-0 w-fit z-10 flex flex-col py-4 bg-white shadow-2xl cursor-default">
+						<div className="absolute top-full right-0 w-fit z-20 flex flex-col py-4 bg-white shadow-2xl cursor-default">
 							{sortOptions.map(option => (
 								<div
 									key={option.id}
@@ -242,8 +212,8 @@ const Category = () => {
 						{currentPageItems && (
 							<div className="flex flex-col gap-5 items-center mb-5">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-									{currentPageItems.map((product, index) => (
-										<ProductCard key={index} product={product}/>
+									{currentPageItems.map((product) => (
+										<ProductCard key={product.id} product={product}/>
 									))}
 								</div>
 								{totalPages > 1 &&

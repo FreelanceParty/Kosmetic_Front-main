@@ -7,13 +7,13 @@ import Paginator from "../../components/Paginator";
 import Filter from "../../components/Category/_elements/Filter";
 import BrandFilter from "../../components/Category/_elements/BrandFilter";
 import PriceFilter from "../../components/Category/_elements/PriceFilter";
-import {sortOptions} from "../../utils/helpers/sort";
+import {combinedSortComparator, sortOptions} from "../../utils/helpers/sort";
 import {defaultFilters} from "../../utils/helpers/filter";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const SearchPage = () => {
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();
 	const searchText = searchParams.get('query');
 
 	const navigate = useNavigate();
@@ -46,26 +46,11 @@ const SearchPage = () => {
 
 		let sorted = [...filteredItems];
 
-		switch (optionId) {
-			case 'title-asc':
-				sorted.sort((a, b) => a.name.localeCompare(b.name));
-				break;
-			case 'title-desc':
-				sorted.sort((a, b) => b.name.localeCompare(a.name));
-				break;
-			case 'price-asc':
-				sorted.sort((a, b) => a.price - b.price);
-				break;
-			case 'price-desc':
-				sorted.sort((a, b) => b.price - a.price);
-				break;
-			case 'available-count-desc':
-				sorted.sort((a, b) => (b.amount || 0) - (a.amount || 0));
-				break;
-			default:
-				sorted = [...initialProducts];
-				break;
+		if (optionId === 'default') {
+			sorted = [...initialProducts];
 		}
+
+		sorted.sort((a, b) => combinedSortComparator(a, b, optionId));
 
 		setFilteredItems(sorted);
 		setCurrentPageItems(sorted.slice(0, pageSize));
@@ -81,24 +66,41 @@ const SearchPage = () => {
 
 	useEffect(() => {
 		const fetchProducts = async () => {
-			//setLoading(true);
 			try {
+				// setLoading(true);
 				const response = await axios.get(`${REACT_APP_API_URL}/goods/findByName/${searchText}`);
-				//setLoading(false);
 				const products = response.data;
+
 				setInitialProducts(products);
-				setFilteredItems(products);
+
 				const brands = [...new Set(products.map(p => p.brand).filter(Boolean))].sort();
 				const brandObjects = getOptionsFromTitles(brands);
 				setBrands(brandObjects);
-				setCurrentPageItems(products.slice(0, pageSize))
-				setTotalPages(Math.ceil(products.length / pageSize));
+				applySorting([...products]);
+				// setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
 		};
 		fetchProducts();
 	}, [searchText]);
+
+	useEffect(() => {
+		if (!initialProducts) {
+			return;
+		}
+		applySorting([...initialProducts]);
+	}, [initialProducts, selectedSortOption]);
+
+	function applySorting(items) {
+		let sorted = [...items];
+		sorted.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
+
+		setFilteredItems(sorted);
+		setTotalPages(Math.ceil(sorted.length / pageSize));
+		setPage(1);
+		setCurrentPageItems(sorted.slice(0, pageSize));
+	}
 
 	function getOptionsFromTitles(titles) {
 		return titles.map(title => ({
@@ -132,7 +134,7 @@ const SearchPage = () => {
 					<ChevronRightIcon classes="w-3 h-3"/>
 					<div className="border-l border-gray-700 h-full"></div>
 					{isSortOpen &&
-						<div className="absolute top-full right-0 w-fit z-10 flex flex-col py-4 bg-white shadow-2xl cursor-default">
+						<div className="absolute top-full right-0 w-fit z-20 flex flex-col py-4 bg-white shadow-2xl cursor-default">
 							{sortOptions.map(option => (
 								<div
 									key={option.id}
@@ -165,8 +167,8 @@ const SearchPage = () => {
 						{currentPageItems && (
 							<div className="flex flex-col gap-5 items-center mb-5">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-									{currentPageItems.map((product, index) => (
-										<ProductCard key={index} product={product}/>
+									{currentPageItems.map((product) => (
+										<ProductCard key={product.id} product={product}/>
 									))}
 								</div>
 								{totalPages > 1 &&
