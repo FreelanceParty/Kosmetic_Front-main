@@ -5,6 +5,7 @@ import axios from "axios";
 import ProductCard from "../../components/ProductSlider/ProductCard/ProductCard";
 import Paginator from "../../components/Paginator";
 import BrandDescription from "./BrandDescription";
+import {sortOptions, combinedSortComparator} from "../../utils/helpers/sort";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -20,6 +21,11 @@ const BrandPage = () => {
 	const [totalPages, setTotalPages] = useState(0);
 	const pageSize = 6;
 	const [currentPageItems, setCurrentPageItems] = useState(null);
+
+	const [selectedSortOption, setSelectedSortOption] = useState(
+		localStorage.getItem('selectedSortOption') ?? 'default'
+	);
+	const [isSortOpen, setSortOpen] = useState(false);
 
 	const [filteredItems, setFilteredItems] = useState(null);
 	const [chosenCategory, setChosenCategory] = useState(null);
@@ -57,17 +63,19 @@ const BrandPage = () => {
 			}
 		};
 		const fetchProducts = async () => {
-			//setLoading(true);
 			try {
+				// setLoading(true);
 				const response = await axios.get(`${REACT_APP_API_URL}/goods/findByBrandName/${brands}`);
-				//setLoading(false);
 				const products = response.data;
+
 				setInitialProducts(products);
 				setFilteredItems(products);
 				const categories = [...new Set(products.map(p => p.category))].sort();
 				setCategories(categories);
 				setCurrentPageItems(products.slice(0, pageSize))
 				setTotalPages(Math.ceil(products.length / pageSize));
+				applySorting([...products]);
+				// setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
@@ -75,6 +83,45 @@ const BrandPage = () => {
 		fetchBrand();
 		fetchProducts();
 	}, [brands]);
+
+	useEffect(() => {
+		if (!initialProducts) {
+			return;
+		}
+		applySorting([...initialProducts]);
+	}, [initialProducts, selectedSortOption]);
+
+	function applySorting(items) {
+		let sorted = [...items];
+		sorted.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
+
+		setFilteredItems(sorted);
+		setTotalPages(Math.ceil(sorted.length / pageSize));
+		setPage(1);
+		setCurrentPageItems(sorted.slice(0, pageSize));
+	}
+
+	function handleSortOptionChange(optionId) {
+		setSelectedSortOption(optionId);
+		localStorage.setItem('selectedSortOption', optionId);
+		setSortOpen(false);
+
+		if (!filteredItems) {
+			return;
+		}
+
+		let sorted = [...filteredItems];
+
+		if (optionId === 'default') {
+			sorted = [...initialProducts];
+		}
+
+		sorted.sort((a, b) => combinedSortComparator(a, b, optionId));
+
+		setFilteredItems(sorted);
+		setCurrentPageItems(sorted.slice(0, pageSize));
+		setPage(1);
+	}
 
 	return (
 		<div className="flex flex-col gap-10 mx-auto w-full max-w-[1440px] pt-2 px-5">
@@ -94,10 +141,30 @@ const BrandPage = () => {
 					<div>Фільтри</div>
 					<div className="border-l border-gray-700 h-full"></div>
 				</div>
-				<div className="gap-[10px] items-center text-[#000E55] text-sm flex h-6">
+				<div onClick={() => {
+					setSortOpen(prev => !prev)
+				}} className="relative gap-[10px] items-center text-[#000E55] text-sm flex h-6 cursor-pointer">
 					<div className="border-l border-gray-700 h-full"></div>
-					<div>Сортувати ></div>
+					<div>Сортувати</div>
+					<ChevronRightIcon classes="w-3 h-3"/>
 					<div className="border-l border-gray-700 h-full"></div>
+					{isSortOpen &&
+						<div className="absolute top-full right-0 w-fit z-20 flex flex-col py-4 bg-white shadow-2xl cursor-default">
+							{sortOptions.map(option => (
+								<div
+									key={option.id}
+									className={`py-2 px-4 truncate cursor-pointer ${
+										selectedSortOption === option.id
+											? 'bg-[#FFE8F5]'
+											: 'hover:bg-gray-100'
+									}`}
+									onClick={() => handleSortOptionChange(option.id)}
+								>
+									{option.label}
+								</div>
+							))}
+						</div>
+					}
 				</div>
 			</div>
 			<div className="flex gap-6">
@@ -135,8 +202,8 @@ const BrandPage = () => {
 						{currentPageItems && (
 							<div className="flex flex-col gap-5 items-center mb-5">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-									{currentPageItems.map((product, index) => (
-										<ProductCard key={index} product={product}/>
+									{currentPageItems.map((product) => (
+										<ProductCard key={product.id} product={product}/>
 									))}
 								</div>
 								{totalPages > 1 &&

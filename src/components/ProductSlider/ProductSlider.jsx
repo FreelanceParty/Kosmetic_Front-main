@@ -24,8 +24,8 @@ const ProductSlider = ({title, products}) => {
 			<div className="font-semibold text-center text-[24px] leading-[17px]">{title}</div>
 			{/* mobile: дві в рядку */}
 			<div className="flex sm:hidden grid grid-cols-2 gap-4 w-fit mx-auto">
-				{products.map((product, idx) => (
-					<ProductCard key={idx} product={product}/>
+				{products.map((product) => (
+					<ProductCard key={product.id} product={product}/>
 				))}
 			</div>
 			{/* desktop */}

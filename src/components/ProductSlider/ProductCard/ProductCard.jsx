@@ -78,7 +78,7 @@ const ProductCard = ({product}) => {
 
 	return (
 		<>
-			<div className="flex sm:hidden flex-col w-[159px] cursor-pointer"
+			<div className={`flex sm:hidden flex-col w-[159px] cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`}
 				onClick={(e) => {
 					const el = e.target;
 					const isIcon = el.closest('button');
@@ -140,7 +140,7 @@ const ProductCard = ({product}) => {
 				</div>
 			</div>
 
-			<div className="hidden sm:flex flex-col w-[283px] cursor-pointer" onClick={() => navigate('/products/' + product.id)}>
+			<div className={`hidden sm:flex flex-col w-[283px] cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`} onClick={() => navigate('/products/' + product.id)}>
 				<div className="relative flex items-center justify-center w-full aspect-square">
 					<img className="max-h-[283px] max-w-[283px]" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
