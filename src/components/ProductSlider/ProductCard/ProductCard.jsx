@@ -11,7 +11,7 @@ import Tag from "./_elements/Tag";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const ProductCard = ({product}) => {
+const ProductCard = ({product, isSlider = false}) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const isLoggedIn = useSelector(getIsLoggedIn);
@@ -78,7 +78,7 @@ const ProductCard = ({product}) => {
 
 	return (
 		<>
-			<div className={`flex sm:hidden flex-col w-[159px] cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`}
+			<div className={`flex flex-col w-[159px] cursor-pointer ${isSlider ? 'md:hidden' : 'sm:hidden'} ${product.amount <= 0 ? 'opacity-50' : ''}`}
 				onClick={(e) => {
 					const el = e.target;
 					const isIcon = el.closest('button');
@@ -121,9 +121,9 @@ const ProductCard = ({product}) => {
 							)}
 							<div className={`flex flex-col h-[27px] ${priceOld ? 'justify-between' : 'justify-end'}`}>
 								{priceOld && (
-									<div className="font-normal text-[10px] line-through leading-[7px]">{priceOld} ГРН</div>
+									<div className="font-normal text-[10px] line-through leading-[7px] text-nowrap">{priceOld} ГРН</div>
 								)}
-								<div className={`font-bold text-sm leading-[10px] ${priceOld ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
+								<div className={`font-bold text-sm leading-[10px] text-nowrap ${priceOld ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
 							</div>
 						</div>
 						{!productCartFind &&
@@ -140,9 +140,10 @@ const ProductCard = ({product}) => {
 				</div>
 			</div>
 
-			<div className={`hidden sm:flex flex-col w-[283px] cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`} onClick={() => navigate('/products/' + product.id)}>
+			<div className={`hidden flex-col justify-between h-full ${isSlider ? 'md:flex w-full' : 'sm:flex w-[283px]'} cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`}
+				onClick={() => navigate('/products/' + product.id)}>
 				<div className="relative flex items-center justify-center w-full aspect-square">
-					<img className="max-h-[283px] max-w-[283px]" src={product.images} alt="product"/>
+					<img className="max-w-full" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
 						<div className="absolute top-4 right-0 flex flex-col gap-4 z-10">
 							{product.sale && <Tag isSale={true}/>}
@@ -150,9 +151,9 @@ const ProductCard = ({product}) => {
 						</div>
 					}
 				</div>
-				<div className="flex flex-col gap-5 py-5 px-3">
-					<div className="flex flex-col gap-4">
-						<div className="flex gap-3">
+				<div className="flex flex-col gap-2 lg:gap-5 py-2 lg:py-5 px-1 lg:px-3">
+					<div className="flex flex-col gap-2 lg:gap-4">
+						<div className="flex gap-2 lg:gap-3">
 							<RateHearts count={averageRating}/>
 							<div className="font-normal text-xs">{reviewsCount}</div>
 						</div>
@@ -170,9 +171,9 @@ const ProductCard = ({product}) => {
 						</div>
 						<div className={`flex flex-col ${priceOld ? 'justify-between' : 'justify-end'}`}>
 							{priceOld && (
-								<div className="font-normal text-sm line-through leading-[10px]">{priceOld} ГРН</div>
+								<div className="font-normal text-sm line-through leading-[10px] text-nowrap">{priceOld} ГРН</div>
 							)}
-							<div className={`font-bold text-md leading-[11px] ${!priceOld ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
+							<div className={`font-bold text-md leading-[11px] text-nowrap ${!priceOld ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
 						</div>
 					</div>
 				</div>

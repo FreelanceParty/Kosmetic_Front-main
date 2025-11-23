@@ -20,16 +20,16 @@ const ProductSlider = ({title, products}) => {
 	}
 
 	return (
-		<div className="flex flex-col gap-10 pt-10 max-w-[1240px] items-center border-t border-[#E8E8E8]">
+		<div className="flex flex-col gap-10 pt-10 max-w-full xl:max-w-[1240px] items-center border-t border-[#E8E8E8]">
 			<div className="font-semibold text-center text-[24px] leading-[17px]">{title}</div>
 			{/* mobile: дві в рядку */}
-			<div className="flex sm:hidden grid grid-cols-2 gap-4 w-fit mx-auto">
+			<div className="md:hidden grid grid-cols-2 sm:grid-cols-3 gap-4 w-fit mx-auto">
 				{products.map((product) => (
-					<ProductCard key={product.id} product={product}/>
+					<ProductCard key={product.id} product={product} isSlider={true}/>
 				))}
 			</div>
 			{/* desktop */}
-			<div className="hidden sm:flex items-center w-full relative">
+			<div className="hidden md:flex items-center w-full relative">
 				<button
 					onClick={handlePrev}
 					disabled={index === 0}
@@ -54,11 +54,11 @@ const ProductSlider = ({title, products}) => {
 								style={{
 									width:        `${100 / products.length}%`,
 									flex:         "0 0 auto",
-									paddingLeft:  "8px",
-									paddingRight: "8px",
+									paddingLeft:  "4px",
+									paddingRight: "4px",
 								}}
 							>
-								<ProductCard product={product}/>
+								<ProductCard product={product} isSlider={true}/>
 							</div>
 						))}
 					</div>

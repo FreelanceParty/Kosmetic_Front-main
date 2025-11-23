@@ -59,7 +59,7 @@ const HomePage = () => {
 	return (
 		<div>
 			<BestKoreanProducts/>
-			<div className="flex flex-col gap-[60px] items-center p-10">
+			<div className="flex flex-col gap-[60px] items-center py-10 px-2 xl:px-10">
 				<ProductSlider title="BEAUTY ЗНИЖКИ %" products={discountProducts}/>
 				<ProductSlider title="НОВИНКИ" products={newProducts}/>
 				<CategoryList/>

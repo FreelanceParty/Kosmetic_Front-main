@@ -163,7 +163,7 @@ const SearchPage = () => {
 					<PriceFilter title={'Ціна'}/>
 				</div>
 				{searchText !== null && (
-					<div className="flex flex-col gap-10">
+					<div className="flex flex-col items-center gap-10 w-full">
 						{currentPageItems && (
 							<div className="flex flex-col gap-5 items-center mb-5">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
