@@ -1,19 +1,15 @@
 import RateHearts from "../../../components/RateHearts/RateHearts";
-import {routeHelper} from "../../../utils/helpers/routeHelper";
 import NumberInput from "../../../components/NumberInput/NumberInput";
 import Button from "../../../components/ButtonNew/Button";
 import Details from "../Sections/Details";
 import {useEffect, useState} from "react";
-import {useMedia} from "../../../utils/hooks/useMedia";
 import {useSelector} from "react-redux";
 import {getOptUser} from "../../../redux/auth/selectors";
 import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 
-const Mobile = ({product, reviewsLength, reviewsCount, averageRating}) => {
-	const {getCategoryRoute} = routeHelper();
-	const [isAdmin, setIsAdmin] = useState(false);
+const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, quantity, setQuantity, addToCartHandler}) => {
 	const isOptUser = useSelector(getOptUser);
-	const [isAuthorized, setIsAuthorized] = useState(false);
+	const [isAuthorized] = useState(false);
 	const [price, setPrice] = useState(0);
 	const [priceOld, setPriceOld] = useState(0);
 
@@ -59,14 +55,17 @@ const Mobile = ({product, reviewsLength, reviewsCount, averageRating}) => {
 								<div className={`font-bold text-2xl ${priceOld ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
 								<div className="font-normal text-lg">Роздрібна ціна</div>
 							</div>
-							<NumberInput/>
+							{isInCart ||
+								<NumberInput limit={product.amount} number={quantity} setNumber={setQuantity}/>
+							}
 						</div>
 						<div className="flex flex-col gap-4">
 							<Button
-								text="ДОДАТИ У КОШИК"
+								text={isInCart ? `У КОШИКУ` : `ДОДАТИ У КОШИК`}
 								type="primary"
-								classes="bg-[#E667A4] w-full"
-								isDisabled={product.amount === 0}
+								classes={`${isInCart ? 'bg-gray-400' : 'bg-[#E667A4]'} w-full`}
+								onClick={isInCart ? null : addToCartHandler}
+								isDisabled={isInCart || product.amount === 0}
 							/>
 							<div className="flex justify-between">
 								{product.amount > 0 ? (

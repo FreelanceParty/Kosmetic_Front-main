@@ -2,31 +2,47 @@ import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {Loader} from "../../components/Loader/Loader";
-import {useMedia} from "../../utils/hooks/useMedia";
-import {routeHelper} from "../../utils/helpers/routeHelper";
 import Desktop from "./Contents/Desktop";
 import Mobile from "./Contents/Mobile";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectCart} from "../../redux/cart/selectors";
+import {trackAddToCart} from "../../ads/AdEvents";
+import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../redux/auth/selectors";
+import {handleAddToCart,} from "../../utils/helpers/basket";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 const ProductPage = () => {
 	// todo: додати анімації
-	// todo: залогінений/ ні
-	// todo: оптові ціни
 	const {id} = useParams();
 	const [loading, setLoading] = useState(true);
 	const [product, setProduct] = useState(null);
-	const [isAdmin, setIsAdmin] = useState(false);
-	const [isOptUser, setIsOptUser] = useState(false);
-	const [isAuthorized, setIsAuthorized] = useState(false);
 	const [isInCart, setIsInCart] = useState(false);
 	const productCart = useSelector(selectCart);
+	const [quantity, setQuantity] = useState(1);
 
 	const [reviewsLength, setReviewsLength] = useState(0);
 	const [averageRating, setAverageRating] = useState(0);
 	const [reviewsCount, setReviewsCount] = useState('');
+
+	const isLoggedIn = useSelector(getIsLoggedIn);
+
+	const userEmail = useSelector(getUserEmail);
+	const userFirstName = useSelector(getUserFirstName);
+	const userLastName = useSelector(getUserLastName);
+	const userNumber = useSelector(getUserNumber);
+
+	const dispatch = useDispatch();
+
+	async function addToCart() {
+		setIsInCart(true);
+		await handleAddToCart({product, quantity, dispatch, isLoggedIn});
+		try {
+			await trackAddToCart(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber})
+		} catch (e) {
+			console.log(e);
+		}
+	}
 
 	useEffect(() => {
 		const fetchReviews = async () => {
@@ -68,20 +84,17 @@ const ProductPage = () => {
 			setLoading(true);
 			try {
 				const response = await axios.get(`${API_URL}/goods/${id}`);
+				setIsInCart(productCart.some(item => item.id === response.data.id));
 				setLoading(false);
 				setProduct(response.data);
 			} catch (error) {
 				console.log(error);
 			}
 		};
-		fetchProduct();
-	}, [id]);
-
-	useEffect(() => {
-		if (product !== null) {
-			console.log(product);
+		if (product === null) {
+			fetchProduct();
 		}
-	}, [product]);
+	}, [id]);
 
 	return (
 		<>
@@ -89,8 +102,26 @@ const ProductPage = () => {
 				<Loader/>
 			) : (
 				<>
-					<Desktop isInCart={isInCart} product={product} reviewsCount={reviewsCount} averageRating={averageRating} reviewsLength={reviewsLength}/>
-					<Mobile product={product} reviewsCount={reviewsCount} averageRating={averageRating} reviewsLength={reviewsLength}/>
+					<Desktop
+						isInCart={isInCart}
+						product={product}
+						reviewsCount={reviewsCount}
+						averageRating={averageRating}
+						reviewsLength={reviewsLength}
+						quantity={quantity}
+						setQuantity={setQuantity}
+						addToCartHandler={addToCart}
+					/>
+					<Mobile
+						isInCart={isInCart}
+						product={product}
+						reviewsCount={reviewsCount}
+						averageRating={averageRating}
+						reviewsLength={reviewsLength}
+						quantity={quantity}
+						setQuantity={setQuantity}
+						addToCartHandler={addToCart}
+					/>
 				</>
 			)}
 		</>

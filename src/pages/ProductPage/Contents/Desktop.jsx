@@ -4,26 +4,15 @@ import NumberInput from "../../../components/NumberInput/NumberInput";
 import Button from "../../../components/ButtonNew/Button";
 import Details from "../Sections/Details";
 import {useEffect, useState} from "react";
-import {handleAddToCart,} from "../../../utils/helpers/basket";
-import {useMedia} from "../../../utils/hooks/useMedia";
-import {useDispatch, useSelector} from "react-redux";
-import {getIsLoggedIn, getOptUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../../redux/auth/selectors";
-import {trackAddToCart} from "../../../ads/AdEvents";
+import {useSelector} from "react-redux";
+import {getOptUser} from "../../../redux/auth/selectors";
 import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 
-const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}) => {
-	const isLoggedIn = useSelector(getIsLoggedIn);
+const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating, quantity, setQuantity, addToCartHandler}) => {
 	const isOptUser = useSelector(getOptUser);
-	const userEmail = useSelector(getUserEmail);
-	const userFirstName = useSelector(getUserFirstName);
-	const userLastName = useSelector(getUserLastName);
-	const userNumber = useSelector(getUserNumber);
 
-	const dispatch = useDispatch();
 	const {getCategoryRoute} = routeHelper();
-	const [isAdmin, setIsAdmin] = useState(false);
 	const [isAuthorized, setIsAuthorized] = useState(false);
-	const [quantity, setQuantity] = useState(1);
 	const [price, setPrice] = useState(0);
 	const [priceOld, setPriceOld] = useState(0);
 
@@ -36,19 +25,6 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}
 			setPriceOld(product.priceOld);
 		}
 	}, [isOptUser])
-
-	async function addToCart() {
-		if (isInCart) {
-			// todo: remove from cart
-		} else {
-			await handleAddToCart({product, quantity, dispatch, isLoggedIn})
-			try {
-				trackAddToCart(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber})
-			} catch (e) {
-				console.log(e);
-			}
-		}
-	}
 
 	return (
 		<div className="hidden md:flex w-full justify-center relative">
@@ -96,19 +72,21 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating}
 										<div className="text-[#B90003] leading-[13px]">Немає в наявності</div>
 									)}
 									<div className="border-[#000E55] border-l"></div>
-									<div className="leading-[11px]">Код: {product.code}</div>
+									<div className="leading-[14px] lg:leading-[11px]">Код: {product.code}</div>
 									<div className="border-[#000E55] border-l"></div>
-									<div className="leading-[11px]">Артикул: {product.article}</div>
+									<div className="leading-[14px] lg:leading-[11px]">Артикул: {product.article}</div>
 								</div>
 							</div>
 							<div className="flex gap-[30px]">
-								<NumberInput limit={product.amount} number={quantity} setNumber={setQuantity}/>
+								{isInCart ||
+									<NumberInput limit={product.amount} number={quantity} setNumber={setQuantity}/>
+								}
 								<Button
-									text={isInCart ? `ДОДАНО` : `ДОДАТИ У КОШИК`}
+									text={isInCart ? `У КОШИКУ` : `ДОДАТИ У КОШИК`}
 									type="primary"
-									classes="bg-[#E667A4]"
-									onClick={() => addToCart}
-									isDisabled={product.amount === 0}
+									classes={`${isInCart ? 'bg-gray-400' : 'bg-[#E667A4]'}`}
+									onClick={isInCart ? null : addToCartHandler}
+									isDisabled={isInCart || product.amount === 0}
 								/>
 							</div>
 							{!isAuthorized && (
