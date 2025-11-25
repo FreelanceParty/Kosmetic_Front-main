@@ -9,6 +9,7 @@ import {selectCart} from "../../redux/cart/selectors";
 import {trackAddToCart} from "../../ads/AdEvents";
 import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../redux/auth/selectors";
 import {handleAddToCart,} from "../../utils/helpers/basket";
+import {toast} from "react-toastify";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -20,6 +21,7 @@ const ProductPage = () => {
 	const [isInCart, setIsInCart] = useState(false);
 	const productCart = useSelector(selectCart);
 	const [quantity, setQuantity] = useState(1);
+	const [productCount, setProductCount] = useState(0);
 
 	const [reviewsLength, setReviewsLength] = useState(0);
 	const [averageRating, setAverageRating] = useState(0);
@@ -85,6 +87,7 @@ const ProductPage = () => {
 			try {
 				const response = await axios.get(`${API_URL}/goods/${id}`);
 				setIsInCart(productCart.some(item => item.id === response.data.id));
+				setProductCount(response.data.amount);
 				setLoading(false);
 				setProduct(response.data);
 			} catch (error) {
@@ -95,6 +98,17 @@ const ProductPage = () => {
 			fetchProduct();
 		}
 	}, [id]);
+
+	const updateProductCountHandler = async () => {
+		try {
+			await axios.patch(`${API_URL}/goods/${product._id}/amount`, {
+				amount: productCount
+			});
+			toast.success("Кількість товару успішно оновлено");
+		} catch (error) {
+			toast.error("Помилка зміни кількості товару", error);
+		}
+	};
 
 	return (
 		<>
@@ -111,6 +125,9 @@ const ProductPage = () => {
 						quantity={quantity}
 						setQuantity={setQuantity}
 						addToCartHandler={addToCart}
+						productCount={productCount}
+						setProductCount={setProductCount}
+						updateProductCountHandler={updateProductCountHandler}
 					/>
 					<Mobile
 						isInCart={isInCart}
@@ -121,6 +138,9 @@ const ProductPage = () => {
 						quantity={quantity}
 						setQuantity={setQuantity}
 						addToCartHandler={addToCart}
+						productCount={productCount}
+						setProductCount={setProductCount}
+						updateProductCountHandler={updateProductCountHandler}
 					/>
 				</>
 			)}

@@ -5,11 +5,13 @@ import Button from "../../../components/ButtonNew/Button";
 import Details from "../Sections/Details";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {getOptUser} from "../../../redux/auth/selectors";
+import {getIsAdmin, getOptUser} from "../../../redux/auth/selectors";
 import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
+import Input from "../../../components/Input/Input";
 
-const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating, quantity, setQuantity, addToCartHandler}) => {
+const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating, quantity, setQuantity, addToCartHandler, productCount, setProductCount, updateProductCountHandler}) => {
 	const isOptUser = useSelector(getOptUser);
+	const isAdmin = useSelector(getIsAdmin);
 
 	const {getCategoryRoute} = routeHelper();
 	const [isAuthorized, setIsAuthorized] = useState(false);
@@ -89,6 +91,23 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating,
 									isDisabled={isInCart || product.amount === 0}
 								/>
 							</div>
+							{isAdmin && (
+								<div className="flex gap-[30px]">
+									<Input
+										type="number"
+										value={productCount}
+										placeholder="К-сть товару"
+										onChange={(e) => setProductCount(e.target.value)}
+										inputClasses="pr-2"
+									/>
+									<Button
+										text="Оновити"
+										type="primary"
+										classes="bg-[#E667A4]"
+										onClick={updateProductCountHandler}
+									/>
+								</div>
+							)}
 							{!isAuthorized && (
 								<div className="flex gap-3 items-center">
 									<img

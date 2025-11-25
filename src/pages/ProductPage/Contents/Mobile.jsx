@@ -4,11 +4,13 @@ import Button from "../../../components/ButtonNew/Button";
 import Details from "../Sections/Details";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {getOptUser} from "../../../redux/auth/selectors";
+import {getIsAdmin, getOptUser} from "../../../redux/auth/selectors";
 import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
+import Input from "../../../components/Input/Input";
 
-const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, quantity, setQuantity, addToCartHandler}) => {
+const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, quantity, setQuantity, addToCartHandler, productCount, setProductCount, updateProductCountHandler}) => {
 	const isOptUser = useSelector(getOptUser);
+	const isAdmin = useSelector(getIsAdmin);
 	const [isAuthorized] = useState(false);
 	const [price, setPrice] = useState(0);
 	const [priceOld, setPriceOld] = useState(0);
@@ -67,6 +69,23 @@ const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, 
 								onClick={isInCart ? null : addToCartHandler}
 								isDisabled={isInCart || product.amount === 0}
 							/>
+							{isAdmin && (
+								<div className="flex gap-[30px]">
+									<Input
+										type="number"
+										value={productCount}
+										placeholder="К-сть товару"
+										onChange={(e) => setProductCount(e.target.value)}
+										inputClasses="pr-2"
+									/>
+									<Button
+										text="Оновити"
+										type="primary"
+										classes="bg-[#E667A4]"
+										onClick={updateProductCountHandler}
+									/>
+								</div>
+							)}
 							<div className="flex justify-between">
 								{product.amount > 0 ? (
 									<div className="text-[#007504]">В наявності</div>
