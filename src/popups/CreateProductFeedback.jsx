@@ -1,15 +1,20 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import RateHearts from "../components/RateHearts/RateHearts";
 import Button from "../components/ButtonNew/Button";
 import Input from "../components/Input/Input";
 import TextArea from "../components/TextArea/TextArea";
 import axios from "axios";
 import {toast} from "react-toastify";
+import DownloadIcon from "../components/Icons/DownloadIcon";
 
 const API_URL = process.env.REACT_APP_API_URL;
+const MAX_IMAGE_SIZE_BYTES = 2048 * 1024; // 2 MB
 
 const CreateProductFeedback = ({product, closePopup}) => {
 	const [errorMessage, setErrorMessage] = useState(null);
+	const [imageFile, setImageFile] = useState(null);
+	const fileInputRef = useRef(null);
+
 	const [formValues, setFormValues] = useState({
 		productId: product.id,
 		firstName: "",
@@ -41,6 +46,24 @@ const CreateProductFeedback = ({product, closePopup}) => {
 		return re.test(email);
 	};
 
+	const handleImageChange = (event) => {
+		const file = event.target.files[0];
+		if (file) {
+			if (file.size > MAX_IMAGE_SIZE_BYTES) {
+				toast.error(`Розмір завантаження має бути менше ${MAX_IMAGE_SIZE_BYTES / 1024 / 1024} МБ.`);
+				setImageFile(null);
+				event.target.value = null;
+			} else {
+				setImageFile(file);
+				toast.success(`Зображення "${file.name}" завантажено.`);
+			}
+		}
+	};
+
+	const handleDownloadClick = () => {
+		fileInputRef.current.click();
+	};
+
 	const saveFeedback = async () => {
 		try {
 			if (errorMessage) {
@@ -48,7 +71,12 @@ const CreateProductFeedback = ({product, closePopup}) => {
 				return;
 			}
 
-			const response = await axios.post(`${API_URL}/productReviews`, formValues);
+			const formData = new FormData();
+			Object.keys(formValues).forEach((key) => formData.append(key, formValues[key]));
+			if (imageFile) {
+				formData.append("image", imageFile);
+			}
+			const response = await axios.post(`${API_URL}/productReviews`, formData);
 
 			if (response.status !== 201) {
 				throw new Error(
@@ -58,7 +86,8 @@ const CreateProductFeedback = ({product, closePopup}) => {
 			closePopup();
 			toast.success('Відгук доданий!');
 		} catch (e) {
-			console.log(e)
+			console.log(e);
+			toast.error("Не вдалося зберегти відгук. Спробуйте пізніше.");
 		}
 	};
 
@@ -107,15 +136,36 @@ const CreateProductFeedback = ({product, closePopup}) => {
 					</div>
 				</div>
 
-				<div className="flex flex-col md:flex-row items-center justify-between gap-4 cursor-pointer">
-					<div className="flex gap-3 items-center">
-						<img
-							src={require("../assets/icons/download.svg").default}
-							alt="download"
-							width={16}
-							height={16}
-						/>
-						<div>Додати зображення</div>
+				<input
+					type="file"
+					ref={fileInputRef}
+					onChange={handleImageChange}
+					accept="image/*"
+					style={{display: 'none'}}
+				/>
+
+				<div className="flex flex-col md:flex-row items-center justify-between gap-4">
+					<div className="flex gap-3 items-center cursor-pointer" onClick={handleDownloadClick}>
+						<DownloadIcon/>
+						<div>
+							{imageFile ?
+								<span className="text-green-600 font-medium">{imageFile.name}</span>
+								: "Додати зображення"
+							}
+						</div>
+						{imageFile && (
+							<button
+								onClick={(e) => {
+									e.stopPropagation();
+									setImageFile(null);
+									fileInputRef.current.value = null;
+									toast.info("Зображення видалено.");
+								}}
+								className="ml-2 text-red-500 hover:text-red-700 font-bold"
+							>
+								&#x2715;
+							</button>
+						)}
 					</div>
 					<Button
 						type="primary"

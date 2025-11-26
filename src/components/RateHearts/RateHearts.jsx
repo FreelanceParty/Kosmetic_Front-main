@@ -1,6 +1,6 @@
 import React from "react";
 
-const RateHearts = ({count, onRate, isReadonly = true, heartSize = 16}) => {
+const RateHearts = ({count, onRate, isReadonly = true, heartSize = 16, containerClasses}) => {
 	const handleClick = (index) => {
 		if (isReadonly) {
 			return;
@@ -11,7 +11,7 @@ const RateHearts = ({count, onRate, isReadonly = true, heartSize = 16}) => {
 	};
 
 	return (
-		<div className={`flex`}>
+		<div className={`flex ${containerClasses ?? ''}`}>
 			{Array.from({length: 5}).map((_, index) => {
 				const isFilled = index < count;
 				return (

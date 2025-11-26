@@ -25,7 +25,7 @@ const ProductFeedbacks = ({product}) => {
 	}, []);
 
 	return (
-		<div className="flex flex-col gap-10 w-fit">
+		<div className="flex flex-col gap-10">
 			<Button
 				type="secondary"
 				text="ЗАЛИШИТИ ВІДГУК"
