@@ -23,8 +23,8 @@ export const handleAddToCart = async ({product, quantity, dispatch, isLoggedIn})
 				new:            product.new,
 				sale:           product.sale,
 				category:       product.category,
-				subCategory:    product.subCategory,
-				subSubCategory: product.subSubCategory,
+				subCategory:    product.subCategory || '-',
+				subSubCategory: product.subSubCategory || '-',
 				productId:      product.id,
 			});
 			scrollToTop();

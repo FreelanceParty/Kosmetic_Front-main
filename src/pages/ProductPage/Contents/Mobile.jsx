@@ -40,10 +40,10 @@ const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, 
 				<div className="flex flex-col gap-8 w-full">
 					<div className="flex flex-col gap-6">
 						<div className="flex justify-between items-center">
-							<a className="underline cursor-pointer font-medium text-lg max-w-fit" href={`/brands/${product.brand}`}>{product.brand}</a>
+							<a className="underline cursor-pointer font-medium text-lg max-w-fit leading-[20px]" href={`/brands/${product.brand}`}>{product.brand}</a>
 							<div className="flex gap-3">
 								<RateHearts heartSize={14} count={averageRating}/>
-								<div className="font-normal text-xs">{reviewsCount}</div>
+								<div className="font-normal text-xs text-nowrap">{reviewsCount}</div>
 							</div>
 						</div>
 						<div className="font-semibold text-[20px]">{product.name}</div>
@@ -65,7 +65,7 @@ const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, 
 							<Button
 								text={isInCart ? `У КОШИКУ` : `ДОДАТИ У КОШИК`}
 								type="primary"
-								classes={`${isInCart ? 'bg-gray-400' : 'bg-[#E667A4]'} w-full`}
+								classes={`${isInCart ? 'bg-gray-400' : 'bg-[#E667A4]'} w-full !h-[51px]`}
 								onClick={isInCart ? null : addToCartHandler}
 								isDisabled={isInCart || product.amount === 0}
 							/>
@@ -76,25 +76,25 @@ const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, 
 										value={productCount}
 										placeholder="К-сть товару"
 										onChange={(e) => setProductCount(e.target.value)}
-										inputClasses="pr-2"
+										inputClasses="pr-2 !h-[51px]"
 									/>
 									<Button
 										text="Оновити"
 										type="primary"
-										classes="bg-[#E667A4]"
+										classes="bg-[#E667A4] !h-[51px]"
 										onClick={updateProductCountHandler}
 									/>
 								</div>
 							)}
-							<div className="flex justify-between">
+							<div className="flex justify-between font-normal text-sm">
 								{product.amount > 0 ? (
-									<div className="text-[#007504]">В наявності</div>
+									<div className="text-[#007504] leading-[10px]">В наявності</div>
 								) : (
-									<div className="text-[#B90003]">Немає в наявності</div>
+									<div className="text-[#B90003] leading-[10px]">Немає в наявності</div>
 								)}
-								<div className="flex flex-col gap-3 font-normal text-sm">
-									<div>Код: {product.code}</div>
-									<div>Артикул: {product.article}</div>
+								<div className="flex flex-col gap-3">
+									<div className="leading-[10px]">Код: {product.code}</div>
+									<div className="leading-[10px]">Артикул: {product.article}</div>
 								</div>
 							</div>
 						</div>
@@ -108,7 +108,7 @@ const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, 
 									width={28}
 									height={28}
 								/>
-								<div>Зареєструйтесь або увійдіть для відображення оптових цін</div>
+								<div className="leading-[20px]">Зареєструйтесь або увійдіть для відображення оптових цін</div>
 							</div>
 						)}
 					</div>

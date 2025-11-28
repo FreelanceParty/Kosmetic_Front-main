@@ -3,7 +3,8 @@ import Description from "./DetailTabs/Description";
 import Using from "./DetailTabs/Using";
 import Composition from "./DetailTabs/Composition";
 import ProductFeedbacks from "./DetailTabs/ProductFeedbacks";
-import {useState} from "react";
+import React, {useState} from "react";
+import ChevronRightIcon from "../../../components/Icons/ChevronRightIcon";
 
 const Details = ({product, reviewsCount}) => {
 	const tabs = [
@@ -51,7 +52,11 @@ const Details = ({product, reviewsCount}) => {
 							onClick={() => setOpenTab(openTab === tab.id ? null : tab.id)}
 						>
 							<div>{tab.label}</div>
-							<div>{openTab === tab.id ? "˅" : ">"}</div>
+							<ChevronRightIcon
+								classes={`h-3 w-3 transform transition-transform duration-300 ${
+									openTab === tab.id ? "rotate-90" : ""
+								}`}
+							/>
 						</div>
 
 						<div className={openTab === tab.id ? "block" : "hidden"}>

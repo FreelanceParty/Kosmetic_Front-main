@@ -5,7 +5,7 @@ import Button from "../../../components/ButtonNew/Button";
 
 const Business = () => {
 	const orderConditionsListItems = [
-		{firstPart: "МІНІМАЛЬНЕ ЗАМОВЛЕННЯ ЛИШЕ 2500 ГРН", secondPart: ""},
+		{firstPart: "МІНІМАЛЬНЕ ЗАМОВЛЕННЯ ЛИШЕ 3000 ГРН", secondPart: ""},
 		{firstPart: "ПОВНА ОПЛАТА НА РАХУНОК ФОП", secondPart: ""},
 		{firstPart: "НАКЛАДЕНИЙ ПЛАТІЖ НА ПЕРШЕ ЗАМОВЛЕННЯ", secondPart: " —  за передплатою 100 грн"},
 		{firstPart: "ВІДПРАВКА НОВОЮ ПОШТОЮ", secondPart: " — 1-3 дні з моменту оплати замовлення"},
@@ -36,7 +36,8 @@ const Business = () => {
 				<div className="flex flex-col gap-10">
 					<div className="font-semibold text-2xl text-center lg:text-left">ОФОРМЛЮЙТЕ ЗАМОВЛЕННЯ ЛЕГКО!</div>
 					<div className="flex flex-col gap-6 leading-[160%]">
-						<div className="font-normal text-md">Увійдіть/зареєструйтесь на сайті, додайте товар в корзину на суму більше 2500 грн, введіть свої дані для відправки та оформлюйте замовлення! Реквізити для оплати надсилає менеджер після підтвердження замовлення в будь який месенжер Telegram / Viber / WhatsUp
+						<div className="font-normal text-md">Увійдіть/зареєструйтесь на сайті, додайте товар в корзину на суму більше 3000 грн, введіть свої дані для відправки та оформлюйте
+							замовлення! Реквізити для оплати надсилає менеджер після підтвердження замовлення в будь який месенжер Telegram / Viber / WhatsUp
 						</div>
 						<div className="font-semibold text-md">ВАЖЛИВО. Якщо отримувач буде інший, вказуйте в коментарях дані отримувача.</div>
 					</div>

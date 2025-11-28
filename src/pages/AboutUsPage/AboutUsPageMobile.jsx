@@ -68,7 +68,7 @@ const AboutUsPage = () => {
 						<img src={`${ourValuesImage1}`} alt="1" className="rounded-[8px] w-full"/>
 					</div>
 				</div>
-					<ReviewsMobile withProducts={false}/>
+				<ReviewsMobile withProducts={false}/>
 				<div className="flex flex-col gap-10 mb-[60px] items-center px-8">
 					<div className="text-[20px] max-w-[800px]">
 						Приєднуйтесь до нашої спільноти краси!<br/>

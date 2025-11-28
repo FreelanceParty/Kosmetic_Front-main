@@ -95,7 +95,7 @@ const ProductCard = ({product, isSlider = false}) => {
 					}
 				}}>
 				<div className="relative flex items-center justify-center w-full aspect-square">
-					<img src={product.images} alt="product"/>
+					<img className="h-[159px]" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
 						<div className="absolute top-3 right-0 flex flex-col gap-3 z-10">
 							{product.sale && <Tag isSale={true}/>}
