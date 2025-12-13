@@ -52,22 +52,23 @@ const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, 
 						<div className="flex justify-between items-center">
 							<div className="flex flex-col gap-4">
 								{priceOld && (
-									<div className="font-normal text-md line-through">{priceOld} ГРН</div>
+									<div className="font-normal text-md line-through leading-[11px]">{priceOld} ГРН</div>
 								)}
-								<div className={`font-bold text-2xl ${priceOld ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
-								<div className="font-normal text-lg">Роздрібна ціна</div>
+								<div className={`font-bold text-2xl leading-[17px] ${priceOld ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
+								<div className="font-normal text-lg leading-[8px]">Роздрібна ціна</div>
 							</div>
 							{isInCart ||
-								<NumberInput limit={product.amount} number={quantity} setNumber={setQuantity}/>
+								<NumberInput number={quantity} setNumber={setQuantity}/>
 							}
 						</div>
 						<div className="flex flex-col gap-4">
+							<div className={`font semibold text-md text-[#DA469A] ${quantity > product.amount || 'hidden'}`}>*Дана кількість не доступна на складі</div>
 							<Button
 								text={isInCart ? `У КОШИКУ` : `ДОДАТИ У КОШИК`}
 								type="primary"
 								classes={`${isInCart ? 'bg-gray-400' : 'bg-[#E667A4]'} w-full !h-[51px]`}
 								onClick={isInCart ? null : addToCartHandler}
-								isDisabled={isInCart || product.amount === 0}
+								isDisabled={isInCart || product.amount === 0 || quantity > product.amount}
 							/>
 							{isAdmin && (
 								<div className="flex gap-[30px]">

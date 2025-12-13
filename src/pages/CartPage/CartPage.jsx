@@ -1,7 +1,7 @@
 import {selectCart} from "../../redux/cart/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import EmptyBasketIcon from "../../components/Icons/EmptyBasketIcon";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Button from "../../components/ButtonNew/Button";
 import NumberInput from "../../components/NumberInput/NumberInput";
 import DeleteIcon from "../../components/Icons/DeleteIcon";
@@ -17,6 +17,7 @@ const CartPage = () => {
 
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const cartItems = useSelector(selectCart);
+	const [notAvailableProductsAmount, setNotAvailableProductsAmount] = useState([])
 
 	const totalAmount = isOptUser
 		? cartItems.reduce(
@@ -32,11 +33,22 @@ const CartPage = () => {
 		if (value >= 1) {
 			dispatch(addToCart({...product, quantity: value}));
 		}
+		if (value > product.amount) {
+			setNotAvailableProductsAmount([...notAvailableProductsAmount, product.id])
+		} else {
+			setNotAvailableProductsAmount(notAvailableProductsAmount.filter(id => id !== product.id))
+		}
 	}
 
 	function removeFromCart(product) {
 		handleRemoveFromCart({product, dispatch, isLoggedIn});
 	}
+
+	useEffect(() => {
+		if (notAvailableProductsAmount.length === 0) {
+			setNotAvailableProductsAmount(cartItems.filter(item => item.amount < item.quantity).map(item => item.id))
+		}
+	}, [cartItems])
 
 	return (
 		<div className="flex flex-col pt-5">
@@ -71,7 +83,10 @@ const CartPage = () => {
 
 							{cartItems.map((product, index) => (
 								<div key={index} className="flex gap-4 py-4">
-									<div className="w-[58px] h-[58px] aspect-square">
+									{notAvailableProductsAmount.includes(product.id) &&
+										<div className="my-auto font-extrabold text-md text-[#DA469A]">**</div>
+									}
+									<div className="w-[58px] h-[58px] aspect-square my-auto">
 										<img src={product.images} alt="product"/>
 									</div>
 									<div className="flex flex-col gap-4">
@@ -90,16 +105,18 @@ const CartPage = () => {
 							))}
 						</div>
 					</div>
-					<div className="flex flex-col gap-6 py-6 px-5">
+					<div className="flex flex-col gap-3 py-6 px-5">
 						<div className="flex justify-between font-semibold">
-							<div className="text-lg">ВСЬОГО:</div>
-							<div className="text-xl">{totalAmount} ГРН</div>
+							<div className="text-lg leading-[14px]">ВСЬОГО:</div>
+							<div className="text-xl leading-[14px]">{totalAmount} ГРН</div>
 						</div>
+						<div className={`font-semibold text-xs text-[#DA469A]`}>{notAvailableProductsAmount.length > 0 && '*Дана кількість не доступна на складі'}</div>
 						<Button
 							type={"primary"}
 							text={"ОФОРМИТИ ЗАМОВЛЕННЯ"}
 							classes={"w-full max-w-[335px] mx-auto bg-[#E667A4]"}
 							onClick={() => navigate("/order")}
+							isDisabled={notAvailableProductsAmount.length > 0}
 						/>
 					</div>
 				</div>
