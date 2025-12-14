@@ -8,6 +8,7 @@ import {trackAddToCart} from "../../../ads/AdEvents";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import Tag from "./_elements/Tag";
+import {toast} from "react-toastify";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -76,24 +77,28 @@ const ProductCard = ({product, isSlider = false}) => {
 		(item) => +item.id === +product.id
 	);
 
+	const handleCardClick = (e) => {
+		const el = e.target;
+		const isIcon = el.closest('button');
+		if (isIcon) {
+			el.closest('button').classList.toggle('hidden');
+			handleAddToCart({product, quantity: 1, dispatch, isLoggedIn, event: e});
+			try {
+				trackAddToCart(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
+				toast.success("Товар додано в корзину");
+			} catch (e) {
+				toast.error("Помилка додавання товару в корзину");
+				console.log(e);
+			}
+		} else {
+			navigate(`/products/${product.id}`);
+		}
+	}
+
 	return (
 		<>
 			<div className={`flex flex-col w-[159px] cursor-pointer ${isSlider ? 'md:hidden' : 'sm:hidden'} ${product.amount <= 0 ? 'opacity-50' : ''}`}
-				onClick={(e) => {
-					const el = e.target;
-					const isIcon = el.closest('button');
-					if (isIcon) {
-						el.closest('button').classList.toggle('hidden');
-						handleAddToCart({product, quantity: 1, dispatch, isLoggedIn, event: e});
-						try {
-							trackAddToCart(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber})
-						} catch (e) {
-							console.log(e);
-						}
-					} else {
-						navigate(`/products/${product.id}`);
-					}
-				}}>
+				onClick={handleCardClick}>
 				<div className="relative flex items-center justify-center w-full aspect-square">
 					<img className="h-[159px]" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
@@ -141,7 +146,7 @@ const ProductCard = ({product, isSlider = false}) => {
 			</div>
 
 			<div className={`hidden flex-col justify-between h-full ${isSlider ? 'md:flex w-full' : 'sm:flex w-[283px]'} cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`}
-				onClick={() => navigate('/products/' + product.id)}>
+				onClick={handleCardClick}>
 				<div className="relative flex items-center justify-center w-full aspect-square">
 					<img className="max-w-full" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
@@ -152,12 +157,24 @@ const ProductCard = ({product, isSlider = false}) => {
 					}
 				</div>
 				<div className="flex flex-col gap-2 lg:gap-5 py-2 lg:py-5 px-1 lg:px-3">
-					<div className="flex flex-col gap-2 lg:gap-4">
-						<div className="flex gap-2 lg:gap-3">
-							<RateHearts count={averageRating}/>
-							<div className="font-normal text-xs">{reviewsCount}</div>
+					<div className="flex justify-between">
+						<div className="flex flex-col gap-2 lg:gap-4">
+							<div className="flex gap-2 lg:gap-3">
+								<RateHearts count={averageRating}/>
+								<div className="font-normal text-xs">{reviewsCount}</div>
+							</div>
+							<div className="font-semibold text-sm leading-[11px] uppercase">{product.brand}</div>
 						</div>
-						<div className="font-semibold text-sm leading-[11px] uppercase">{product.brand}</div>
+						{!productCartFind &&
+							<button>
+								<img
+									src={require("../../../assets/icons/buy_mobile.svg").default}
+									alt="to cart"
+									width={44}
+									height={44}
+								/>
+							</button>
+						}
 					</div>
 					<div className="font-normal text-sm line-clamp-2 leading-[15px]">{product.name}</div>
 					<div className="flex justify-between">
