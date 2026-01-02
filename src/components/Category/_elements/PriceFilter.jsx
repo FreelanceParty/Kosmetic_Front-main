@@ -3,10 +3,19 @@ import React, {useState, useRef} from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
-const PriceFilter = ({title}) => {
-	const [range, setRange] = useState([0, 5000]);
+const PriceFilter = ({title, from = 0, to = 5000, step = null, onChange}) => {
+	const [range, setRange] = useState([from, to]);
 	const [isOpen, setIsOpen] = useState(false);
 	const contentRef = useRef(null);
+
+	step = step || Math.max(1, Math.ceil((to - from) / 20));
+
+	const handleChange = (newRange) => {
+		setRange(newRange);
+		if (onChange) {
+			onChange(newRange);
+		}
+	};
 
 	return (
 		<div className="flex flex-col">
@@ -32,11 +41,11 @@ const PriceFilter = ({title}) => {
 				<div className="flex flex-col w-full p-4 gap-2">
 					<Slider
 						range
-						min={0}
-						max={5000}
-						step={100}
+						min={from}
+						max={to}
+						step={step}
 						value={range}
-						onChange={setRange}
+						onChange={handleChange}
 						trackStyle={[{backgroundColor: "#000E55"}]}
 						handleStyle={[
 							{borderColor: "#000E55", backgroundColor: "#000E55"},

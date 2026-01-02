@@ -6,10 +6,16 @@ import ProductCard from "../../components/ProductSlider/ProductCard/ProductCard"
 import Paginator from "../../components/Paginator";
 import BrandDescription from "./BrandDescription";
 import {sortOptions, combinedSortComparator} from "../../utils/helpers/sort";
+import Filter from "../../components/Category/_elements/Filter";
+import PriceFilter from "../../components/Category/_elements/PriceFilter";
+import {applyFiltersToProducts, defaultFilters, getConvertedFiltersForProducts} from "../../utils/helpers/filter";
+import {useSelector} from "react-redux";
+import {getOptUser} from "../../redux/auth/selectors";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const BrandPage = () => {
+	const isOptUser = useSelector(getOptUser);
 	const navigate = useNavigate();
 
 	const {brands} = useParams();
@@ -29,6 +35,20 @@ const BrandPage = () => {
 
 	const [filteredItems, setFilteredItems] = useState(null);
 	const [chosenCategory, setChosenCategory] = useState(null);
+
+	const [filters, setFilters] = useState(defaultFilters);
+	const [chosenFilters, setChosenFilters] = useState([]);
+	const [priceFilter, setPriceFilter] = useState(null);
+	const [minPrice, setMinPrice] = useState(null);
+	const [maxPrice, setMaxPrice] = useState(null);
+
+	function handleFilterOptionChange(optionId, isChecked) {
+		if (isChecked) {
+			setChosenFilters(prev => [...prev, optionId]);
+		} else {
+			setChosenFilters(prev => prev.filter(item => item !== optionId));
+		}
+	}
 
 	function goToPage(pageNumber) {
 		const start = (pageNumber - 1) * pageSize;
@@ -74,22 +94,42 @@ const BrandPage = () => {
 				setCategories(categories);
 				setCurrentPageItems(products.slice(0, pageSize))
 				setTotalPages(Math.ceil(products.length / pageSize));
+				const allFilters = await getConvertedFiltersForProducts(products);
+				const merged = [...defaultFilters, ...allFilters];
+				merged.sort((a, b) => a.order - b.order);
+				setFilters(merged);
+
+				const prices = products.map(p => isOptUser ? p.priceOPT : p.price);
+				const min = Math.min(...prices);
+				const max = Math.max(...prices);
+				setMinPrice(min);
+				setMaxPrice(max);
 				applySorting([...products]);
 				// setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
 		};
-		fetchBrand();
-		fetchProducts();
+		if (initialProducts === null) {
+			fetchBrand();
+			fetchProducts();
+		}
 	}, [brands]);
 
 	useEffect(() => {
 		if (!initialProducts) {
 			return;
 		}
-		applySorting([...initialProducts]);
-	}, [initialProducts, selectedSortOption]);
+		let items = chosenCategory
+			? initialProducts.filter(p => p.category === chosenCategory)
+			: initialProducts;
+		items = applyFiltersToProducts(items, chosenFilters, priceFilter);
+		items.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
+		setFilteredItems(items);
+		setCurrentPageItems(items.slice(0, pageSize));
+		setTotalPages(Math.ceil(items.length / pageSize));
+		setPage(1);
+	}, [chosenCategory, initialProducts, selectedSortOption, chosenFilters, priceFilter]);
 
 	function applySorting(items) {
 		let sorted = [...items];
@@ -122,6 +162,10 @@ const BrandPage = () => {
 		setCurrentPageItems(sorted.slice(0, pageSize));
 		setPage(1);
 	}
+
+	const handlePriceChange = (priceRange) => {
+		setPriceFilter(priceRange);
+	};
 
 	return (
 		<div className="flex flex-col gap-10 mx-auto w-full max-w-[1440px] pt-2 px-5">
@@ -169,12 +213,12 @@ const BrandPage = () => {
 			</div>
 			<div className="flex gap-6">
 				<div className="hidden md:flex flex-col min-w-[335px] max-w-[335px]">
-					{[...Array(10)].map((_, index) => (
-						<div key={index} className="flex justify-between items-center h-11 border-b px-[10px]">
-							<div className="font-medium">ФІЛЬТР {index}</div>
-							<ChevronRightIcon className="w-3 h-3"/>
-						</div>
+					{filters.map((filter, index) => (
+						<Filter key={index} title={filter.title} options={filter.options} onOptionChange={handleFilterOptionChange}/>
 					))}
+					{(minPrice && maxPrice) &&
+						<PriceFilter title={'Ціна'} onChange={handlePriceChange} from={minPrice} to={maxPrice}/>
+					}
 				</div>
 				{brand !== null && (
 					<div className="flex flex-col gap-10">

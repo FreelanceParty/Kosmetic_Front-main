@@ -2,7 +2,7 @@ import ChevronRightIcon from "../../Icons/ChevronRightIcon";
 import Checkbox from "../../Inputs/Checkbox";
 import {useState, useRef} from "react";
 
-const Filter = ({title, options}) => {
+const Filter = ({title, options, onOptionChange}) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const contentRef = useRef(null);
 
@@ -27,7 +27,7 @@ const Filter = ({title, options}) => {
 			>
 				<div className="flex flex-col gap-3 py-[7px] max-h-[400px] overflow-y-auto">
 					{options.map((option, index) => (
-						<Checkbox key={index} label={option.title} labelClasses={option.style}/>
+						<Checkbox key={index} label={option.title} labelClasses={option.style} onChange={(e) => onOptionChange(option.slug ?? option.id, e)}/>
 					))}
 				</div>
 			</div>

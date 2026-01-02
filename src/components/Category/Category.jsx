@@ -8,13 +8,15 @@ import {routeHelper} from "../../utils/helpers/routeHelper";
 import Filter from "./_elements/Filter";
 import BrandFilter from "./_elements/BrandFilter";
 import PriceFilter from "./_elements/PriceFilter";
-import {sortOptions} from "../../utils/helpers/sort";
-import {defaultFilters, faceFilters, hairFilters} from "../../utils/helpers/filter";
-import {combinedSortComparator} from "../../utils/helpers/sort";
+import {combinedSortComparator, sortOptions} from "../../utils/helpers/sort";
+import {applyFiltersToProducts, defaultFilters, getConvertedFiltersForProducts} from "../../utils/helpers/filter";
+import {useSelector} from "react-redux";
+import {getOptUser} from "../../redux/auth/selectors";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const Category = () => {
+	const isOptUser = useSelector(getOptUser);
 	const {getCategoryByRoute} = routeHelper();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -38,7 +40,11 @@ const Category = () => {
 	const [isSortOpen, setSortOpen] = useState(false);
 
 	const [filters, setFilters] = useState(defaultFilters);
+	const [priceFilter, setPriceFilter] = useState(null);
+	const [chosenFilters, setChosenFilters] = useState([]);
 	const [brands, setBrands] = useState([]);
+	const [minPrice, setMinPrice] = useState(null);
+	const [maxPrice, setMaxPrice] = useState(null);
 
 	function handleSortOptionChange(optionId) {
 		setSelectedSortOption(optionId);
@@ -80,15 +86,13 @@ const Category = () => {
 		let items = chosenSubCategory
 			? initialProducts.filter(p => p.subCategory === chosenSubCategory)
 			: initialProducts;
-
-		let sorted = [...items];
-		sorted.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
-
-		setFilteredItems(sorted);
-		setCurrentPageItems(sorted.slice(0, pageSize));
-		setTotalPages(Math.ceil(sorted.length / pageSize));
+		items = applyFiltersToProducts(items, chosenFilters, priceFilter);
+		items.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
+		setFilteredItems(items);
+		setCurrentPageItems(items.slice(0, pageSize));
+		setTotalPages(Math.ceil(items.length / pageSize));
 		setPage(1);
-	}, [chosenSubCategory, initialProducts, selectedSortOption]);
+	}, [chosenSubCategory, initialProducts, selectedSortOption, chosenFilters, priceFilter]);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -99,34 +103,28 @@ const Category = () => {
 				const products = response.data;
 				setInitialProducts(products);
 				setFilteredItems(products);
-				const subCategories = [...new Set(products.map(p => p.subCategory).filter(Boolean))].sort();
-				const subSubCategories = [...new Set(products.map(p => p.subSubCategory).filter(Boolean))].sort();
 				const brands = [...new Set(products.map(p => p.brand).filter(Boolean))].sort();
 				const brandObjects = getOptionsFromTitles(brands);
-				const subCategoryObjects = getOptionsFromTitles(subCategories);
-				const subSubCategoryObjects = getOptionsFromTitles(subSubCategories);
 				setBrands(brandObjects);
-				setSubCategories(subCategories);
 				setCurrentPageItems(products.slice(0, pageSize))
 				setTotalPages(Math.ceil(products.length / pageSize));
-				if (category === 'Догляд для волосся') {
-					hairFilters[0].options = subSubCategoryObjects;
-					hairFilters[1].options = subCategoryObjects;
-					const merged = [...defaultFilters, ...hairFilters];
-					merged.sort((a, b) => a.order - b.order);
-					setFilters(merged);
-				} else if (category === 'Догляд для обличчя') {
-					faceFilters[0].options = subSubCategoryObjects;
-					faceFilters[1].options = subCategoryObjects;
-					const merged = [...defaultFilters, ...faceFilters];
-					merged.sort((a, b) => a.order - b.order);
-					setFilters(merged);
-				}
+				const allFilters = await getConvertedFiltersForProducts(products);
+				const merged = [...defaultFilters, ...allFilters];
+				merged.sort((a, b) => a.order - b.order);
+				setFilters(merged);
+
+				const prices = products.map(p => isOptUser ? p.priceOPT : p.price);
+				const min = Math.min(...prices);
+				const max = Math.max(...prices);
+				setMinPrice(min);
+				setMaxPrice(max);
 			} catch (error) {
 				console.log(error);
 			}
 		};
-		fetchProducts();
+		if (initialProducts === null) {
+			fetchProducts();
+		}
 	}, [category]);
 
 	function getOptionsFromTitles(titles) {
@@ -138,6 +136,18 @@ const Category = () => {
 				       .replace(/\s+/g, '_')
 				       .replace(/[^\w_]/g, '')
 		}));
+	}
+
+	const handlePriceChange = (priceRange) => {
+		setPriceFilter(priceRange);
+	};
+
+	function handleFilterOptionChange(optionId, isChecked) {
+		if (isChecked) {
+			setChosenFilters(prev => [...prev, optionId]);
+		} else {
+			setChosenFilters(prev => prev.filter(item => item !== optionId));
+		}
 	}
 
 	return (
@@ -185,12 +195,14 @@ const Category = () => {
 			<div className="flex gap-6">
 				<div className="hidden md:flex flex-col min-w-[335px] max-w-[335px]">
 					{filters.map((filter, index) => (
-						<Filter key={index} title={filter.title} options={filter.options}/>
+						<Filter key={index} title={filter.title} options={filter.options} onOptionChange={handleFilterOptionChange}/>
 					))}
 					{brands.length > 0 &&
 						<BrandFilter title={"Бренди"} options={brands}/>
 					}
-					<PriceFilter title={'Ціна'}/>
+					{(minPrice && maxPrice) &&
+						<PriceFilter title={'Ціна'} onChange={handlePriceChange} from={minPrice} to={maxPrice}/>
+					}
 				</div>
 				{category !== null && (
 					<div className="flex flex-col gap-10">

@@ -8,7 +8,9 @@ import Filter from "../../components/Category/_elements/Filter";
 import BrandFilter from "../../components/Category/_elements/BrandFilter";
 import PriceFilter from "../../components/Category/_elements/PriceFilter";
 import {combinedSortComparator, sortOptions} from "../../utils/helpers/sort";
-import {defaultFilters} from "../../utils/helpers/filter";
+import {applyFiltersToProducts, defaultFilters, getConvertedFiltersForProducts} from "../../utils/helpers/filter";
+import {useSelector} from "react-redux";
+import {getOptUser} from "../../redux/auth/selectors";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -16,6 +18,7 @@ const SearchPage = () => {
 	const [searchParams] = useSearchParams();
 	const searchText = searchParams.get('query');
 
+	const isOptUser = useSelector(getOptUser);
 	const navigate = useNavigate();
 
 	const [initialProducts, setInitialProducts] = useState(null);
@@ -33,7 +36,11 @@ const SearchPage = () => {
 	const [isSortOpen, setSortOpen] = useState(false);
 
 	const [filters, setFilters] = useState(defaultFilters);
+	const [chosenFilters, setChosenFilters] = useState([]);
 	const [brands, setBrands] = useState([]);
+	const [priceFilter, setPriceFilter] = useState(null);
+	const [minPrice, setMinPrice] = useState(null);
+	const [maxPrice, setMaxPrice] = useState(null);
 
 	function handleSortOptionChange(optionId) {
 		setSelectedSortOption(optionId);
@@ -67,30 +74,52 @@ const SearchPage = () => {
 	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
-				// setLoading(true);
+				//setLoading(true);
 				const response = await axios.get(`${REACT_APP_API_URL}/goods/findByName/${searchText}`);
 				const products = response.data;
 
 				setInitialProducts(products);
+				setFilteredItems(products);
 
 				const brands = [...new Set(products.map(p => p.brand).filter(Boolean))].sort();
 				const brandObjects = getOptionsFromTitles(brands);
 				setBrands(brandObjects);
-				applySorting([...products]);
-				// setLoading(false);
+				setCurrentPageItems(products.slice(0, pageSize))
+				setTotalPages(Math.ceil(products.length / pageSize));
+				const allFilters = await getConvertedFiltersForProducts(products);
+				const merged = [...defaultFilters, ...allFilters];
+				merged.sort((a, b) => a.order - b.order);
+				setFilters(merged);
+				applySorting([...merged]);
+
+				const prices = products.map(p => isOptUser ? p.priceOPT : p.price);
+				const min = Math.min(...prices);
+				const max = Math.max(...prices);
+				setMinPrice(min);
+				setMaxPrice(max);
+				//setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
 		};
-		fetchProducts();
+
+		if (initialProducts === null) {
+			fetchProducts();
+		}
 	}, [searchText]);
 
 	useEffect(() => {
 		if (!initialProducts) {
 			return;
 		}
-		applySorting([...initialProducts]);
-	}, [initialProducts, selectedSortOption]);
+		let items = initialProducts;
+		items = applyFiltersToProducts(items, chosenFilters, priceFilter);
+		items.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
+		setFilteredItems(items);
+		setCurrentPageItems(items.slice(0, pageSize));
+		setTotalPages(Math.ceil(items.length / pageSize));
+		setPage(1);
+	}, [initialProducts, selectedSortOption, chosenFilters, priceFilter]);
 
 	function applySorting(items) {
 		let sorted = [...items];
@@ -112,6 +141,18 @@ const SearchPage = () => {
 				       .replace(/[^\w_]/g, '')
 		}));
 	}
+
+	function handleFilterOptionChange(optionId, isChecked) {
+		if (isChecked) {
+			setChosenFilters(prev => [...prev, optionId]);
+		} else {
+			setChosenFilters(prev => prev.filter(item => item !== optionId));
+		}
+	}
+
+	const handlePriceChange = (priceRange) => {
+		setPriceFilter(priceRange);
+	};
 
 	return (
 		<div className="flex flex-col gap-8 md:gap-10 mx-auto w-full max-w-[1440px] pt-2 px-5">
@@ -155,12 +196,14 @@ const SearchPage = () => {
 			<div className="flex gap-6">
 				<div className="hidden md:flex flex-col min-w-[335px] max-w-[335px]">
 					{filters.map((filter, index) => (
-						<Filter key={index} title={filter.title} options={filter.options}/>
+						<Filter key={index} title={filter.title} options={filter.options} onOptionChange={handleFilterOptionChange}/>
 					))}
 					{brands.length > 0 &&
 						<BrandFilter title={"Бренди"} options={brands}/>
 					}
-					<PriceFilter title={'Ціна'}/>
+					{(minPrice && maxPrice) &&
+						<PriceFilter title={'Ціна'} onChange={handlePriceChange} from={minPrice} to={maxPrice}/>
+					}
 				</div>
 				{searchText !== null && (
 					<div className="flex flex-col items-center gap-10 w-full">
