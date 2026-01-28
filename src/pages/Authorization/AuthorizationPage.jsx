@@ -29,6 +29,12 @@ const AuthorizationPage = () => {
 		setFormData((prev) => ({...prev, [name]: value,}));
 	}
 
+	function handlePasswordChange(e) {
+		setIsShowEmailError(false);
+		const {name, value} = e.target;
+		setFormData((prev) => ({...prev, [name]: value,}));
+	}
+
 	useEffect(() => {
 		const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 		const isValidEmail = re.test(formData.email);
@@ -55,7 +61,6 @@ const AuthorizationPage = () => {
 					navigate('/');
 				} else if (response.type === "auth/login/rejected") {
 					setIsShowEmailError(true);
-					setIsValidEmail(false);
 					setErrorMessage(wrongCredsMessage);
 				}
 			})
@@ -89,7 +94,7 @@ const AuthorizationPage = () => {
 							type="password"
 							name="password"
 							placeholder="Пароль*"
-							onChange={(e) => setFormData(prev => ({...prev, [e.target.name]: e.target.value}))}
+							onChange={(e) => handlePasswordChange(e)}
 							onBlur={(e) => handleInputBlur(e)}
 						/>
 					</div>
@@ -101,7 +106,7 @@ const AuthorizationPage = () => {
 					classes="h-[53px] w-[350px] md:w-[409px]"
 					textClasses="font-medium text-lg"
 					onClick={() => loginDispatch()}
-					isDisabled={!isValidEmail}
+					isDisabled={isShowEmailError || !formData.password}
 				/>
 			</div>
 			<div className="flex flex-col gap-[38px] px-[40px] xl:px-[70px] py-20 md:py-[130px] w-fit bg-[#F6F6F6]">

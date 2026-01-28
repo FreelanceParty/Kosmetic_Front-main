@@ -81,7 +81,7 @@ const Header = () => {
 				/>
 			)}
 			<Promo/>
-			<div className="relative flex flex-col z-20 bg-white">
+			<div className="relative flex flex-col z-20 bg-white shadow-sm">
 				<div className="flex justify-around border-b border-[#E8E8E8] py-[10px] lg:py-5 items-center">
 					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<HeaderMenu icon="mob-menu" classes="flex lg:hidden" onClick={() => setIsMobileMenuOpen(true)}/>

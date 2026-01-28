@@ -1,14 +1,28 @@
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 const BrandDescription = ({title, text}) => {
+	const contentRef = useRef(null);
+	const [maxH, setMaxH] = useState(80);
 	const [expanded, setExpanded] = useState(false);
+
+	useEffect(() => {
+		const el = contentRef.current;
+		if (!el) {
+			return;
+		}
+		if (expanded) {
+			setMaxH(el.scrollHeight);
+		} else {
+			setMaxH(80);
+		}
+	}, [expanded, title, text]);
 
 	return (
 		<div className="relative w-full max-w-3xl">
 			<div
-				className={`relative transition-all duration-500 ${
-					expanded ? "max-h-none" : "max-h-20 overflow-hidden"
-				}`}
+				ref={contentRef}
+				style={{maxHeight: `${maxH}px`}}
+				className={`relative overflow-hidden transition-[max-height] duration-500 ease-in-out`}
 			>
 				<p className="text-[#000E55]/90 leading-relaxed">
 					<span className="font-bold">{title} </span>
