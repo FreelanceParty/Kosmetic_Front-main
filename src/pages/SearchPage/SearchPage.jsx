@@ -25,7 +25,7 @@ const SearchPage = () => {
 
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
-	const pageSize = 6;
+	const pageSize = 12;
 	const [currentPageItems, setCurrentPageItems] = useState(null);
 
 	const [filteredItems, setFilteredItems] = useState(null);
@@ -37,10 +37,19 @@ const SearchPage = () => {
 
 	const [filters, setFilters] = useState(defaultFilters);
 	const [chosenFilters, setChosenFilters] = useState([]);
+	const [chosenBrands, setChosenBrands] = useState([]);
 	const [brands, setBrands] = useState([]);
 	const [priceFilter, setPriceFilter] = useState(null);
 	const [minPrice, setMinPrice] = useState(null);
 	const [maxPrice, setMaxPrice] = useState(null);
+
+	function handleBrandOptionChange(brandTitle, isChecked) {
+		if (isChecked) {
+			setChosenBrands(prev => [...prev, brandTitle]);
+		} else {
+			setChosenBrands(prev => prev.filter(b => b !== brandTitle));
+		}
+	}
 
 	function handleSortOptionChange(optionId) {
 		setSelectedSortOption(optionId);
@@ -90,7 +99,6 @@ const SearchPage = () => {
 				const merged = [...defaultFilters, ...allFilters];
 				merged.sort((a, b) => a.order - b.order);
 				setFilters(merged);
-				applySorting([...merged]);
 
 				const prices = products.map(p => isOptUser ? p.priceOPT : p.price);
 				const min = Math.min(...prices);
@@ -113,23 +121,13 @@ const SearchPage = () => {
 			return;
 		}
 		let items = initialProducts;
-		items = applyFiltersToProducts(items, chosenFilters, priceFilter);
+		items = applyFiltersToProducts(items, chosenFilters, priceFilter, chosenBrands);
 		items.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
 		setFilteredItems(items);
 		setCurrentPageItems(items.slice(0, pageSize));
 		setTotalPages(Math.ceil(items.length / pageSize));
 		setPage(1);
-	}, [initialProducts, selectedSortOption, chosenFilters, priceFilter]);
-
-	function applySorting(items) {
-		let sorted = [...items];
-		sorted.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
-
-		setFilteredItems(sorted);
-		setTotalPages(Math.ceil(sorted.length / pageSize));
-		setPage(1);
-		setCurrentPageItems(sorted.slice(0, pageSize));
-	}
+	}, [initialProducts, selectedSortOption, chosenFilters, priceFilter, chosenBrands]);
 
 	function getOptionsFromTitles(titles) {
 		return titles.map(title => ({
@@ -199,7 +197,7 @@ const SearchPage = () => {
 						<Filter key={index} title={filter.title} options={filter.options} onOptionChange={handleFilterOptionChange}/>
 					))}
 					{brands.length > 0 &&
-						<BrandFilter title={"Бренди"} options={brands}/>
+						<BrandFilter title={"Бренди"} options={brands} onOptionChange={handleBrandOptionChange}/>
 					}
 					{(minPrice && maxPrice) &&
 						<PriceFilter title={'Ціна'} onChange={handlePriceChange} from={minPrice} to={maxPrice}/>
@@ -207,8 +205,8 @@ const SearchPage = () => {
 				</div>
 				{searchText !== null && (
 					<div className="flex flex-col items-center gap-10 w-full">
-						{currentPageItems && (
-							<div className="flex flex-col gap-5 items-center mb-5">
+						{currentPageItems?.length > 0 ? (
+							<div className="flex flex-col gap-5 items-center mb-5 w-fit">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
 									{currentPageItems.map((product) => (
 										<ProductCard key={product.id} product={product}/>
@@ -220,6 +218,10 @@ const SearchPage = () => {
 										currentPage={page}
 										onChange={(newPage) => goToPage(newPage)}
 									/>}
+							</div>
+						) : (
+							<div className="flex flex-col gap-5 items-center">
+								<div>Нічого не знайдено</div>
 							</div>
 						)}
 					</div>

@@ -25,7 +25,7 @@ const BrandPage = () => {
 
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
-	const pageSize = 6;
+	const pageSize = 12;
 	const [currentPageItems, setCurrentPageItems] = useState(null);
 
 	const [selectedSortOption, setSelectedSortOption] = useState(
@@ -104,7 +104,6 @@ const BrandPage = () => {
 				const max = Math.max(...prices);
 				setMinPrice(min);
 				setMaxPrice(max);
-				applySorting([...products]);
 				// setLoading(false);
 			} catch (error) {
 				console.log(error);
@@ -130,16 +129,6 @@ const BrandPage = () => {
 		setTotalPages(Math.ceil(items.length / pageSize));
 		setPage(1);
 	}, [chosenCategory, initialProducts, selectedSortOption, chosenFilters, priceFilter]);
-
-	function applySorting(items) {
-		let sorted = [...items];
-		sorted.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
-
-		setFilteredItems(sorted);
-		setTotalPages(Math.ceil(sorted.length / pageSize));
-		setPage(1);
-		setCurrentPageItems(sorted.slice(0, pageSize));
-	}
 
 	function handleSortOptionChange(optionId) {
 		setSelectedSortOption(optionId);
@@ -221,7 +210,7 @@ const BrandPage = () => {
 					}
 				</div>
 				{brand !== null && (
-					<div className="flex flex-col gap-10">
+					<div className="flex flex-col gap-10 w-full">
 						<div className="flex gap-12 pr-0 md:pr-[55px]">
 							<div className="hidden md:block max-w-[150px]">
 								<img src={brand.logo} alt=""/>
@@ -243,8 +232,8 @@ const BrandPage = () => {
 								))}
 							</div>
 						)}
-						{currentPageItems && (
-							<div className="flex flex-col gap-5 items-center mb-5">
+						{currentPageItems?.length > 0 ? (
+							<div className="flex flex-col gap-5 items-center mb-5 w-fit">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
 									{currentPageItems.map((product) => (
 										<ProductCard key={product.id} product={product}/>
@@ -256,6 +245,10 @@ const BrandPage = () => {
 										currentPage={page}
 										onChange={(newPage) => goToPage(newPage)}
 									/>}
+							</div>
+						) : (
+							<div className="flex flex-col gap-5 items-center">
+								<div>Нічого не знайдено</div>
 							</div>
 						)}
 					</div>

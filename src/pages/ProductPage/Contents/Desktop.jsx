@@ -79,17 +79,20 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating,
 									<div className="leading-[14px] lg:leading-[11px]">Артикул: {product.article}</div>
 								</div>
 							</div>
-							<div className="flex gap-[30px] items-center">
-								{isInCart ||
-									<NumberInput number={quantity} setNumber={setQuantity}/>
-								}
-								<Button
-									text={isInCart ? `У КОШИКУ` : `ДОДАТИ У КОШИК`}
-									type="primary"
-									classes={`max-h-[51px] ${isInCart ? 'bg-gray-400' : 'bg-[#E667A4]'}`}
-									onClick={isInCart ? null : addToCartHandler}
-									isDisabled={isInCart || product.amount === 0 || quantity > product.amount}
-								/>
+							<div className="flex flex-col gap-4 items-center w-full">
+								<div className="flex gap-[30px] items-center w-full">
+									{isInCart ||
+										<NumberInput number={quantity} setNumber={setQuantity}/>
+									}
+									<Button
+										text={isInCart ? `У КОШИКУ` : `ДОДАТИ У КОШИК`}
+										type="primary"
+										classes={`max-h-[51px] w-full max-w-[306px] ${isInCart ? 'bg-gray-400' : 'bg-[#E667A4]'}`}
+										onClick={isInCart ? null : addToCartHandler}
+										isDisabled={isInCart || product.amount === 0 || quantity > product.amount || !Number.isInteger(quantity)}
+									/>
+								</div>
+								<div className={`font semibold text-md text-[#DA469A] ${quantity > product.amount || 'hidden'}`}>{'*Дана кількість не доступна на складі'}</div>
 							</div>
 							{isAdmin && (
 								<div className="flex gap-[30px]">
@@ -108,7 +111,6 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating,
 									/>
 								</div>
 							)}
-							<div className={`font semibold text-md text-[#DA469A]`}>{quantity > product.amount && '*Дана кількість не доступна на складі'}</div>
 							{!isAuthorized && (
 								<div className="flex gap-3 items-center">
 									<img

@@ -2,7 +2,7 @@ import ChevronRightIcon from "../../Icons/ChevronRightIcon";
 import Checkbox from "../../Inputs/Checkbox";
 import React, {useEffect, useState} from "react";
 
-const BrandFilter = ({title, options}) => {
+const BrandFilter = ({title, options, onOptionChange}) => {
 	const [selectedLetter, setSelectedLetter] = useState(null);
 	const [initLetters, setInitLetters] = useState([]);
 	const [filteredOptions, setFilteredOptions] = useState([]);
@@ -57,8 +57,8 @@ const BrandFilter = ({title, options}) => {
 					))}
 				</div>
 				<div className={`flex flex-col gap-3 max-h-[290px] overflow-y-auto`}>
-					{filteredOptions.map((option, index) => (
-						<Checkbox key={index} label={option.title} labelClasses={option.style}/>
+					{filteredOptions.map((option) => (
+						<Checkbox key={option.id ?? option.title} label={option.title} labelClasses={option.style} onChange={(e) => onOptionChange(option.id, e)}/>
 					))}
 				</div>
 

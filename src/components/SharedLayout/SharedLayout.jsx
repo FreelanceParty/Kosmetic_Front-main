@@ -9,17 +9,20 @@ import Footer from "../Footer/Footer";
 
 const SharedLayout = () => {
 	return (
-		<>
+		<div className="h-screen flex flex-col overflow-x-hidden">
 			<Header/>
-			<div className="flex flex-col overflow-x-hidden overflow-y-auto h-[calc(100vh-134px)] md:h-[calc(100vh-104px)] lg:h-[calc(100vh-190px)]">
-				<div>
+
+			<div className="flex flex-col min-h-0 flex-1 overflow-y-auto">
+				<main className="flex-1">
 					<Suspense fallback={<Loader/>}>
 						<Outlet/>
 					</Suspense>
-				</div>
+				</main>
+
 				<Footer/>
 			</div>
-		</>
+
+		</div>
 	);
 };
 

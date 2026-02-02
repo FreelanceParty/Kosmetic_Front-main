@@ -65,7 +65,7 @@ export const getAllFilters = async () => {
 
 export const getFiltersForProducts = async (products) => {
 	const filterIds = [
-		...new Set(products.flatMap(p => p.filterTagIds.match(/\d+/g) || []).map(Number))
+		...new Set(products.flatMap(p => p.filterTagIds?.match(/\d+/g) || []).map(Number))
 	];
 	const filters = await getAllFilters();
 	return filters.filter((f) => filterIds.includes(f.id));
@@ -101,7 +101,7 @@ export const getConvertedFiltersForProducts = async (products) => {
 	);
 }
 
-export const applyFiltersToProducts = (products, filters, priceFilter) => {
+export const applyFiltersToProducts = (products, filters, priceFilter, brands = []) => {
 	if (filters.length > 0) {
 		const isNew = filters.includes('new');
 		const isSale = filters.includes('sale');
@@ -117,12 +117,18 @@ export const applyFiltersToProducts = (products, filters, priceFilter) => {
 	if (priceFilter) {
 		products = products.filter(i => i.price >= priceFilter[0] && i.price <= priceFilter[1]);
 	}
+	if (brands.length > 0) {
+		products = products.filter(i => brands.includes(i.brand.toLowerCase()
+			.trim()
+			.replace(/\s+/g, '_')
+			.replace(/[^\w_]/g, '')));
+	}
 	return products;
 }
 
 export const filterProductsByFilterIds = (products, filterIds) => {
 	return products.filter(p => {
-		const pIds = p.filterTagIds.match(/\d+/g)?.map(Number) || [];
+		const pIds = p.filterTagIds?.match(/\d+/g)?.map(Number) || [];
 		return pIds.some(id => filterIds.includes(id));
 	});
 }

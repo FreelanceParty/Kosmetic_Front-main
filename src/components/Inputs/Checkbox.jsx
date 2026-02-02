@@ -14,7 +14,7 @@ const Checkbox = ({label, labelClasses, defaultChecked = false, onChange}) => {
 		<label className="flex items-center gap-2 cursor-pointer select-none">
 			<input
 				type="checkbox"
-				className="sr-only peer"
+				className="sr-only peer absolute top-0"
 				checked={isChecked}
 				onChange={handleChange}
 			/>

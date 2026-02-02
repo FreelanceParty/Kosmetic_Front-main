@@ -18,6 +18,9 @@ const NumberInput = ({limit = 9999, number, setNumber, withNegative = false, min
 					if (value < min && value !== '') {
 						setNumber(Number.parseInt(min))
 					}
+					if(value === '') {
+						setNumber('')
+					}
 				}}
 				className="h-full w-[50px] outline-none bg-transparent text-center" value={number}
 				maxLength={4}

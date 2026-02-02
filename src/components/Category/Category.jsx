@@ -28,7 +28,7 @@ const Category = () => {
 
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
-	const pageSize = 6;
+	const pageSize = 12;
 	const [currentPageItems, setCurrentPageItems] = useState(null);
 
 	const [filteredItems, setFilteredItems] = useState(null);
@@ -42,9 +42,18 @@ const Category = () => {
 	const [filters, setFilters] = useState(defaultFilters);
 	const [priceFilter, setPriceFilter] = useState(null);
 	const [chosenFilters, setChosenFilters] = useState([]);
+	const [chosenBrands, setChosenBrands] = useState([]);
 	const [brands, setBrands] = useState([]);
 	const [minPrice, setMinPrice] = useState(null);
 	const [maxPrice, setMaxPrice] = useState(null);
+
+	function handleBrandOptionChange(brandTitle, isChecked) {
+		if (isChecked) {
+			setChosenBrands(prev => [...prev, brandTitle]);
+		} else {
+			setChosenBrands(prev => prev.filter(b => b !== brandTitle));
+		}
+	}
 
 	function handleSortOptionChange(optionId) {
 		setSelectedSortOption(optionId);
@@ -86,13 +95,13 @@ const Category = () => {
 		let items = chosenSubCategory
 			? initialProducts.filter(p => p.subCategory === chosenSubCategory)
 			: initialProducts;
-		items = applyFiltersToProducts(items, chosenFilters, priceFilter);
+		items = applyFiltersToProducts(items, chosenFilters, priceFilter, chosenBrands);
 		items.sort((a, b) => combinedSortComparator(a, b, selectedSortOption));
 		setFilteredItems(items);
 		setCurrentPageItems(items.slice(0, pageSize));
 		setTotalPages(Math.ceil(items.length / pageSize));
 		setPage(1);
-	}, [chosenSubCategory, initialProducts, selectedSortOption, chosenFilters, priceFilter]);
+	}, [chosenSubCategory, initialProducts, selectedSortOption, chosenFilters, priceFilter, chosenBrands]);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -198,14 +207,14 @@ const Category = () => {
 						<Filter key={index} title={filter.title} options={filter.options} onOptionChange={handleFilterOptionChange}/>
 					))}
 					{brands.length > 0 &&
-						<BrandFilter title={"Бренди"} options={brands}/>
+						<BrandFilter title={"Бренди"} options={brands} onOptionChange={handleBrandOptionChange}/>
 					}
 					{(minPrice && maxPrice) &&
 						<PriceFilter title={'Ціна'} onChange={handlePriceChange} from={minPrice} to={maxPrice}/>
 					}
 				</div>
 				{category !== null && (
-					<div className="flex flex-col gap-10">
+					<div className="flex flex-col gap-10 w-full">
 						{subCategories !== null && (
 							<div className="flex flex-wrap gap-4">
 								{subCategories.map((category, index) => (
@@ -221,8 +230,8 @@ const Category = () => {
 								))}
 							</div>
 						)}
-						{currentPageItems && (
-							<div className="flex flex-col gap-5 items-center mb-5">
+						{currentPageItems?.length > 0 ? (
+							<div className="flex flex-col gap-5 items-center mb-5 w-fit">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
 									{currentPageItems.map((product) => (
 										<ProductCard key={product.id} product={product}/>
@@ -234,6 +243,10 @@ const Category = () => {
 										currentPage={page}
 										onChange={(newPage) => goToPage(newPage)}
 									/>}
+							</div>
+						) : (
+							<div className="flex flex-col gap-5 items-center">
+								<div>Нічого не знайдено</div>
 							</div>
 						)}
 					</div>
