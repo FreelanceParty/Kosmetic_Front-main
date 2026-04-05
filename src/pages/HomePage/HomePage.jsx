@@ -5,7 +5,7 @@ import Cooperation from "../../components/Cooperation/Cooperation.jsx";
 import Reviews from "../../components/Reviews/Reviews.jsx";
 import axios from "axios";
 import ReviewsMobile from "../../components/Reviews/ReviewsMobile";
-import BestKoreanProducts from "../../components/Banners/BestKoreanProducts";
+import CelimaxBanner from "../../components/Banners/CelimaxBanner";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -58,7 +58,7 @@ const HomePage = () => {
 	}, []);
 	return (
 		<div>
-			<BestKoreanProducts/>
+			<CelimaxBanner/>
 			<div className="flex flex-col gap-[60px] items-center py-10 px-2 xl:px-10">
 				<ProductSlider title="BEAUTY ЗНИЖКИ %" products={discountProducts}/>
 				<ProductSlider title="НОВИНКИ" products={newProducts}/>

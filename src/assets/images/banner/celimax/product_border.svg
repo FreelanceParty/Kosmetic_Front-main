@@ -1,0 +1,22 @@
+<svg width="120" height="132" viewBox="-1 -1 122 134" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<filter id="pathBlur" x="-30%" y="-30%" width="160%" height="160%">
+			<feGaussianBlur stdDeviation="1.2"/>
+		</filter>
+	</defs>
+	<path d="M106 0C113.732 0 120 6.26801 120 14V118C120 125.732 113.732 132 106 132H14C6.26801 132 0 125.732 0 118V14C0 6.26801 6.26801 0 14 0H106ZM17 7C11.4772 7 7 11.4772 7 17V103C7 108.523 11.4772 113 17 113H103C108.523 113 113 108.523 113 103V17C113 11.4772 108.523 7 103 7H17Z"
+	      fill="#576474"
+	      fill-opacity="0.9"
+	      filter="url(#pathBlur)"/>
+
+	<rect x="0.5" y="0.5" width="119" height="131" rx="14"
+	      stroke="white"
+	      stroke-opacity="0.3"
+	      stroke-width="0.5"/>
+
+	<rect x="7.5" y="7.5" width="105" height="105.5" rx="10"
+	      stroke="white"
+	      stroke-opacity="0.2"
+	      stroke-width="0.5"/>
+
+</svg>
