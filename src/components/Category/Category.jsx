@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import ChevronRightIcon from "../../components/Icons/ChevronRightIcon";
 import axios from "axios";
 import ProductCard from "../../components/ProductSlider/ProductCard/ProductCard";
@@ -12,6 +12,7 @@ import {combinedSortComparator, sortOptions} from "../../utils/helpers/sort";
 import {applyFiltersToProducts, defaultFilters, getConvertedFiltersForProducts} from "../../utils/helpers/filter";
 import {useSelector} from "react-redux";
 import {getOptUser} from "../../redux/auth/selectors";
+import {filterProductsBy} from "../../utils/enums/headerMegaMenu";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -20,6 +21,7 @@ const Category = () => {
 	const {getCategoryByRoute} = routeHelper();
 	const navigate = useNavigate();
 	const location = useLocation();
+	const [searchParams] = useSearchParams();
 
 	const category = getCategoryByRoute(location.pathname);
 
@@ -109,7 +111,13 @@ const Category = () => {
 			try {
 				const response = await axios.get(`${REACT_APP_API_URL}/goods/findByCategory/${category}`);
 				//setLoading(false);
-				const products = response.data;
+				let products = response.data;
+				const searchCategory = searchParams.get("category");
+				const searchSubCategory = searchParams.get("subcategory");
+				if (searchCategory || searchSubCategory) {
+					const isCategory = searchCategory !== null;
+					products = filterProductsBy(products, isCategory, isCategory ? searchCategory : searchSubCategory);
+				}
 				setInitialProducts(products);
 				setFilteredItems(products);
 				const brands = [...new Set(products.map(p => p.brand).filter(Boolean))].sort();
