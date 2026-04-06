@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import {Container, Slider, SliderElement} from "./CooperationPage.styled";
-import PersonalOrders from "./PersonalOrders/PersonalOrders";
+import RetailOrders from "./RetailOrders/RetailOrders";
 import Business from "./Business/Business";
 import Dropshipping from "./Dropshipping/Dropshipping";
 import Contacts from "./Contacts/Contacts";
 
 const tabs = [
-	{id: "personal", label: "Особисті замовлення", component: <PersonalOrders/>},
+	{id: "personal", label: "Роздрібні замовлення", component: <RetailOrders/>},
 	{id: "business", label: "Для бізнесів (Опт)", component: <Business/>},
 	{id: "dropshipping", label: "Дропшипінг", component: <Dropshipping/>},
 	{id: "contacts", label: "Контакти", component: <Contacts/>},

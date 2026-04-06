@@ -1,3 +1,4 @@
+import Logo from "../../Logo/Logo";
 const SocialMediaList = () => {
 	// todo: links
 	const items = [
@@ -10,13 +11,7 @@ const SocialMediaList = () => {
 
 	return (
 		<div className="flex gap-[58px]">
-			<img
-				className="cursor-pointer"
-				src={require("../../../assets/images/insta_rounded.svg").default}
-				alt="insta"
-				width={110}
-				height={110}
-			/>
+			<Logo/>
 			<div className="flex flex-col gap-6">
 				{items.map((item, index) => (
 					<div key={index} className="flex gap-4 items-center cursor-pointer">

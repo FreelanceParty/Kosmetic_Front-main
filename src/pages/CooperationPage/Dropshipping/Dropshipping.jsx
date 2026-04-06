@@ -1,8 +1,10 @@
 import CooperationList from "../_elements/CooperationList";
 import {MainTitle, SecondaryTitle} from "../CooperationPage.styled";
 import Button from "../../../components/ButtonNew/Button";
+import {useNavigate} from "react-router-dom";
 
 const Dropshipping = () => {
+	const navigate = useNavigate();
 	const orderConditionsListItems = [
 		{firstPart: "БЕЗ МІНІМАЛЬНОЇ СУМИ ЗАМОВЛЕННЯ", secondPart: ""},
 		{firstPart: "ПОВНА ОПЛАТА НА РАХУНОК ФОП", secondPart: ""},
@@ -38,7 +40,7 @@ const Dropshipping = () => {
 						<div className="font-normal text-md">Детальна інструкція зі створення ТТН та актуальні ціни — в наших каналах:</div>
 					</div>
 					<div className="flex flex-col gap-6">
-						<div className="flex gap-4 items-center">
+						<a className="flex gap-4 items-center hover:text-[#E667A4] underline cursor-pointer" href="https://invite.viber.com/?g2=AQBbJ%2BXb2uClMFSC6vure1IGuhLvlb144kglbXjoA0lex1DPoo79HdiJ5Ef6o0No">
 							<img
 								src={require("../../../assets/icons/viber.svg").default}
 								alt="viber"
@@ -46,8 +48,8 @@ const Dropshipping = () => {
 								height={16}
 							/>
 							<div className="font-medium text-md">VIBER</div>
-						</div>
-						<div className="flex gap-4 items-center">
+						</a>
+						<a className="flex gap-4 items-center hover:text-[#E667A4] underline cursor-pointer" href="https://t.me/+aQ3BwgOjRUQ5MDQy">
 							<img
 								src={require("../../../assets/icons/teleg.svg").default}
 								alt="teleg"
@@ -55,11 +57,11 @@ const Dropshipping = () => {
 								height={16}
 							/>
 							<div className="font-medium text-md">TELEGRAM</div>
-						</div>
+						</a>
 					</div>
 				</div>
 			</div>
-			<Button type="primary" text="ВПЕРЕД ЗА ПОКУПКАМИ"/>
+			<Button type="primary" text="ВПЕРЕД ЗА ПОКУПКАМИ" onClick={() => navigate('/search?page=1&query=')}/>
 		</div>
 	);
 };

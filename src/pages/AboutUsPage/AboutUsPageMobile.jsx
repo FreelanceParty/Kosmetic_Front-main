@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import CooperationList from "../CooperationPage/_elements/CooperationList";
 import ReviewSlider from "../../components/Reviews/_elements/ReviewSlider";
 import Button from "../../components/ButtonNew/Button";
@@ -23,6 +23,7 @@ const ourValuesListItems = [
 ];
 
 const AboutUsPage = () => {
+	const navigate = useNavigate();
 	return (
 		<div className="flex md:hidden">
 			<div className="flex flex-col pt-5 gap-[60px]">
@@ -79,11 +80,13 @@ const AboutUsPage = () => {
 							type="primary"
 							text="ПЕРЕЙТИ ДО КАТАЛОГУ"
 							classes="!w-full"
+							onClick={() => navigate('/search?page=1&query=')}
 						/>
 						<Button
 							type="secondary"
 							text="ЗАРЕЄСТРУВАТИСЬ/УВІЙТИ"
 							classes="!w-full"
+							onClick={() => navigate('/authorization')}
 						/>
 					</div>
 				</div>

@@ -10,7 +10,7 @@ const SocialMediaListMobile = () => {
 	return (
 		<div className="flex gap-6">
 			{items.map((item, index) => (
-				<div key={index} className="flex flex-col gap-2 items-center justify-center px-2 py-[6px] bg-[#EFEFEF] rounded-[3px] cursor-pointer">
+				<a href={item.link} key={index} className="flex flex-col gap-2 items-center justify-center px-2 py-[6px] bg-[#EFEFEF] rounded-[3px] cursor-pointer hover:text-[#E667A4]">
 					<img
 						src={item.src}
 						alt={item.icon}
@@ -18,7 +18,7 @@ const SocialMediaListMobile = () => {
 						height={16}
 					/>
 					<div className="font-medium text-[8px] leading-[6px]">{item.title}</div>
-				</div>
+				</a>
 			))}
 		</div>
 	)

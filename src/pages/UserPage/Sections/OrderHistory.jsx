@@ -6,6 +6,7 @@ import {useSelector} from "react-redux";
 import {getUserToken, getIsLoggedIn} from "../../../redux/auth/selectors";
 import OrderBlock from "./_elements/OrderBlock";
 import Paginator from "../../../components/Paginator";
+import {useNavigate} from "react-router-dom";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -17,7 +18,7 @@ const tabs = [
 ];
 
 const OrderHistory = () => {
-
+	const navigate = useNavigate();
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const token = useSelector(getUserToken);
 	const [activeTab, setActiveTab] = useState("all");
@@ -95,6 +96,7 @@ const OrderHistory = () => {
 						type="primary"
 						text="ВПЕРЕД ЗА ПОКУПКАМИ"
 						classes="h-[53px] w-full max-w-[409px]"
+						onClick={() => navigate('/search?page=1&query=')}
 					/>
 				</div>
 

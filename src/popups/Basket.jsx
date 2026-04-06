@@ -62,7 +62,10 @@ const Basket = ({onClose}) => {
 					<EmptyBasketIcon classes={"w-[350px] h-[350px] py-[30px]"}/>
 					<div className="font-semibold text-lg mb-6 leading-[13px]">КОШИК ПОРОЖНІЙ</div>
 					<div className="font-semibold text-lg text-[#64759B] leading-[13px] mb-10">Але це ніколи не пізно виправити</div>
-					<Button type="primary" text="ВПЕРЕД ЗА ПОКУПКАМИ"/>
+					<Button type="primary" text="ВПЕРЕД ЗА ПОКУПКАМИ" onClick={() => {
+						navigate('/search?page=1&query=');
+						onClose();
+					}}/>
 				</div>
 			) : (
 				<>

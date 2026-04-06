@@ -84,8 +84,14 @@ const SearchPage = () => {
 		const fetchProducts = async () => {
 			try {
 				//setLoading(true);
-				const response = await axios.get(`${REACT_APP_API_URL}/goods/findByName/${searchText}`);
-				const products = response.data;
+				let response, products;
+				if(searchText === '') {
+					response = await axios.get(`${REACT_APP_API_URL}/goods`);
+					products = response.data.goods;
+				} else {
+					response = await axios.get(`${REACT_APP_API_URL}/goods/findByName/${searchText}`);
+					products = response.data;
+				}
 
 				setInitialProducts(products);
 				setFilteredItems(products);
