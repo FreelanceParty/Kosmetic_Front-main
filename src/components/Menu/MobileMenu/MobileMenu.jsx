@@ -1,429 +1,338 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import styled from "styled-components";
-import { AiOutlineMenu, AiOutlineClose, AiOutlineDown } from "react-icons/ai";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { menuData } from "../Menu"; // масив з mobileText
-import categoryData from "../menuItems.json"; // лише для "#category"
-import {
-  selectBrandsItems,
-  selectedBrand,
-} from "../../../redux/brands/selectors";
-import { useSelector, useDispatch } from "react-redux";
-import { setFilter } from "../../../redux/filter/slice";
-import { transliterate } from "../../transliterate";
-import { fetchBrands } from "../../../redux/brands/operation";
+import {useNavigate} from "react-router-dom";
+
+import {routeHelper} from "../../../utils/helpers/routeHelper";
+import {HEADER_MEGA_MENU} from "../../../utils/enums/headerMegaMenu";
 
 // ==== Styled ====
 const BurgerWrapper = styled.div`
   position: relative;
   z-index: 1000;
 `;
-const BurgerIcon = styled.button`
-	font-size:  28px;
-	background: none;
-	border:     none;
-	cursor:     pointer;
-	color:      #616161;
-	
-	&:hover,
-	&:focus {
-		color: ${(p) => p.theme.colors.accentColor};
-	}
-`;
+
 const MobileMenuWrapper = styled.div`
   position: fixed;
-  top: 0;
-  left: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
+  inset: 0;
+  left: ${({isOpen}) => (isOpen ? "0" : "-100%")};
   width: 100%;
   height: 100vh;
   background: #fff;
-  padding: 20px;
   transition: left 0.3s ease;
   z-index: 999;
-  overflow-y: auto;
+  overflow: hidden;
 `;
+
+const MenuHeader = styled.div`
+  height: 48px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e8e8e8;
+  color: #64759b;
+  font-size: 12px;
+  font-weight: 600;
+`;
+
 const CloseBtn = styled.button`
-  font-size: 28px;
-  background: none;
-  border: none;
-  float: right;
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  color: #000e55;
+  font-size: 20px;
+  line-height: 1;
   cursor: pointer;
 `;
+
+const MenuBody = styled.div`
+  height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding-bottom: 56px;
+`;
+
 const MobileNav = styled.ul`
   list-style: none;
-  padding: 20px 0;
+  margin: 0;
+  padding: 0;
 `;
-const NavItem = styled.li`
-  padding: 7px 0;
-`;
-const NavLinkStyled = styled(NavLink)`
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 1.57;
-  text-transform: lowercase;
-  text-align: center;
-  color: #616161;
 
-  text-decoration: none;
-
-  &.active {
-    color: #ff63b8;
-  }
-  &:hover {
-    color: #ff63b8;
-  }
-`;
-const LinkStyled = styled.a`
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 1.57;
-  text-transform: lowercase;
-  text-align: center;
-  color: #616161;
-
-  text-decoration: none;
-  &.active {
-    color: #ff63b8;
-  }
-  &:hover {
-    color: #ff63b8;
-  }
-`;
-const AnchorStyled = styled.a`
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 1.57;
-  text-transform: lowercase;
-  text-align: center;
-  color: #616161;
-
-  text-decoration: none;
-  &.active {
-    color: #ff63b8;
-  }
-  &:hover {
-    color: #ff63b8;
-  }
-`;
-const ExpandButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 16px;
-  color: #555;
-  margin-left: 8px;
+const RowButton = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #f2f2f2;
   cursor: pointer;
-  &:hover {
-    color: #ff63b8;
-  }
 `;
-const SubMenu = styled.ul`
-  list-style: none;
-  padding-left: 15px;
-  padding-top: 8px;
+
+const RowLink = styled.a`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  color: #000e55;
+  text-decoration: none;
+  border-bottom: 1px solid #f2f2f2;
 `;
-export const BrandStyleLink = styled(NavLink)`
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 1.57;
+
+const RowText = styled.span`
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  text-align: center;
-  color: #616161;
-
-  text-decoration: none;
-
-  padding: 7px 0;
-  &:hover,
-  &:focus {
-    color: #ff96cf;
-  }
-  &.active {
-    color: #ff96cf;
-  }
+  color: #000e55;
 `;
-export const DownIcon = styled(AiOutlineDown)`
-  width: 22px;
-  height: 22px;
-  padding: 5px;
-  margin-left: 5px;
+
+const SubRowButton = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  padding-left: 24px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #f7f7f7;
   cursor: pointer;
-  &:hover,
-  &:focus {
-    color: #ff96cf;
-  }
 `;
 
-// ==== Рекурсивне меню категорій ====
-const RecursiveMobileMenu = ({ items, parentPath = "", toggleMenu }) => {
-  const [expandedIndex, setExpandedIndex] = useState(null);
-  const navigate = useNavigate();
+const SubRowText = styled.span`
+  font-weight: 600;
+  font-size: 12px;
+  color: #000e55;
+`;
 
-  const toggleExpand = (index) => {
-    setExpandedIndex(expandedIndex === index ? null : index);
-  };
+const LeafLink = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  padding-left: 32px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #fafafa;
+  cursor: pointer;
+  color: #64759b;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+`;
 
-  return (
-    <SubMenu>
-      {items.map((item, index) => {
-        const currentPath = `${parentPath}/${transliterate(item.text)}`;
-        const hasChildren = item.children?.length > 0;
+const PlusMinus = styled.span`
+  width: 16px;
+  min-width: 16px;
+  text-align: center;
+  color: #000e55;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+`;
 
-        return (
-          <NavItem key={index}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <NavLinkStyled
-                to={`/katehorii${currentPath}`}
-                onClick={() => toggleMenu()}
-              >
-                {item.text}
-              </NavLinkStyled>
-              {hasChildren && (
-                <ExpandButton onClick={() => toggleExpand(index)}>
-                  {hasChildren && expandedIndex === index ? (
-                    <DownIcon
-                      style={{ transform: "rotate(-90deg)", color: "#ff63b8" }}
-                    />
-                  ) : (
-                    <DownIcon />
-                  )}
-                </ExpandButton>
-              )}
-            </div>
-            {hasChildren && expandedIndex === index && (
-              <RecursiveMobileMenu
-                items={item.children}
-                parentPath={currentPath}
-              />
-            )}
-          </NavItem>
-        );
-      })}
-    </SubMenu>
-  );
-};
+const FooterBar = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid #e8e8e8;
+  background: #fff;
+  color: #64759b;
+  font-size: 12px;
+  font-weight: 600;
+`;
 
-const MobileMenu = ({ isOpen, setIsOpen }) => {
-  // const [isOpen, setIsOpen] = useState(false);
-  const [showCategory, setShowCategory] = useState(false);
-  const [showBrands, setShowBrands] = useState(false);
-  const [expandedIndex, setExpandedIndex] = useState(null);
+const MobileMenu = ({isOpen, setIsOpen}) => {
+	const navigate = useNavigate();
+	const {getCategoryRoute} = routeHelper();
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
+	const [openedTop, setOpenedTop] = useState(null);
+	const [openedSection, setOpenedSection] = useState(null);
 
-  const isBrandActive = location.pathname.startsWith("/brands/");
-  const isCategoryActive = location.pathname.startsWith("/katehorii/");
+	useEffect(() => {
+		if (!isOpen) {
+			setOpenedTop(null);
+			setOpenedSection(null);
+		}
+	}, [isOpen]);
 
-  useEffect(() => {
-    dispatch(fetchBrands());
-  }, [dispatch]);
-  const toggleMenu = () => {
-    setIsOpen((prev) => {
-      const newState = !prev;
+	const closeMenu = () => setIsOpen(false);
 
-      if (!newState) {
-        // коли закривається меню
-        setShowCategory(false);
-        setShowBrands(false);
-      }
+	const go = (to) => {
+		closeMenu();
+		navigate(to);
+	};
 
-      return newState;
-    });
-  };
+	const topItems = useMemo(() => ([
+		{
+			key: "СПІВПРАЦЯ",
+			type: "accordion",
+			children: [
+				{label: "ОСОБИСТІ ЗАМОВЛЕННЯ", to: "/cooperation"},
+				{label: "ДЛЯ БІЗНЕСУ (ОПТ)", to: "/cooperation"},
+				{label: "ДРОПШИПІНГ", to: "/cooperation"},
+				{label: "КОНТАКТИ", to: "/cooperation"},
+			],
+		},
+		{
+			key: "ОБЛИЧЧЯ",
+			type: "category",
+			href: getCategoryRoute("догляд для обличчя"),
+			menuKey: "ОБЛИЧЧЯ",
+		},
+		{
+			key: "ВОЛОССЯ",
+			type: "category",
+			href: getCategoryRoute("догляд для волосся"),
+			menuKey: "ВОЛОССЯ",
+		},
+		{
+			key: "МАКІЯЖ",
+			type: "category",
+			href: getCategoryRoute("макіяж"),
+			menuKey: "МАКІЯЖ",
+		},
+		{
+			key: "ТІЛО",
+			type: "category",
+			href: getCategoryRoute("догляд для тіла"),
+			menuKey: "ТІЛО",
+		},
+		{
+			key: "НАБОРИ & ПОДАРУНКИ",
+			type: "category",
+			href: getCategoryRoute("набори"),
+			menuKey: "НАБОРИ & ПОДАРУНКИ",
+		},
+		{key: "SALE", type: "link", href: "/"},
+		{key: "БРЕНДИ", type: "link", href: "/brands"},
+		{key: "ПРО НАС", type: "link", href: "/about-us"},
+	]), [getCategoryRoute]);
 
-  const brands = useSelector(selectedBrand);
+	const openedCategoryMenu = openedTop && HEADER_MEGA_MENU[openedTop] ? HEADER_MEGA_MENU[openedTop] : null;
+	const openedCategoryHref = topItems.find((i) => i.key === openedTop)?.href;
 
-  const handleClickBrand = (e) => {
-    const name = e.target.innerText;
-    console.log("name", name);
-    dispatch(setFilter(name.toLowerCase().trim()));
-    // setIsOpen(false);
-  };
-  const handleAnchorClick = (href) => {
-    setIsOpen(false);
-    // setShowCategory(false);
-    // setShowBrands(false);
-    if (href.startsWith("/")) {
-      navigate(href);
-    } else {
-      navigate("/");
-      setExpandedIndex(null);
-      setTimeout(() => {
-        const el = document.querySelector(href);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }, 300);
-    }
-  };
+	return (
+		<BurgerWrapper className="flex lg:hidden">
+			<MobileMenuWrapper isOpen={isOpen}>
+				<MenuHeader>
+					<span>Меню</span>
+					<CloseBtn type="button" onClick={closeMenu} aria-label="Close menu">
+						×
+					</CloseBtn>
+				</MenuHeader>
 
-  return (
-    <BurgerWrapper className="flex lg:hidden">
-      <MobileMenuWrapper isOpen={isOpen}>
-        <CloseBtn onClick={toggleMenu}>
-          <AiOutlineClose />
-        </CloseBtn>
+				<MenuBody>
+					<MobileNav>
+						{topItems.map((item) => {
+							const isOpenTop = openedTop === item.key;
+							const canExpand = item.type === "accordion" || item.type === "category";
 
-        <MobileNav>
-          {menuData.map((item, index) => {
-            const key = item.to || item.href || item.mobileTo;
+							if (!canExpand) {
+								return (
+									<li key={item.key}>
+										<RowButton
+											type="button"
+											onClick={() => go(item.href)}
+										>
+											<RowText style={item.key === "SALE" ? {color: "#B90003"} : undefined}>{item.key}</RowText>
+											<span />
+										</RowButton>
+									</li>
+								);
+							}
 
-            // === Категорії ===
-            if (item.mobileTo === "#category") {
-              return (
-                <NavItem key={key}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <LinkStyled
-                      className={isCategoryActive ? "active" : ""}
-                      href="#category"
-                      onClick={() => {
-                        //   setShowCategory((prev) => !prev);
-                        toggleMenu();
-                        navigate("/");
-                        setTimeout(() => {
-                          const categoryElement =
-                            document.getElementById("category");
-                          if (categoryElement) {
-                            categoryElement.scrollIntoView({
-                              behavior: "smooth",
-                              block: "start",
-                            });
-                          }
-                        });
-                      }}
-                    >
-                      {item.mobileText}
-                    </LinkStyled>
-                    <ExpandButton
-                      onClick={() => {
-                        setShowCategory((prev) => !prev);
-                      }}
-                    >
-                      {showCategory ? (
-                        <DownIcon
-                          style={{
-                            transform: "rotate(-90deg)",
-                            color: "#ff63b8",
-                          }}
-                        />
-                      ) : (
-                        <DownIcon />
-                      )}
-                    </ExpandButton>
-                  </div>
+							return (
+								<li key={item.key}>
+									<RowButton
+										type="button"
+										onClick={() => {
+											setOpenedSection(null);
+											setOpenedTop(isOpenTop ? null : item.key);
+										}}
+									>
+										<RowText>{item.key}</RowText>
+										<PlusMinus>{isOpenTop ? "−" : "+"}</PlusMinus>
+									</RowButton>
 
-                  {showCategory && (
-                    <RecursiveMobileMenu
-                      items={categoryData[0].children}
-                      toggleMenu={toggleMenu}
-                    />
-                  )}
-                </NavItem>
-              );
-            }
+									{isOpenTop && item.type === "accordion" && (
+										<ul style={{listStyle: "none", margin: 0, padding: 0}}>
+											{item.children.map((ch) => (
+												<li key={ch.label}>
+													<LeafLink type="button" onClick={() => go(ch.to)}>
+														{ch.label}
+														<span />
+													</LeafLink>
+												</li>
+											))}
+										</ul>
+									)}
 
-            // === Бренди ===
-            if (item.to === "/brands") {
-              return (
-                <NavItem key={key}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <NavLinkStyled
-                      to={item.to}
-                      className={isBrandActive ? "active" : ""}
-                      onClick={() => {
-                        toggleMenu();
-                        navigate("/brands");
-                      }}
-                    >
-                      {item.mobileText}
-                    </NavLinkStyled>
-                    <ExpandButton
-                      onClick={() => {
-                        setShowBrands((prev) => !prev);
-                      }}
-                    >
-                      {showBrands ? (
-                        <DownIcon
-                          style={{
-                            transform: "rotate(-90deg)",
-                            color: "#ff63b8",
-                          }}
-                        />
-                      ) : (
-                        <DownIcon />
-                      )}
-                    </ExpandButton>
-                  </div>
+									{isOpenTop && item.type === "category" && openedCategoryMenu && openedCategoryHref && (
+										<ul style={{listStyle: "none", margin: 0, padding: 0}}>
+											{openedCategoryMenu.columns
+												.flatMap((c) => c.sections ?? [])
+												.map((section) => {
+													const isSectionOpen = openedSection === section.title;
+													const hasItems = (section.items ?? []).length > 0;
 
-                  {showBrands &&
-                    Array.isArray(brands.items) &&
-                    brands.items.length > 0 && (
-                      <SubMenu>
-                        {brands.items
-                          .flatMap(({ brandsName }) => brandsName)
-                          .map((name) => (
-                            <NavItem key={name}>
-                              <BrandStyleLink
-                                to={`/brands/${name.toLowerCase().trim()}`}
-                                onClick={(e) => {
-                                  handleClickBrand(e);
-                                  toggleMenu();
-                                }}
-                              >
-                                {name}
-                              </BrandStyleLink>
-                            </NavItem>
-                          ))}
-                      </SubMenu>
-                    )}
-                </NavItem>
-              );
-            }
+													return (
+														<li key={section.title}>
+															<SubRowButton
+																type="button"
+																onClick={() => {
+																if (!hasItems) {
+																	go(`${openedCategoryHref}?category=${encodeURIComponent(section.title)}`);
+																	return;
+																}
+																setOpenedSection(isSectionOpen ? null : section.title);
+															}}
+															>
+																<SubRowText>{section.title}</SubRowText>
+																{hasItems ? <PlusMinus>{isSectionOpen ? "−" : "+"}</PlusMinus> : <span />}
+															</SubRowButton>
 
-            // === Якорі або прості посилання ===
-            if (item.href || item.mobileTo) {
-              return (
-                <NavItem key={key}>
-                  <AnchorStyled
-                    href={item.href || item.mobileTo}
-                    onClick={() =>
-                      handleAnchorClick(item.href || item.mobileTo)
-                    }
-                  >
-                    {item.mobileText}
-                  </AnchorStyled>
-                </NavItem>
-              );
-            }
+															{hasItems && isSectionOpen && (
+																<ul style={{listStyle: "none", margin: 0, padding: 0}}>
+																	{section.items.map((leaf) => (
+																		<li key={leaf}>
+																			<LeafLink
+																				type="button"
+																				onClick={() => go(`${openedCategoryHref}?subcategory=${encodeURIComponent(leaf)}`)}
+																			>
+																				{leaf}
+																				<span />
+																			</LeafLink>
+																		</li>
+																	))}
+																</ul>
+															)}
+														</li>
+													);
+												})}
+										</ul>
+									)}
+								</li>
+							);
+						})}
+					</MobileNav>
+				</MenuBody>
 
-            // === Стандартне NavLink ===
-            return (
-              <NavItem key={key}>
-                <NavLinkStyled
-                  to={item.to}
-                  onClick={() => {
-                    toggleMenu();
-                  }}
-                >
-                  {item.mobileText}
-                </NavLinkStyled>
-              </NavItem>
-            );
-          })}
-        </MobileNav>
-      </MobileMenuWrapper>
-    </BurgerWrapper>
-  );
+				<FooterBar>beautyblossom.com.ua</FooterBar>
+			</MobileMenuWrapper>
+		</BurgerWrapper>
+	);
 };
 
 export default MobileMenu;
