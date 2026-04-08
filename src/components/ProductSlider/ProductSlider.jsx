@@ -22,7 +22,7 @@ const ProductSlider = ({title, products}) => {
 	}
 
 	return (
-		<div className="flex flex-col gap-10 pt-10 max-w-full xl:max-w-[1240px] items-center border-t border-[#E8E8E8]">
+		<div className="flex flex-col gap-10 pt-10 max-w-full md:max-w-[720px] lg:max-w-[900px] xl:max-w-[1240px] items-center border-t border-[#E8E8E8]">
 			<div className="font-semibold text-center text-[24px] leading-[17px]">{title}</div>
 			{/* mobile: дві в рядку */}
 			<div className="md:hidden grid grid-cols-2 sm:grid-cols-3 gap-4 w-fit mx-auto">

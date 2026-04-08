@@ -7,11 +7,13 @@ import {useSelector} from "react-redux";
 import {getIsAdmin, getOptUser} from "../../../redux/auth/selectors";
 import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 import Input from "../../../components/Input/Input";
+import ProductSlider from "../../../components/ProductSlider/ProductSlider";
 
-const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, quantity, setQuantity, addToCartHandler, productCount, setProductCount, updateProductCountHandler}) => {
+const Mobile = ({isInCart, product, recommendedProducts, reviewsLength, reviewsCount, averageRating, quantity, setQuantity, addToCartHandler, productCount, setProductCount, updateProductCountHandler}) => {
 	const isOptUser = useSelector(getOptUser);
 	const isAdmin = useSelector(getIsAdmin);
 	const [isAuthorized] = useState(false);
+
 	const [price, setPrice] = useState(0);
 	const [priceOld, setPriceOld] = useState(0);
 
@@ -119,12 +121,7 @@ const Mobile = ({isInCart, product, reviewsLength, reviewsCount, averageRating, 
 					reviewsCount={reviewsLength}
 				/>
 			</div>
-			<div className="flex flex-col gap-10 py-10 border-t">
-				<div>РЕКОМЕНДОВАНІ ТОВАРИ</div>
-				{/*<ProductSlider*/}
-				// todo: slider
-				{/*/>*/}
-			</div>
+			<ProductSlider title={"РЕКОМЕНДОВАНІ ТОВАРИ"} products={recommendedProducts}/>
 		</div>
 	)
 }

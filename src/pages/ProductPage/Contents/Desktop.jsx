@@ -8,8 +8,22 @@ import {useSelector} from "react-redux";
 import {getIsAdmin, getOptUser} from "../../../redux/auth/selectors";
 import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 import Input from "../../../components/Input/Input";
+import ProductSlider from "../../../components/ProductSlider/ProductSlider";
 
-const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating, quantity, setQuantity, addToCartHandler, productCount, setProductCount, updateProductCountHandler}) => {
+const Desktop = ({
+	product,
+	recommendedProducts,
+	isInCart,
+	reviewsLength,
+	reviewsCount,
+	averageRating,
+	quantity,
+	setQuantity,
+	addToCartHandler,
+	productCount,
+	setProductCount,
+	updateProductCountHandler
+}) => {
 	const isOptUser = useSelector(getOptUser);
 	const isAdmin = useSelector(getIsAdmin);
 
@@ -129,11 +143,8 @@ const Desktop = ({product, isInCart, reviewsLength, reviewsCount, averageRating,
 						reviewsCount={reviewsLength}
 					/>
 				</div>
-				<div className="flex flex-col gap-10 py-10 border-t">
-					<div>РЕКОМЕНДОВАНІ ТОВАРИ</div>
-					{/*<ProductSlider*/}
-					// todo: slider
-					{/*/>*/}
+				<div className="flex justify-center w-full mb-4">
+					<ProductSlider title={"РЕКОМЕНДОВАНІ ТОВАРИ"} products={recommendedProducts}/>
 				</div>
 			</div>
 		</div>

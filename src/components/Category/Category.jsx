@@ -139,9 +139,14 @@ const Category = () => {
 				console.log(error);
 			}
 		};
-		if (initialProducts === null) {
-			fetchProducts();
-		}
+		setInitialProducts(null);
+		setFilteredItems(null);
+		setCurrentPageItems(null);
+		setChosenSubCategory(null);
+		setChosenFilters([]);
+		setChosenBrands([]);
+		setPriceFilter(null);
+		fetchProducts();
 	}, [category]);
 
 	function getOptionsFromTitles(titles) {

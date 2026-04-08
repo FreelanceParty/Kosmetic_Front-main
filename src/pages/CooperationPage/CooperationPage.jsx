@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Container, Slider, SliderElement} from "./CooperationPage.styled";
 import RetailOrders from "./RetailOrders/RetailOrders";
 import Business from "./Business/Business";
 import Dropshipping from "./Dropshipping/Dropshipping";
 import Contacts from "./Contacts/Contacts";
+import {useSearchParams} from "react-router-dom";
 
 const tabs = [
 	{id: "personal", label: "Роздрібні замовлення", component: <RetailOrders/>},
@@ -13,7 +14,18 @@ const tabs = [
 ];
 
 const CooperationPage = () => {
-	const [activeTab, setActiveTab] = useState("personal");
+	const [searchParams] = useSearchParams();
+	const section = searchParams.get("section");
+	const isSearchSectionValid = section === 'personal' || section === 'business' || section === 'dropshipping' || section === 'contacts';
+	const [activeTab, setActiveTab] = useState(isSearchSectionValid ? section : "personal");
+
+	useEffect(() => {
+		if (isSearchSectionValid) {
+			setActiveTab(section);
+		} else {
+			setActiveTab("personal");
+		}
+	}, [section]);
 
 	return (
 		<Container>

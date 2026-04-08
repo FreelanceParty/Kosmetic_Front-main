@@ -18,6 +18,7 @@ const ProductPage = () => {
 	const {id} = useParams();
 	const [loading, setLoading] = useState(true);
 	const [product, setProduct] = useState(null);
+	const [recommendedProducts, setRecommendedProducts] = useState([]);
 	const [isInCart, setIsInCart] = useState(false);
 	const productCart = useSelector(selectCart);
 	const [quantity, setQuantity] = useState(1);
@@ -99,6 +100,24 @@ const ProductPage = () => {
 		}
 	}, [id]);
 
+	useEffect(() => {
+		const fetchRecommendedProducts = async () => {
+			try {
+				const response = await axios.get(`${API_URL}/goods`);
+				const goods = response?.data?.goods ?? [];
+				const eligible = goods.filter((p) => (p?.new || p?.sale) && (p?.amount ?? 0) > 0 && String(p?.id) !== String(product?.id));
+				const shuffled = [...eligible].sort(() => Math.random() - 0.5);
+				setRecommendedProducts(shuffled.slice(0, 12));
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		if (product) {
+			fetchRecommendedProducts();
+		}
+	}, [product]);
+
 	const updateProductCountHandler = async () => {
 		try {
 			await axios.patch(`${API_URL}/goods/${product._id}/amount`, {
@@ -119,6 +138,7 @@ const ProductPage = () => {
 					<Desktop
 						isInCart={isInCart}
 						product={product}
+						recommendedProducts={recommendedProducts}
 						reviewsCount={reviewsCount}
 						averageRating={averageRating}
 						reviewsLength={reviewsLength}
@@ -132,6 +152,7 @@ const ProductPage = () => {
 					<Mobile
 						isInCart={isInCart}
 						product={product}
+						recommendedProducts={recommendedProducts}
 						reviewsCount={reviewsCount}
 						averageRating={averageRating}
 						reviewsLength={reviewsLength}

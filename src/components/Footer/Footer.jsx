@@ -1,8 +1,12 @@
 import SocialMediaList from "./Sections/SocialMediaList";
 import SocialMediaListMobile from "./Sections/SocialMediaListMobile";
 import Logo from "../Logo/Logo";
+import {Link} from "react-router-dom";
+import {routeHelper} from "../../utils/helpers/routeHelper";
 
 const Footer = () => {
+	const {getCategoryRoute} = routeHelper();
+
 	return (
 		<div>
 			<div className="flex flex-col lg:hidden px-4 pt-[60px] pb-10 bg-[#F6F6F6]">
@@ -14,11 +18,11 @@ const Footer = () => {
 				</div>
 				<div className="flex flex-col gap-[60px] pt-8">
 					<div className="flex flex-col gap-6 text-[14px] leading-[10px]">
-						<a href="/about-us">Про нас</a>
-						<a href="/cooperation">Оптова співпраця</a>
+						<Link to="/about-us">Про нас</Link>
+						<Link to="/cooperation">Оптова співпраця</Link>
 						<a href="/">Оплата і доставка</a>
-						<a href="/cabinet">Особистий кабінет</a>
-						<a href="/contacts">Контакти</a>
+						<Link to="/cabinet">Особистий кабінет</Link>
+						<Link to="/cooperation?section=contacts">Контакти</Link>
 						<a href="/">Договір публічної оферти</a>
 					</div>
 					<div className="text-[10px] text-center leading-[12px]">Всі права захищені. <br/> {new Date().getFullYear()}</div>
@@ -31,25 +35,26 @@ const Footer = () => {
 						<SocialMediaList/>
 					</div>
 					<div className="flex gap-8 xl:gap-[60px]">
-						<div className="flex flex-col gap-6 text-sm">
-							<div className="font-semibold leading-[10px]">КОМПАНІЯ</div>
-							<a className="leading-[10px]" href="/about-us">Про нас</a>
-							<a className="leading-[10px]" href="/cooperation">Оптова співпраця</a>
-							<a className="leading-[10px]" href="/">Дропшипінг</a>
-							<a className="leading-[10px]" href="/">Договір публічної оферти</a>
-							<a className="leading-[10px]" href="/contacts">Контакти</a>
+						<div className="flex flex-col gap-5 text-sm">
+							<div className="font-semibold leading-[12px]">КОМПАНІЯ</div>
+							<Link className="leading-[12px]" to="/about-us">Про нас</Link>
+							<Link className="leading-[12px]" to="/cooperation?section=business">Оптова співпраця</Link>
+							<Link className="leading-[12px]" to="/cooperation?section=dropshipping">Дропшипінг</Link>
+							<a className="leading-[12px]" href="/">Договір публічної оферти</a>
+							<Link className="leading-[12px]" to="/cooperation?section=contacts">Контакти</Link>
 						</div>
 						<div className="flex gap-[34px]">
 							<div className="flex flex-col gap-6 font-semibold">
-								<a className="leading-[10px]" href="/">ОБЛИЧЧЯ</a>
-								<a className="leading-[10px]" href="/">ВОЛОССЯ</a>
-								<a className="leading-[10px]" href="/">МАКІЯЖ</a>
-								<a className="leading-[10px]" href="/">БРЕНДИ</a>
+								<Link className="leading-[10px]" to={getCategoryRoute("догляд для обличчя")}>ОБЛИЧЧЯ</Link>
+								<Link className="leading-[10px]" to={getCategoryRoute("догляд для волосся")}>ВОЛОССЯ</Link>
+								<Link className="leading-[10px]" to={getCategoryRoute("макіяж")}>МАКІЯЖ</Link>
+								<Link className="leading-[10px]" to="/brands">БРЕНДИ</Link>
 							</div>
 							<div className="flex flex-col gap-6 font-semibold">
-								<a className="leading-[10px]" href="/">ТІЛО</a>
-								<a className="leading-[10px]" href="/">SALE</a>
-								<a className="leading-[15px]" href="/">НАБОРИ &<br/>ПОДАРУНКИ</a>
+								<Link className="leading-[10px]" to={getCategoryRoute("догляд для тіла")}>ТІЛО</Link>
+								<Link className="leading-[10px]" to="/search?marker=sale&page=1&query=">SALE</Link>
+								<Link className="leading-[10px]" to="/search?marker=new&page=1&query=">NEW</Link>
+								<Link className="leading-[15px]" to={getCategoryRoute("набори")}>НАБОРИ &<br/>ПОДАРУНКИ</Link>
 							</div>
 						</div>
 					</div>

@@ -44,13 +44,13 @@ const Header = () => {
 		{title: "МАКІЯЖ", href: getCategoryRoute("макіяж")},
 		{title: "ТІЛО", href: getCategoryRoute("догляд для тіла")},
 		{title: "НАБОРИ & ПОДАРУНКИ", href: getCategoryRoute("набори")},
-		{title: "SALE", href: "/", styles: "text-[#B90003]"}, // todo: href
+		{title: "SALE", href: "/search?marker=sale&page=1&query=", styles: "text-[#B90003]"},
+		{title: "NEW", href: "/search?marker=new&page=1&query=", styles: "text-green-600"},
 		{title: "БРЕНДИ", href: "/brands"},
 		{title: "ПРО НАС", href: "/about-us"},
 	]), [getCategoryRoute]);
 
 	const openedMenu = openedDropdown ? HEADER_MEGA_MENU[openedDropdown] : null;
-	const megaMenuColumnsCount = openedMenu?.columns?.length ?? 0;
 
 	useEffect(() => {
 		const handleDocumentMouseDown = (e) => {

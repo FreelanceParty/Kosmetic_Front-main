@@ -17,6 +17,7 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const SearchPage = () => {
 	const [searchParams] = useSearchParams();
 	const searchText = searchParams.get('query');
+	const searchMarker = searchParams.get('marker');
 
 	const isOptUser = useSelector(getOptUser);
 	const navigate = useNavigate();
@@ -81,11 +82,17 @@ const SearchPage = () => {
 	}
 
 	useEffect(() => {
+		if (searchMarker === 'new' || searchMarker === 'sale') {
+			setChosenFilters([searchMarker]);
+		}
+	}, [searchParams])
+
+	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
 				//setLoading(true);
 				let response, products;
-				if(searchText === '') {
+				if (searchText === '') {
 					response = await axios.get(`${REACT_APP_API_URL}/goods`);
 					products = response.data.goods;
 				} else {
