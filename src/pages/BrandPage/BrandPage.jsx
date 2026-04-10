@@ -25,7 +25,7 @@ const BrandPage = () => {
 
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
-	const pageSize = 12;
+	const pageSize = 30;
 	const [currentPageItems, setCurrentPageItems] = useState(null);
 
 	const [selectedSortOption, setSelectedSortOption] = useState(

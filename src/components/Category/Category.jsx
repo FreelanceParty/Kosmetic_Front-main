@@ -30,7 +30,7 @@ const Category = () => {
 
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
-	const pageSize = 12;
+	const pageSize = 30;
 	const [currentPageItems, setCurrentPageItems] = useState(null);
 
 	const [filteredItems, setFilteredItems] = useState(null);
@@ -109,7 +109,16 @@ const Category = () => {
 		const fetchProducts = async () => {
 			//setLoading(true);
 			try {
-				const response = await axios.get(`${REACT_APP_API_URL}/goods/findByCategory/${category}`);
+				const searchFromPrice = searchParams.get("fromPrice");
+				const searchToPrice = searchParams.get("toPrice");
+				const params = {
+					...(searchFromPrice ? {fromPrice: searchFromPrice} : {}),
+					...(searchToPrice ? {toPrice: searchToPrice} : {}),
+				};
+				const response = await axios.get(
+					`${REACT_APP_API_URL}/goods/findByCategory/${category}`,
+					{params}
+				);
 				//setLoading(false);
 				let products = response.data;
 				const searchCategory = searchParams.get("category");
@@ -117,6 +126,24 @@ const Category = () => {
 				if (searchCategory || searchSubCategory) {
 					const isCategory = searchCategory !== null;
 					products = filterProductsBy(products, isCategory, isCategory ? searchCategory : searchSubCategory);
+				}
+
+				if (searchFromPrice || searchToPrice) {
+					const from = searchFromPrice ? Number(searchFromPrice) : null;
+					const to = searchToPrice ? Number(searchToPrice) : null;
+					products = (products ?? []).filter((p) => {
+						const price = Number(isOptUser ? p?.priceOPT : p?.price);
+						if (!Number.isFinite(price)) {
+							return false;
+						}
+						if (from !== null && Number.isFinite(from) && price < from) {
+							return false;
+						}
+						if (to !== null && Number.isFinite(to) && price > to) {
+							return false;
+						}
+						return true;
+					});
 				}
 				setInitialProducts(products);
 				setFilteredItems(products);

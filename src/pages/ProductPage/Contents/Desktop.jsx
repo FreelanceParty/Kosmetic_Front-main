@@ -28,7 +28,6 @@ const Desktop = ({
 	const isAdmin = useSelector(getIsAdmin);
 
 	const {getCategoryRoute} = routeHelper();
-	const [isAuthorized, setIsAuthorized] = useState(false);
 	const [price, setPrice] = useState(0);
 	const [priceOld, setPriceOld] = useState(0);
 
@@ -125,7 +124,7 @@ const Desktop = ({
 									/>
 								</div>
 							)}
-							{!isAuthorized && (
+							{!isOptUser && (
 								<div className="flex gap-3 items-center">
 									<img
 										src={require("../../../assets/icons/star_percentage.svg").default}

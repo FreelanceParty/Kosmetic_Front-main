@@ -37,6 +37,9 @@ const Header = () => {
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const userName = useSelector(getUserFirstName);
 	const cartItems = useSelector(selectCart);
+	const cartBadgeCount = useMemo(() => (
+		(cartItems ?? []).reduce((sum, item) => sum + (Number(item?.quantity) || 0), 0)
+	), [cartItems]);
 
 	const navLinks = useMemo(() => ([
 		{title: "ОБЛИЧЧЯ", href: getCategoryRoute("догляд для обличчя")},
@@ -125,7 +128,7 @@ const Header = () => {
 					<Logo/>
 					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<User icon="user" title={isLoggedIn ? userName : "ВХІД"} onClick={() => handleUserIconClick()}/>
-						<HeaderMenu icon="basket" title="КОШИК" onClick={() => handleGoToCart()}/>
+						<HeaderMenu icon="basket" title="КОШИК" badgeCount={cartBadgeCount} onClick={() => handleGoToCart()}/>
 					</div>
 				</div>
 				<div className="hidden lg:flex justify-center gap-10 font-semibold text-md leading-[10px] py-6">
@@ -176,7 +179,7 @@ const Header = () => {
 												<div key={sectionIdx} className="min-w-0 flex flex-col gap-4">
 													<a
 														key={section.title}
-														href={(navLinks.find((l) => l.title === openedDropdown)?.href ?? "#") + '?category=' + section.title}
+														href={section.link ?? ((navLinks.find((l) => l.title === openedDropdown)?.href ?? "#") + '?category=' + section.title)}
 														className="text-[#000E55] font-semibold text-sm uppercase tracking-wide hover:text-[#FF63B8] truncate leading-[12px]"
 														onClick={() => setOpenedDropdown(null)}
 													>

@@ -9,10 +9,22 @@ import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 import Input from "../../../components/Input/Input";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
 
-const Mobile = ({isInCart, product, recommendedProducts, reviewsLength, reviewsCount, averageRating, quantity, setQuantity, addToCartHandler, productCount, setProductCount, updateProductCountHandler}) => {
+const Mobile = ({
+	isInCart,
+	product,
+	recommendedProducts,
+	reviewsLength,
+	reviewsCount,
+	averageRating,
+	quantity,
+	setQuantity,
+	addToCartHandler,
+	productCount,
+	setProductCount,
+	updateProductCountHandler
+}) => {
 	const isOptUser = useSelector(getOptUser);
 	const isAdmin = useSelector(getIsAdmin);
-	const [isAuthorized] = useState(false);
 
 	const [price, setPrice] = useState(0);
 	const [priceOld, setPriceOld] = useState(0);
@@ -101,7 +113,7 @@ const Mobile = ({isInCart, product, recommendedProducts, reviewsLength, reviewsC
 								</div>
 							</div>
 						</div>
-						{isAuthorized ? (
+						{isOptUser ? (
 							<div/>
 						) : (
 							<div className="flex gap-3 items-center">

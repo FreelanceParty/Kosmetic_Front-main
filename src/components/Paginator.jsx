@@ -1,10 +1,12 @@
 import GoToLastIcon from "./Icons/GoToLastIcon";
 import ChevronRightIcon from "./Icons/ChevronRightIcon";
 import ChevronLeftIcon from "./Icons/ChevronLeftIcon";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
+import GoToFirstIcon from "./Icons/GoToFirstIcon";
 
 const Paginator = ({currentPage = 1, totalPages = 1, onChange}) => {
 	const [_page, setPage] = useState(currentPage);
+	const rootRef = useRef(null);
 
 	useEffect(() => {
 		setPage(currentPage);
@@ -19,6 +21,27 @@ const Paginator = ({currentPage = 1, totalPages = 1, onChange}) => {
 		}
 		setPage(page);
 		onChange?.(page);
+		scrollToTop();
+	}
+
+	function scrollToTop() {
+		let node = rootRef.current;
+		if (!node) {
+			return;
+		}
+
+		node = node.parentElement;
+		while (node) {
+			const style = window.getComputedStyle(node);
+			const canScroll = (style.overflowY === "auto" || style.overflowY === "scroll") && node.scrollHeight > node.clientHeight;
+			if (canScroll) {
+				node.scrollTo({top: 0, behavior: "smooth"});
+				return;
+			}
+			node = node.parentElement;
+		}
+
+		window.scrollTo({top: 0, behavior: "smooth"});
 	}
 
 	function getVisiblePages() {
@@ -58,7 +81,13 @@ const Paginator = ({currentPage = 1, totalPages = 1, onChange}) => {
 	const visiblePages = getVisiblePages();
 
 	return (
-		<div className="flex cursor-pointer w-fit">
+		<div className="flex cursor-pointer w-fit" ref={rootRef}>
+			<div
+				className="flex items-center justify-center h-[33px] w-[33px] hover:bg-gray-200"
+				onClick={() => handleClick(1)}
+			>
+				<GoToFirstIcon/>
+			</div>
 			<div
 				className="flex items-center justify-center h-[33px] w-[33px] hover:bg-gray-200"
 				onClick={() => handleClick(_page - 1)}
