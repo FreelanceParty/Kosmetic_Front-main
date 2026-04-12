@@ -11,15 +11,13 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 import ForgottenPage from "./pages/ForgottenPage/ForgottenPage";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import AboutUsPage from "./pages/AboutUsPage/AboutUsPage";
-import DiscountPage from "./pages/DiscountPage/DiscountPage";
-import NewPage from "./pages/NewPage/NewPage";
 import AllBrandsPage from "./pages/AllBrandsPage/AllBrandsPage";
 import BrandPage from "./pages/BrandPage/BrandPage";
 import NoProducts from "./pages/NoProducts/NoProducts";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import {useMedia} from "./utils/hooks/useMedia";
 import AdminPage from "./pages/AdminPage/AdminPage";
-import {PrivateRoute, PrivateAdminRoute} from "./modules/PrivateRoutes/PrivateRoutes";
+import {PrivateAdminRoute} from "./modules/PrivateRoutes/PrivateRoutes";
 import CooperationPage from "./pages/CooperationPage/CooperationPage";
 import UserPage from "./pages/UserPage/UserPage";
 import SharedLayoutWithoutFooter from "./components/SharedLayoutWithoutFooter/SharedLayoutWithoutFooter";
@@ -130,22 +128,6 @@ function App() {
 						element={
 							<Suspense fallback={<Loader/>}>
 								<BrandPage/>
-							</Suspense>
-						}
-					/>
-					<Route
-						path="novynky"
-						element={
-							<Suspense fallback={<Loader/>}>
-								<NewPage/>
-							</Suspense>
-						}
-					/>
-					<Route
-						path="aktsiji"
-						element={
-							<Suspense fallback={<Loader/>}>
-								<DiscountPage/>
 							</Suspense>
 						}
 					/>

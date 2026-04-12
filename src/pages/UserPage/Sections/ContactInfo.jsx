@@ -42,10 +42,16 @@ const ContactInfo = () => {
 			await axios.post(`${API_URL}/auth/updateUserData/${id}`, formData);
 			toast.info("Дані оновлено.");
 		} catch (error) {
-			if (error.response && error.response.status === 401) {
-				toast.error("Ви ввели невірний діючий пароль.");
+			if (error.response.data.meta.field === 'email') {
+				setErrors({...errors, ['email']: "E-mail зайнятий"});
+			} else if (error.response.data.meta.field === 'number') {
+				setErrors({...errors, ['number']: "Номер телефону зайнятий"});
 			} else {
-				console.error("Помилка при відправці запиту:", error);
+				if (error.response && error.response.status === 401) {
+					toast.error("Ви ввели невірний діючий пароль.");
+				} else {
+					console.error("Помилка при відправці запиту:", error.status);
+				}
 			}
 		}
 	};

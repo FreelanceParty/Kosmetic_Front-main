@@ -11,7 +11,6 @@ import User from "../Login/User/User";
 import {getIsLoggedIn, getUserFirstName} from "../../redux/auth/selectors";
 import {selectCart} from "../../redux/cart/selectors";
 
-import SlidingSearchForm from "../SlidingSearchForm/SlidingSearchForm";
 import {routeHelper} from "../../utils/helpers/routeHelper";
 import HeaderMenu from "./HeaderMenu";
 import Basket from "../../popups/Basket";

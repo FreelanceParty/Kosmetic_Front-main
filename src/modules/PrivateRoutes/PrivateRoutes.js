@@ -4,7 +4,7 @@ import {getIsAdmin} from "../../redux/auth/selectors";
 
 export const PrivateRoute = ({component: Component, ...rest}) => {
 	const token = localStorage.getItem("token");
-	return token ? <Component/> : <Navigate to="/login" {...rest} />;
+	return token ? <Component/> : <Navigate to="/authorization" {...rest} />;
 };
 
 export const PrivateAdminRoute = ({component: Component, ...rest}) => {

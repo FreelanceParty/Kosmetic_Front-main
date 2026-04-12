@@ -7,6 +7,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 export const handleAddToCart = async ({product, quantity, dispatch, isLoggedIn}) => {
 	dispatch(addToCart({...product, quantity}));
 
+	// todo: Error: Invalid hook call. Hooks can only be called inside of the body of a function component.
 	try {
 		if (isLoggedIn) {
 			await axios.post(`${API_URL}/basket`, {
@@ -39,7 +40,8 @@ export const handleRemoveFromCart = async ({product, dispatch, isLoggedIn}) => {
 
 	try {
 		if (isLoggedIn) {
-			await axios.delete(`/basket/${product.id}`);
+			// todo: {"message":"1677415 is not valid id"}
+			await axios.delete(`${API_URL}/basket/${product.id}`);
 			scrollToTop();
 		}
 	} catch (e) {
