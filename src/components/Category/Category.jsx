@@ -13,6 +13,9 @@ import {applyFiltersToProducts, defaultFilters, getConvertedFiltersForProducts} 
 import {useSelector} from "react-redux";
 import {getOptUser} from "../../redux/auth/selectors";
 import {filterProductsBy} from "../../utils/enums/headerMegaMenu";
+import FilterIcon from "../Icons/FilterIcon";
+import CloseCrossIcon from "../Icons/CloseCrossIcon";
+import Button from "../ButtonNew/Button";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -48,6 +51,7 @@ const Category = () => {
 	const [brands, setBrands] = useState([]);
 	const [minPrice, setMinPrice] = useState(null);
 	const [maxPrice, setMaxPrice] = useState(null);
+	const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
 	function handleBrandOptionChange(brandTitle, isChecked) {
 		if (isChecked) {
@@ -176,6 +180,14 @@ const Category = () => {
 		fetchProducts();
 	}, [category]);
 
+	useEffect(() => {
+		if (isMobileFiltersOpen) {
+			document.body.style.overflow = "hidden";
+			return;
+		}
+		document.body.style.overflow = "";
+	}, [isMobileFiltersOpen]);
+
 	function getOptionsFromTitles(titles) {
 		return titles.map(title => ({
 			title: title,
@@ -210,11 +222,18 @@ const Category = () => {
 					<div className="border-l border-gray-700 h-full"></div>
 					<div>{category}</div>
 				</div>
-				<div className="gap-[10px] items-center text-[#000E55] text-sm flex lg:hidden h-6">
+				<button
+					type="button"
+					className="gap-[10px] items-center text-[#000E55] text-sm flex lg:hidden h-6"
+					onClick={() => setIsMobileFiltersOpen(true)}
+				>
 					<div className="border-l border-gray-700 h-full"></div>
-					<div>Фільтри</div>
+					<div className="flex items-center gap-2">
+						<FilterIcon classes="h-4 w-4"/>
+						<div>Фільтри</div>
+					</div>
 					<div className="border-l border-gray-700 h-full"></div>
-				</div>
+				</button>
 				<div onClick={() => {
 					setSortOpen(prev => !prev)
 				}} className="relative gap-[10px] items-center text-[#000E55] text-sm flex h-6 cursor-pointer">
@@ -253,6 +272,54 @@ const Category = () => {
 						<PriceFilter title={'Ціна'} onChange={handlePriceChange} from={minPrice} to={maxPrice}/>
 					}
 				</div>
+				{isMobileFiltersOpen && (
+					<div className="fixed inset-0 z-50 bg-white">
+						<div className="flex flex-col h-full">
+							<div className="flex justify-between items-center px-5 py-5 border-b border-[#F6F6F6]">
+								<div className="font-semibold text-sm leading-[10px]">ФІЛЬТРИ</div>
+								<CloseCrossIcon
+									classes="h-[13px] w-[13px] cursor-pointer"
+									onClick={() => setIsMobileFiltersOpen(false)}
+								/>
+							</div>
+							<div className="flex-1 overflow-y-auto px-5 pt-4 pb-6">
+								<div className="flex flex-col">
+									{filters.map((filter, index) => (
+										<Filter
+											key={index}
+											title={filter.title}
+											options={filter.options}
+											onOptionChange={handleFilterOptionChange}
+										/>
+									))}
+									{brands.length > 0 && (
+										<BrandFilter
+											title={"Бренди"}
+											options={brands}
+											onOptionChange={handleBrandOptionChange}
+										/>
+									)}
+									{(minPrice && maxPrice) && (
+										<PriceFilter
+											title={'Ціна'}
+											onChange={handlePriceChange}
+											from={minPrice}
+											to={maxPrice}
+										/>
+									)}
+								</div>
+							</div>
+							<div className="px-5 py-4 border-t border-[#F6F6F6] mb-10">
+								<Button
+									type="primary"
+									text="ЗАСТОСУВАТИ"
+									classes="w-full h-[43px] rounded-md bg-[#DA469A] text-white font-semibold"
+									onClick={() => setIsMobileFiltersOpen(false)}
+								/>
+							</div>
+						</div>
+					</div>
+				)}
 				{category !== null && (
 					<div className="flex flex-col gap-10 w-full">
 						{subCategories !== null && (
@@ -271,7 +338,7 @@ const Category = () => {
 							</div>
 						)}
 						{currentPageItems?.length > 0 ? (
-							<div className="flex flex-col gap-5 items-center mb-5 w-fit">
+							<div className="flex flex-col gap-5 items-center mb-5 w-full">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
 									{currentPageItems.map((product) => (
 										<ProductCard key={product.id} product={product}/>

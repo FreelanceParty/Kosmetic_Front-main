@@ -1,30 +1,33 @@
 import React, {useEffect, useState} from "react";
-import RightArrowAltIcon from "../../../../../components/Icons/RightArrowAltIcon";
 import SearchIcon from "../../../../../components/Icons/SearchIcon";
 import ChevronIcon from "../../../../../components/Icons/ChevronIcon";
 import StatusOptions from "./StatusOptions";
 import FilterIcon from "../../../../../components/Icons/FilterIcon";
 import CloseCrossIcon from "../../../../../components/Icons/CloseCrossIcon";
-import Filter from "../../../../../components/Category/_elements/Filter";
 import {statusFilters} from "../../../../../utils/helpers/filter"
 import DateFilter from "../../../../../components/Category/_elements/DateFilter";
 import Button from "../../../../../components/ButtonNew/Button";
+import RightArrowAltIcon from "../../../../../components/Icons/RightArrowAltIcon";
+import Filter from "../../../../../components/Category/_elements/Filter";
 
 const Filters = ({statusFilter, setStatusFilter, isStatusFilterOpen, setStatusFilterOpen, dateFromFilter, setDateFromFilter, dateToFilter, setDateToFilter, setSearchText}) => {
 	const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+	const [statusMobileFilter, setStatusMobileFilter] = useState(statusFilter);
 	const [dateFromMobileFilter, setDateFromMobileFilter] = useState(dateFromFilter);
 	const [dateToMobileFilter, setDateToMobileFilter] = useState(dateToFilter);
 
 	const handleSubmit = () => {
 		setIsMobileFiltersOpen(false);
+		setStatusFilter(statusMobileFilter);
 		setDateFromFilter(dateFromMobileFilter);
 		setDateToFilter(dateToMobileFilter);
 	}
-	// todo: status for mobile
+
 	useEffect(() => {
+		setStatusMobileFilter(statusFilter);
 		setDateFromMobileFilter(dateFromFilter);
 		setDateToMobileFilter(dateToFilter);
-	}, [dateFromFilter, dateToFilter]);
+	}, [statusFilter, dateFromFilter, dateToFilter]);
 
 	return (
 		<div className="flex justify-center items-center gap-4 md:gap-5 mx-auto w-full">

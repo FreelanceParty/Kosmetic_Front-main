@@ -12,7 +12,7 @@ const SharedLayout = () => {
 		<div className="h-screen flex flex-col overflow-x-hidden">
 			<Header/>
 
-			<div className="flex flex-col min-h-0 flex-1 overflow-y-auto">
+			<div id="app-scroll-container" className="flex flex-col min-h-0 flex-1 overflow-y-auto">
 				<main className="flex-1">
 					<Suspense fallback={<Loader/>}>
 						<Outlet/>
