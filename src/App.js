@@ -32,7 +32,7 @@ import CartPage from "./pages/CartPage/CartPage";
 import OrderPlacementPage from "./pages/OrderPlacementPage/OrderPlacementPage";
 
 function App() {
-	const {isMobileScreen} = useMedia();
+	useMedia();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -262,7 +262,7 @@ function App() {
           <Route path="feedback" element={<Feedback />} />
         </Route> */}
 			</Routes>
-			{!isMobileScreen && <ScrollToTop/>}
+			<ScrollToTop/>
 		</ThemeProvider>
 	);
 }

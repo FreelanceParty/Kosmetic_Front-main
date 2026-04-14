@@ -12,15 +12,15 @@ const BurgerWrapper = styled.div`
 `;
 
 const MobileMenuWrapper = styled.div`
-  position: fixed;
-  inset: 0;
-  left: ${({isOpen}) => (isOpen ? "0" : "-100%")};
-  width: 100%;
-  height: 100vh;
-  background: #fff;
-  transition: left 0.3s ease;
-  z-index: 999;
-  overflow: hidden;
+	position:   fixed;
+	inset:      0;
+	left:       ${({isOpen}) => (isOpen ? "0" : "-100%")};
+	width:      100%;
+	height:     100vh;
+	background: #FFFFFF;
+	transition: left 0.3s ease;
+	z-index:    999;
+	overflow:   hidden;
 `;
 
 const MenuHeader = styled.div`
@@ -135,22 +135,6 @@ const PlusMinus = styled.span`
   font-size: 18px;
   font-weight: 400;
   line-height: 1;
-`;
-
-const FooterBar = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-top: 1px solid #e8e8e8;
-  background: #fff;
-  color: #64759b;
-  font-size: 12px;
-  font-weight: 600;
 `;
 
 const MobileMenu = ({isOpen, setIsOpen}) => {
@@ -328,8 +312,6 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 						})}
 					</MobileNav>
 				</MenuBody>
-
-				<FooterBar>beautyblossom.com.ua</FooterBar>
 			</MobileMenuWrapper>
 		</BurgerWrapper>
 	);

@@ -102,7 +102,7 @@ const ProductCard = ({product, isSlider = false}) => {
 				<div className="relative flex items-center justify-center w-full aspect-square">
 					<img className="h-[159px]" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
-						<div className="absolute top-3 right-0 flex flex-col gap-3 z-10">
+						<div className="absolute top-3 right-0 flex flex-col gap-3 z-9">
 							{product.sale && <Tag isSale={true}/>}
 							{product.new && <Tag isSale={false}/>}
 						</div>
@@ -150,7 +150,7 @@ const ProductCard = ({product, isSlider = false}) => {
 				<div className="relative flex items-center justify-center w-full aspect-square">
 					<img className="max-w-full" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
-						<div className="absolute top-4 right-0 flex flex-col gap-4 z-10">
+						<div className="absolute top-4 right-0 flex flex-col gap-4 z-9">
 							{product.sale && <Tag isSale={true}/>}
 							{product.new && <Tag isSale={false}/>}
 						</div>

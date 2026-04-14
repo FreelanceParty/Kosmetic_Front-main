@@ -45,7 +45,7 @@ const Mobile = ({
 				<div className="relative w-full flex items-center justify-center mb-6">
 					<img src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
-						<div className="absolute top-4 right-0 flex flex-col gap-4 z-10">
+						<div className="absolute top-4 right-0 flex flex-col gap-4 z-9">
 							{product.sale && <Tag isSale={true}/>}
 							{product.new && <Tag isSale={false}/>}
 						</div>

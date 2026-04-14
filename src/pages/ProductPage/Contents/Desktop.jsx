@@ -56,7 +56,7 @@ const Desktop = ({
 						<div className="relative flex items-center justify-center w-1/2 aspect-square">
 							<img src={product.images} alt="product"/>
 							{(product.sale || product.new) &&
-								<div className="absolute top-6 right-0 flex flex-col gap-6 z-10">
+								<div className="absolute top-6 right-0 flex flex-col gap-6 z-9">
 									{product.sale && <Tag isSale={true}/>}
 									{product.new && <Tag isSale={false}/>}
 								</div>
