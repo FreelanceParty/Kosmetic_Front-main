@@ -24,7 +24,7 @@ export function routeHelper() {
 		// todo:
 		{
 			name:  "Захист від сонця",
-			route: "/katehoriji",
+			route: "/katehoriji/sunProtection",
 		},
 		{
 			name:  "Аксесуари для догляду",
