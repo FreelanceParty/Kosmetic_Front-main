@@ -8,6 +8,7 @@ import {Side} from "../../../../popups/Abstracts/Side";
 import OrderDetails from "../../../../popups/Side/OrderDetails/OrderDetails";
 import Filters from "./_elements/Filters";
 import OrderCard from "./_elements/Mobile/OrderCard";
+import {Loader} from "../../../../components/Loader/Loader";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -93,7 +94,9 @@ const Orders = () => {
 	return (
 		<>
 			{initialOrders.length === 0 ?
-				<div>Loading...</div>
+				<div className="flex justify-center w-full py-10">
+					<Loader/>
+				</div>
 				:
 				<div className="flex flex-col gap-8 px-5">
 					<Filters
@@ -135,7 +138,7 @@ const Orders = () => {
 								</div>
 							)}
 						</div>
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:hidden">
 							{currentPageOrders.length > 0 ? (
 								currentPageOrders.map((order) => (
 									<OrderCard

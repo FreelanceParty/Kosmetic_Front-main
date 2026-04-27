@@ -16,6 +16,7 @@ import {filterProductsBy} from "../../utils/enums/headerMegaMenu";
 import FilterIcon from "../Icons/FilterIcon";
 import CloseCrossIcon from "../Icons/CloseCrossIcon";
 import Button from "../ButtonNew/Button";
+import {Loader} from "../Loader/Loader";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -27,6 +28,7 @@ const Category = () => {
 	const [searchParams] = useSearchParams();
 
 	const category = getCategoryByRoute(location.pathname);
+	const [loading, setLoading] = useState(false);
 
 	const [initialProducts, setInitialProducts] = useState(null);
 	const [subCategories, setSubCategories] = useState(null);
@@ -111,8 +113,8 @@ const Category = () => {
 
 	useEffect(() => {
 		const fetchProducts = async () => {
-			//setLoading(true);
 			try {
+				setLoading(true);
 				const searchFromPrice = searchParams.get("fromPrice");
 				const searchToPrice = searchParams.get("toPrice");
 				const params = {
@@ -166,8 +168,10 @@ const Category = () => {
 				const max = Math.max(...prices);
 				setMinPrice(min);
 				setMaxPrice(max);
+				setLoading(false);
 			} catch (error) {
 				console.log(error);
+				setLoading(false);
 			}
 		};
 		setInitialProducts(null);
@@ -320,7 +324,11 @@ const Category = () => {
 						</div>
 					</div>
 				)}
-				{category !== null && (
+				{loading ? (
+					<div className="flex justify-center w-full py-10">
+						<Loader/>
+					</div>
+				) : category !== null && (
 					<div className="flex flex-col gap-10 w-full">
 						{subCategories !== null && (
 							<div className="flex flex-wrap gap-4">

@@ -6,6 +6,7 @@ import CategoryIcon from "../Icons/CategoryIcon";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {getOptUser} from "../../redux/auth/selectors";
+import {availabilityComparator} from "../../utils/helpers/sort";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -23,7 +24,9 @@ const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 				try {
 					setCategories();
 					const result = await axios.get(`${API_URL}/goods/findByName/${searchQuery}`);
-					setFoundProducts(result.data || []);
+					const products = (result.data || []).slice();
+					products.sort(availabilityComparator);
+					setFoundProducts(products);
 				} catch (error) {
 					console.error("Помилка пошуку:", error);
 				}
@@ -76,7 +79,7 @@ const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 					<div className="flex flex-col overflow-y-auto max-h-full md:max-h-[306px]">
 						{foundProducts.slice(0, 5).map((product, index) => (
 							<div onClick={() => handleItemClick(`/products/${product.id}`)} key={index}
-								className="w-full py-4 md:py-[10px] w-full h-[82px] md:h-[102px] cursor-pointer pr-2 border-b border-[#f6f6f6]">
+								className={`w-full py-4 md:py-[10px] w-full h-[82px] md:h-[102px] cursor-pointer pr-2 border-b border-[#f6f6f6] ${product.amount <= 0 ? 'opacity-50' : ''}`}>
 								<div className="flex gap-3 w-full h-[58px] md:h-[82px]">
 									<div className="flex items-center justify-center h-[58px] md:h-[72px] aspect-square">
 										<img src={product.images} alt="product"/>

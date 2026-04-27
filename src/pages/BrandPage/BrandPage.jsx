@@ -14,12 +14,14 @@ import {getOptUser} from "../../redux/auth/selectors";
 import FilterIcon from "../../components/Icons/FilterIcon";
 import CloseCrossIcon from "../../components/Icons/CloseCrossIcon";
 import Button from "../../components/ButtonNew/Button";
+import {Loader} from "../../components/Loader/Loader";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const BrandPage = () => {
 	const isOptUser = useSelector(getOptUser);
 	const navigate = useNavigate();
+	const [loading, setLoading] = useState(false);
 
 	const {brands} = useParams();
 	const [brand, setBrand] = useState(null);
@@ -77,18 +79,17 @@ const BrandPage = () => {
 
 	useEffect(() => {
 		const fetchBrand = async () => {
-			//setLoading(true);
+			setLoading(true);
 			try {
 				const response = await axios.get(`${REACT_APP_API_URL}/brands/${brands}`);
-				//setLoading(false);
 				setBrand(response.data);
 			} catch (error) {
 				console.log(error);
+				setLoading(false);
 			}
 		};
 		const fetchProducts = async () => {
 			try {
-				// setLoading(true);
 				const response = await axios.get(`${REACT_APP_API_URL}/goods/findByBrandName/${brands}`);
 				const products = response.data;
 
@@ -108,9 +109,10 @@ const BrandPage = () => {
 				const max = Math.max(...prices);
 				setMinPrice(min);
 				setMaxPrice(max);
-				// setLoading(false);
+				setLoading(false);
 			} catch (error) {
 				console.log(error);
+				setLoading(false);
 			}
 		};
 		if (initialProducts === null) {
@@ -269,7 +271,11 @@ const BrandPage = () => {
 						</div>
 					</div>
 				)}
-				{brand !== null && (
+				{loading ? (
+					<div className="flex justify-center w-full py-10">
+						<Loader/>
+					</div>
+				) : brand !== null && (
 					<div className="flex flex-col gap-10 w-full">
 						<div className="flex gap-12 pr-0 md:pr-[55px]">
 							<div className="hidden md:block max-w-[150px]">
@@ -304,7 +310,8 @@ const BrandPage = () => {
 										totalPages={totalPages}
 										currentPage={page}
 										onChange={(newPage) => goToPage(newPage)}
-									/>}
+									/>
+								}
 							</div>
 						) : (
 							<div className="flex flex-col gap-5 items-center">

@@ -25,7 +25,7 @@ const Promo = () => {
 
 	return (
 		<div className={`bg-[#FFE8F5]`}>
-			{isMobileScreen && <PromoWrapper style={{height: "28px"}}/>}
+			{isMobileScreen && <PromoWrapper style={{height: "12px"}}/>}
 
 			<PromoWrapper className="flex justify-center py-[10px] w-full text-center z-10">
 				{isMobileScreen ? (
@@ -33,7 +33,7 @@ const Promo = () => {
 						href="https://t.me/+Eejgotzs-ktiMTIy"
 						target="_blank"
 						rel="noreferrer"
-						className="text-xs leading-2"
+						className="text-sm leading-2"
 					>
 						Підписуйся на наш телеграм
 					</PromoText>

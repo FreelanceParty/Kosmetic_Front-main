@@ -8,7 +8,7 @@ const SharedLayoutWithoutFooter = () => {
 	return (
 		<>
 			<Header/>
-			<div id="app-scroll-container" className="flex flex-col overflow-y-auto h-[calc(100vh-110px)] md:h-[calc(100vh-85px)] lg:h-[calc(100vh-180px)] pb-24">
+			<div id="app-scroll-container" className="flex flex-col overflow-y-auto overflow-x-hidden h-[calc(100vh-110px)] md:h-[calc(100vh-85px)] lg:h-[calc(100vh-180px)] pb-24">
 				<div>
 					<Suspense fallback={<Loader/>}>
 						<Outlet/>

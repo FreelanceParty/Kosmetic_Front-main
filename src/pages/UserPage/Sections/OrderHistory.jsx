@@ -7,6 +7,7 @@ import {getUserToken, getIsLoggedIn} from "../../../redux/auth/selectors";
 import OrderBlock from "./_elements/OrderBlock";
 import Paginator from "../../../components/Paginator";
 import {useNavigate} from "react-router-dom";
+import {Loader} from "../../../components/Loader/Loader";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -23,6 +24,7 @@ const OrderHistory = () => {
 	const token = useSelector(getUserToken);
 	const [activeTab, setActiveTab] = useState("all");
 	const [orders, setOrders] = useState([]);
+	const [loading, setLoading] = useState(false);
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
 	const pageSize = 7;
@@ -31,6 +33,7 @@ const OrderHistory = () => {
 	useEffect(() => {
 		const fetchOrders = async () => {
 			try {
+				setLoading(true);
 				const response = await axios.get(
 					`${REACT_APP_API_URL}/orders/byUser`, {
 						headers: {
@@ -42,8 +45,10 @@ const OrderHistory = () => {
 				setOrders(ordersResponse);
 				setCurrentPageItems(ordersResponse.slice(0, pageSize));
 				setTotalPages(Math.ceil(ordersResponse.length / pageSize));
+				setLoading(false);
 			} catch (error) {
 				console.log(error);
+				setLoading(false);
 			}
 		};
 		if (isLoggedIn) {
@@ -79,9 +84,13 @@ const OrderHistory = () => {
 		setCurrentPageItems(filteredOrders.slice(0, pageSize));
 	}
 
-	return ( // todo: add loader
+	return (
 		<>
-			{orders.length === 0
+			{loading ? (
+				<div className="flex justify-center w-full py-10">
+					<Loader/>
+				</div>
+			) : orders.length === 0
 				? <div className="flex flex-col gap-[50px]">
 					<div className="hidden md:flex flex-col gap-4">
 						<div className="font-semibold text-lg leading-[13px]">ІСТОРІЯ ЗАМОВЛЕНЬ</div>

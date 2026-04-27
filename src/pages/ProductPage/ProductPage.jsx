@@ -83,22 +83,36 @@ const ProductPage = () => {
 	}, [product]);
 
 	useEffect(() => {
+		let isCancelled = false;
 		const fetchProduct = async () => {
 			setLoading(true);
+			setProduct(null);
+			setRecommendedProducts([]);
 			try {
 				const response = await axios.get(`${API_URL}/goods/${id}`);
+
+				if (isCancelled) {
+					return;
+				}
+
 				setIsInCart(productCart.some(item => item.id === response.data.id));
 				setProductCount(response.data.amount);
-				setLoading(false);
 				setProduct(response.data);
+				setLoading(false);
 			} catch (error) {
 				console.log(error);
+				if (!isCancelled) {
+					setLoading(false);
+				}
 			}
 		};
-		if (product === null) {
-			fetchProduct();
-		}
-	}, [id]);
+
+		fetchProduct();
+
+		return () => {
+			isCancelled = true;
+		};
+	}, [id, productCart]);
 
 	useEffect(() => {
 		const fetchRecommendedProducts = async () => {

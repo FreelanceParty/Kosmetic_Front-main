@@ -1,141 +1,8 @@
 import React, {useEffect, useMemo, useState} from "react";
-import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 
 import {routeHelper} from "../../../utils/helpers/routeHelper";
 import {HEADER_MEGA_MENU} from "../../../utils/enums/headerMegaMenu";
-
-// ==== Styled ====
-const BurgerWrapper = styled.div`
-  position: relative;
-  z-index: 1000;
-`;
-
-const MobileMenuWrapper = styled.div`
-	position:   fixed;
-	inset:      0;
-	left:       ${({isOpen}) => (isOpen ? "0" : "-100%")};
-	width:      100%;
-	height:     100vh;
-	background: #FFFFFF;
-	transition: left 0.3s ease;
-	z-index:    999;
-	overflow:   hidden;
-`;
-
-const MenuHeader = styled.div`
-  height: 48px;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #e8e8e8;
-  color: #64759b;
-  font-size: 12px;
-  font-weight: 600;
-`;
-
-const CloseBtn = styled.button`
-  background: transparent;
-  border: 0;
-  padding: 8px;
-  color: #000e55;
-  font-size: 20px;
-  line-height: 1;
-  cursor: pointer;
-`;
-
-const MenuBody = styled.div`
-  height: calc(100vh - 48px);
-  overflow-y: auto;
-  padding-bottom: 56px;
-`;
-
-const MobileNav = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-`;
-
-const RowButton = styled.button`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid #f2f2f2;
-  cursor: pointer;
-`;
-
-const RowLink = styled.a`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
-  color: #000e55;
-  text-decoration: none;
-  border-bottom: 1px solid #f2f2f2;
-`;
-
-const RowText = styled.span`
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: #000e55;
-`;
-
-const SubRowButton = styled.button`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  padding-left: 24px;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid #f7f7f7;
-  cursor: pointer;
-`;
-
-const SubRowText = styled.span`
-  font-weight: 600;
-  font-size: 12px;
-  color: #000e55;
-`;
-
-const LeafLink = styled.button`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  padding-left: 32px;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid #fafafa;
-  cursor: pointer;
-  color: #64759b;
-  font-size: 12px;
-  font-weight: 500;
-  text-align: left;
-`;
-
-const PlusMinus = styled.span`
-  width: 16px;
-  min-width: 16px;
-  text-align: center;
-  color: #000e55;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 1;
-`;
 
 const MobileMenu = ({isOpen, setIsOpen}) => {
 	const navigate = useNavigate();
@@ -160,46 +27,47 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 
 	const topItems = useMemo(() => ([
 		{
-			key: "СПІВПРАЦЯ",
-			type: "accordion",
+			key:      "СПІВПРАЦЯ",
+			type:     "accordion",
 			children: [
 				{label: "ОСОБИСТІ ЗАМОВЛЕННЯ", to: "/cooperation"},
-				{label: "ДЛЯ БІЗНЕСУ (ОПТ)", to: "/cooperation"},
-				{label: "ДРОПШИПІНГ", to: "/cooperation"},
-				{label: "КОНТАКТИ", to: "/cooperation"},
+				{label: "ДЛЯ БІЗНЕСУ (ОПТ)", to: "/cooperation?section=business"},
+				{label: "ДРОПШИПІНГ", to: "/cooperation?section=dropshipping"},
+				{label: "КОНТАКТИ", to: "/cooperation?section=contacts"},
 			],
 		},
 		{
-			key: "ОБЛИЧЧЯ",
-			type: "category",
-			href: getCategoryRoute("догляд для обличчя"),
+			key:     "ОБЛИЧЧЯ",
+			type:    "category",
+			href:    getCategoryRoute("догляд для обличчя"),
 			menuKey: "ОБЛИЧЧЯ",
 		},
 		{
-			key: "ВОЛОССЯ",
-			type: "category",
-			href: getCategoryRoute("догляд для волосся"),
+			key:     "ВОЛОССЯ",
+			type:    "category",
+			href:    getCategoryRoute("догляд для волосся"),
 			menuKey: "ВОЛОССЯ",
 		},
 		{
-			key: "МАКІЯЖ",
-			type: "category",
-			href: getCategoryRoute("макіяж"),
+			key:     "МАКІЯЖ",
+			type:    "category",
+			href:    getCategoryRoute("макіяж"),
 			menuKey: "МАКІЯЖ",
 		},
 		{
-			key: "ТІЛО",
-			type: "category",
-			href: getCategoryRoute("догляд для тіла"),
+			key:     "ТІЛО",
+			type:    "category",
+			href:    getCategoryRoute("догляд для тіла"),
 			menuKey: "ТІЛО",
 		},
 		{
-			key: "НАБОРИ & ПОДАРУНКИ",
-			type: "category",
-			href: getCategoryRoute("набори"),
+			key:     "НАБОРИ & ПОДАРУНКИ",
+			type:    "category",
+			href:    getCategoryRoute("набори"),
 			menuKey: "НАБОРИ & ПОДАРУНКИ",
 		},
-		{key: "SALE", type: "link", href: "/"},
+		{key: "SALE", type: "link", href: "/search?marker=sale&page=1&query=", styles: 'text-[#B90003]'},
+		{key: "NEW", type: "link", href: "/search?marker=new&page=1&query=", styles: 'text-green-600'},
 		{key: "БРЕНДИ", type: "link", href: "/brands"},
 		{key: "ПРО НАС", type: "link", href: "/about-us"},
 	]), [getCategoryRoute]);
@@ -208,17 +76,27 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 	const openedCategoryHref = topItems.find((i) => i.key === openedTop)?.href;
 
 	return (
-		<BurgerWrapper className="flex lg:hidden">
-			<MobileMenuWrapper isOpen={isOpen}>
-				<MenuHeader>
+		<div className="relative z-[1000] flex lg:hidden">
+			<div
+				className={
+					"fixed inset-0 h-screen w-full overflow-hidden bg-white z-[999] transition-transform duration-300 ease-in-out " +
+					(isOpen ? "translate-x-0" : "-translate-x-full")
+				}
+			>
+				<div className="flex h-12 items-center justify-between border-b border-[#e8e8e8] px-4 text-[12px] font-semibold text-[#64759b]">
 					<span>Меню</span>
-					<CloseBtn type="button" onClick={closeMenu} aria-label="Close menu">
+					<button
+						type="button"
+						onClick={closeMenu}
+						aria-label="Close menu"
+						className="cursor-pointer bg-transparent p-2 text-[20px] leading-none text-[#000e55]"
+					>
 						×
-					</CloseBtn>
-				</MenuHeader>
+					</button>
+				</div>
 
-				<MenuBody>
-					<MobileNav>
+				<div className="h-[calc(100vh-48px)] overflow-y-auto pb-14">
+					<ul className="list-none m-0 p-0">
 						{topItems.map((item) => {
 							const isOpenTop = openedTop === item.key;
 							const canExpand = item.type === "accordion" || item.type === "category";
@@ -226,45 +104,61 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 							if (!canExpand) {
 								return (
 									<li key={item.key}>
-										<RowButton
+										<button
 											type="button"
 											onClick={() => go(item.href)}
+											className="flex w-full cursor-pointer items-center justify-between gap-3 border-b border-[#f2f2f2] bg-transparent px-4 py-[14px]"
 										>
-											<RowText style={item.key === "SALE" ? {color: "#B90003"} : undefined}>{item.key}</RowText>
-											<span />
-										</RowButton>
+											<span
+												className={
+													`text-[12px] font-bold uppercase tracking-[0.02em] text-[#000e55] ${item.styles ?? ''}`
+												}
+											>
+												{item.key}
+											</span>
+											<span/>
+										</button>
 									</li>
 								);
 							}
 
 							return (
 								<li key={item.key}>
-									<RowButton
+									<button
 										type="button"
 										onClick={() => {
 											setOpenedSection(null);
 											setOpenedTop(isOpenTop ? null : item.key);
 										}}
+										className="flex w-full cursor-pointer items-center justify-between gap-3 border-b border-[#f2f2f2] bg-transparent px-4 py-[14px]"
 									>
-										<RowText>{item.key}</RowText>
-										<PlusMinus>{isOpenTop ? "−" : "+"}</PlusMinus>
-									</RowButton>
+										<span className="text-[12px] font-bold uppercase tracking-[0.02em] text-[#000e55]">
+											{item.key}
+										</span>
+										<span className="min-w-4 w-4 text-center text-[18px] font-normal leading-none text-[#000e55]">
+											{isOpenTop ? "−" : "+"}
+										</span>
+									</button>
 
 									{isOpenTop && item.type === "accordion" && (
-										<ul style={{listStyle: "none", margin: 0, padding: 0}}>
+										<ul className="list-none m-0 p-0">
 											{item.children.map((ch) => (
 												<li key={ch.label}>
-													<LeafLink type="button" onClick={() => go(ch.to)}>
+													<button
+														type="button"
+														onClick={() => go(ch.to)}
+														className="flex w-full cursor-pointer items-center justify-between border-b border-[#fafafa] bg-transparent px-4 py-[10px] pl-8 text-left text-[12px] font-medium text-[#64759b]"
+													>
 														{ch.label}
-														<span />
-													</LeafLink>
+														<span/>
+													</button>
 												</li>
 											))}
 										</ul>
 									)}
 
 									{isOpenTop && item.type === "category" && openedCategoryMenu && openedCategoryHref && (
-										<ul style={{listStyle: "none", margin: 0, padding: 0}}>
+										<ul className="list-none m-0 p-0">
 											{openedCategoryMenu.columns
 												.flatMap((c) => c.sections ?? [])
 												.map((section) => {
@@ -273,31 +167,39 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 
 													return (
 														<li key={section.title}>
-															<SubRowButton
+															<button
 																type="button"
 																onClick={() => {
-																if (!hasItems) {
-																	go(`${openedCategoryHref}?category=${encodeURIComponent(section.title)}`);
-																	return;
-																}
-																setOpenedSection(isSectionOpen ? null : section.title);
-															}}
+																	if (!hasItems) {
+																		go(`${openedCategoryHref}?category=${encodeURIComponent(section.title)}`);
+																		return;
+																	}
+																	setOpenedSection(isSectionOpen ? null : section.title);
+																}}
+																className="flex w-full cursor-pointer items-center justify-between gap-3 border-b border-[#f7f7f7] bg-transparent px-4 py-3 pl-6"
 															>
-																<SubRowText>{section.title}</SubRowText>
-																{hasItems ? <PlusMinus>{isSectionOpen ? "−" : "+"}</PlusMinus> : <span />}
-															</SubRowButton>
+																<span className="text-[12px] font-semibold text-[#000e55]">{section.title}</span>
+																{hasItems ? (
+																	<span className="min-w-4 w-4 text-center text-[18px] font-normal leading-none text-[#000e55]">
+																		{isSectionOpen ? "−" : "+"}
+																	</span>
+																) : (
+																	<span/>
+																)}
+															</button>
 
 															{hasItems && isSectionOpen && (
-																<ul style={{listStyle: "none", margin: 0, padding: 0}}>
+																<ul className="list-none m-0 p-0">
 																	{section.items.map((leaf) => (
 																		<li key={leaf}>
-																			<LeafLink
+																			<button
 																				type="button"
 																				onClick={() => go(`${openedCategoryHref}?subcategory=${encodeURIComponent(leaf)}`)}
+																				className="flex w-full cursor-pointer items-center justify-between border-b border-[#fafafa] bg-transparent px-4 py-[10px] pl-8 text-left text-[12px] font-medium text-[#64759b]"
 																			>
 																				{leaf}
-																				<span />
-																			</LeafLink>
+																				<span/>
+																			</button>
 																		</li>
 																	))}
 																</ul>
@@ -310,10 +212,10 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 								</li>
 							);
 						})}
-					</MobileNav>
-				</MenuBody>
-			</MobileMenuWrapper>
-		</BurgerWrapper>
+					</ul>
+				</div>
+			</div>
+		</div>
 	);
 };
 

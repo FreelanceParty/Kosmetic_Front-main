@@ -4,6 +4,7 @@ import Button from "../ButtonNew/Button";
 import ChevronLeftIcon from "../Icons/ChevronLeftIcon";
 import ChevronRightIcon from "../Icons/ChevronRightIcon";
 import {useNavigate} from "react-router-dom";
+import {Loader} from "../Loader/Loader";
 
 const ProductSlider = ({title, products}) => {
 	const navigate = useNavigate();
@@ -18,7 +19,11 @@ const ProductSlider = ({title, products}) => {
 	const handleNext = () => setIndex(prev => Math.min(prev + step, maxIndex));
 
 	if (!products || products.length === 0) {
-		return <div>Loading...</div>;
+		return (
+			<div className="flex justify-center w-full py-10">
+				<Loader/>
+			</div>
+		);
 	}
 
 	return (
