@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import SearchInput from "./SearchInput";
 import {CATEGORIES} from "../../utils/enums/categories";
@@ -13,6 +13,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 	const navigate = useNavigate();
 	const isOptUser = useSelector(getOptUser);
+	const latestRequestIdRef = useRef(0);
 
 	const [searchQuery, setSearchQuery] = useState("");
 	const [foundCategories, setFoundCategories] = useState([]);
@@ -21,14 +22,21 @@ const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 	useEffect(() => {
 		const delayDebounce = setTimeout(async () => {
 			if (searchQuery.trim() !== "") {
+				const requestId = ++latestRequestIdRef.current;
 				try {
 					setCategories();
-					const result = await axios.get(`${API_URL}/goods/findByName/${searchQuery}`);
+					const encodedQuery = encodeURIComponent(searchQuery);
+					const result = await axios.get(`${API_URL}/goods/findByName/${encodedQuery}`);
 					const products = (result.data || []).slice();
 					products.sort(availabilityComparator);
-					setFoundProducts(products);
+					if (requestId === latestRequestIdRef.current) {
+						setFoundProducts(products);
+					}
 				} catch (error) {
 					console.error("Помилка пошуку:", error);
+					if (requestId === latestRequestIdRef.current) {
+						setFoundProducts([]);
+					}
 				}
 			} else {
 				setFoundCategories([]);
@@ -60,7 +68,7 @@ const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 	}
 
 	return (isSearchOpen &&
-		<div className="fixed w-full bg-white px-5">
+		<div className="w-full bg-white px-5">
 			<div className="flex flex-col w-full max-w-[962px] mx-auto">
 				<SearchInput
 					value={searchQuery}

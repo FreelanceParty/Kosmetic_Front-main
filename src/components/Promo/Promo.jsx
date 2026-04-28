@@ -25,7 +25,7 @@ const Promo = () => {
 
 	return (
 		<div className={`bg-[#FFE8F5]`}>
-			{isMobileScreen && <PromoWrapper style={{height: "12px"}}/>}
+			{isMobileScreen && <PromoWrapper style={{height: "4px"}}/>}
 
 			<PromoWrapper className="flex justify-center py-[10px] w-full text-center z-10">
 				{isMobileScreen ? (

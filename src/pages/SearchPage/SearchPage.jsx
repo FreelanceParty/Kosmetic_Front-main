@@ -110,7 +110,8 @@ const SearchPage = () => {
 					response = await axios.get(`${REACT_APP_API_URL}/goods`);
 					products = response.data.goods;
 				} else {
-					response = await axios.get(`${REACT_APP_API_URL}/goods/findByName/${searchText}`);
+					const encodedQuery = encodeURIComponent(searchText ?? "");
+					response = await axios.get(`${REACT_APP_API_URL}/goods/findByName/${encodedQuery}`);
 					products = response.data;
 				}
 
@@ -139,9 +140,7 @@ const SearchPage = () => {
 			}
 		};
 
-		if (initialProducts === null) {
-			fetchProducts();
-		}
+		fetchProducts();
 	}, [searchText]);
 
 	useEffect(() => {
