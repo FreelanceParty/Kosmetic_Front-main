@@ -23,7 +23,7 @@ const Reviews = ({withProducts = true, reviews}) => {
 	//const navigate = useNavigate(); // todo: go to product page
 
 	return (
-		<div className="flex md:hidden flex-col border-t border-[#E8E8E8] w-full max-w-[1241px] pb-[60px]">
+		<div className="flex md:hidden flex-col border-t border-[#E8E8E8] w-full max-w-[1241px] pb-[60px] overflow-x-hidden">
 			<div className="font-semibold text-[24px] leading-[17px] text-center py-10">ВІДГУКИ</div>
 			<div className="flex flex-col gap-10 items-center">
 
@@ -33,7 +33,7 @@ const Reviews = ({withProducts = true, reviews}) => {
 					spaceBetween={20}
 					slidesPerView={2.2}
 					pagination={{clickable: true, el: ".custom-screen-reviews-pagination"}}
-					className="max-w-md"
+					className="w-full max-w-md overflow-hidden"
 				>
 					{images.map((image, index) => (
 						<SwiperSlide key={index} className="max-w-fit">
@@ -48,7 +48,7 @@ const Reviews = ({withProducts = true, reviews}) => {
 						spaceBetween={20}
 						slidesPerView={1.5}
 						pagination={{clickable: true, el: ".custom-product-reviews-pagination"}}
-						className="max-w-md"
+						className="w-full max-w-md overflow-hidden"
 					>
 						{reviews.slice(0, 9).map((review, index) => (
 							<SwiperSlide key={index} className="max-w-[306px]">

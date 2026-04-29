@@ -25,8 +25,8 @@ const ourValuesListItems = [
 const AboutUsPage = () => {
 	const navigate = useNavigate();
 	return (
-		<div className="flex md:hidden">
-			<div className="flex flex-col pt-5 gap-[60px]">
+		<div className="flex md:hidden w-full overflow-x-hidden">
+			<div className="flex flex-col pt-5 gap-[60px] w-full min-w-0 overflow-x-hidden">
 				<div className="flex flex-col gap-8 px-4">
 					<div className="font-semibold text-[18px] py-[10px] leading-[13px] text-center border-b border-[#F6F6F6]">ПРО НАС</div>
 					<div className="text-md">
