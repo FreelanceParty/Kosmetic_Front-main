@@ -6,18 +6,11 @@ import ProductReview from "./_elements/ProductReview";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Pagination} from "swiper/modules";
 
-const images = [
-	//require("../../assets/images/reviews/1.png"),
-	require("../../assets/images/reviews/2.png"),
-	require("../../assets/images/reviews/3.png"),
-	require("../../assets/images/reviews/4.png"),
-	require("../../assets/images/reviews/5.png"),
-	require("../../assets/images/reviews/2.png"),
-	require("../../assets/images/reviews/3.png"),
-	require("../../assets/images/reviews/4.png"),
-	require("../../assets/images/reviews/5.png"),
-	//require("../../assets/images/reviews/6.png"),
-];
+const importAll = (r) => r.keys().map(r);
+
+const images = importAll(
+	require.context("../../assets/images/reviews", false, /\.(png|jpe?g|webp|svg)$/)
+);
 
 const Reviews = ({withProducts = true, reviews}) => {
 	//const navigate = useNavigate(); // todo: go to product page
@@ -37,7 +30,7 @@ const Reviews = ({withProducts = true, reviews}) => {
 				>
 					{images.map((image, index) => (
 						<SwiperSlide key={index} className="max-w-fit">
-							<img className="w-[193px] h-[344px]" src={image} alt="review"/>
+							<img className="w-[193px] h-[344px] object-cover object-center" src={image} alt="review"/>
 						</SwiperSlide>
 					))}
 				</Swiper>
