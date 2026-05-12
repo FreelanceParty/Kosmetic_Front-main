@@ -2,7 +2,7 @@ export const CATEGORIES = [
 	{
 		image: require("../../assets/images/categories/mascara.png"),
 		name:  "Туш для вій",
-		route: "/katehoriji/makiiazh/dlia%20ochej/tush",
+		route: "/katehoriji/makeup?subcategory=Туш",
 	},
 	{
 		image: require("../../assets/images/categories/hair_care.png"),
@@ -12,31 +12,31 @@ export const CATEGORIES = [
 	{
 		image: require("../../assets/images/categories/face_cream.png"),
 		name:  "Крем для обличчя",
-		route: "/katehoriji/facial/moisturizing/cream",
+		route: "/katehoriji/faceCare?subcategory=Крем",
 	},
 	{
 		image: require("../../assets/images/categories/hydration.png"),
 		name:  "Зволоження",
-		route: "/katehoriji/facial/moisturizing",
+		route: "/katehoriji/faceCare?subcategory=Зволоження",
 	},
 	{
 		image: require("../../assets/images/categories/serums.png"),
 		name:  "Сироватки",
-		route: "/katehoriji/facial/moisturizing/serum",
+		route: "/katehoriji/faceCare?subcategory=Сироватки%20під%20очі",
 	},
 	{
 		image: require("../../assets/images/categories/eye_cream.png"),
 		name:  "Крем для очей",
-		route: "/katehoriji/facial/forSkinUnderTheEyes/creamUnderTheEyes",
+		route: "/katehoriji/faceCare?subcategory=Креми%20під%20очі",
 	},
 	{
 		image: require("../../assets/images/categories/face_masks.png"),
 		name:  "Маски для обличчя",
-		route: "/katehoriji/facial/masks",
+		route: "/katehoriji/faceCare?category=МАСКИ%20ДЛЯ%20ОБЛИЧЧЯ",
 	},
 	{
 		image: require("../../assets/images/categories/hand_cream.png"),
 		name:  "Крем для рук",
-		route: "/katehoriji/bodyCare/handCosmetics/handCream",
+		route: "/katehoriji/bodyCare?category=КРЕМ%20ДЛЯ%20РУК",
 	},
 ]

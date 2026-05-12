@@ -182,7 +182,7 @@ const Category = () => {
 		setChosenBrands([]);
 		setPriceFilter(null);
 		fetchProducts();
-	}, [category]);
+	}, [category, location.search, isOptUser]);
 
 	useEffect(() => {
 		if (isMobileFiltersOpen) {

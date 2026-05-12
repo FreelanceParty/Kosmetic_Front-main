@@ -7,16 +7,16 @@ import "swiper/css";
 
 const promoMessages = [
 	{
-		text: "Підписуйся на наш телеграм, щоб дізнатись першим про новинки",
+		text: "Кешбек на кожне наступне оптове замовлення",
+		href: null,
+	},
+	{
+		text: "Підписуйся на наш телеграм канал",
 		href: "https://t.me/+Eejgotzs-ktiMTIy",
 	},
 	{
-		text: "Безкоштовна доставка від 3000 грн",
-		href: "",
-	},
-	{
-		text: "Зареєструйся на сайті, щоб побачити оптові ціни",
-		href: "",
+		text: "НОВА ПОСТАВКА КОСМЕТИКИ SKIN1004 , Beauty Of Joseon , Dr.Althea , AXIS-Y , TOCOBO",
+		href: null,
 	},
 ];
 
@@ -35,7 +35,7 @@ const Promo = () => {
 						rel="noreferrer"
 						className="text-sm leading-2"
 					>
-						Підписуйся на наш телеграм
+						Підписуйся на наш телеграм канал
 					</PromoText>
 				) : (
 					<Swiper
@@ -43,7 +43,7 @@ const Promo = () => {
 						slidesPerView={1}
 						loop={true}
 						autoplay={{
-							delay:                50000,
+							delay:                4000,
 							disableOnInteraction: false,
 							pauseOnMouseEnter:    true,
 						}}

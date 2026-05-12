@@ -23,7 +23,7 @@ const Footer = () => {
 						<a href="/">Оплата і доставка</a>
 						<Link to="/cabinet">Особистий кабінет</Link>
 						<Link to="/cooperation?section=contacts">Контакти</Link>
-						<a href="/">Договір публічної оферти</a>
+						<a href="/docs/Договір_публічної_оферти_2026р_BEAUTYBLOSSOM.docx" target="_blank" rel="noreferrer">Договір публічної оферти</a>
 					</div>
 					<div className="text-[10px] text-center leading-[12px]">Всі права захищені. <br/> {new Date().getFullYear()}</div>
 				</div>
@@ -40,7 +40,7 @@ const Footer = () => {
 							<Link className="leading-[12px]" to="/about-us">Про нас</Link>
 							<Link className="leading-[12px]" to="/cooperation?section=business">Оптова співпраця</Link>
 							<Link className="leading-[12px]" to="/cooperation?section=dropshipping">Дропшипінг</Link>
-							<a className="leading-[12px]" href="/">Договір публічної оферти</a>
+							<a className="leading-[12px]" href="/docs/Договір_публічної_оферти_2026р_BEAUTYBLOSSOM.docx" target="_blank" rel="noreferrer">Договір публічної оферти</a>
 							<Link className="leading-[12px]" to="/cooperation?section=contacts">Контакти</Link>
 						</div>
 						<div className="flex gap-[34px]">
