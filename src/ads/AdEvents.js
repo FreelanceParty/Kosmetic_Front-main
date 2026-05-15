@@ -2,10 +2,11 @@ import axios from "axios";
 import {v4 as uuidv4} from 'uuid';
 import CryptoJS from "crypto-js";
 
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
-// todo: add other events
+const getProductId = (product) => product?._id || product?.id || product?.productId || product?.code;
+const getProductPrice = (product) => Number(product?.price ?? product?.priceOPT ?? 0);
+
 export const trackPageView = async (userSelectors = {}) => {
 	const eventId  = uuidv4(),
 	      userData = getHashedUserData(userSelectors);
@@ -23,8 +24,7 @@ export const trackPageView = async (userSelectors = {}) => {
 	try {
 		await sendConversionAPI('PageView', eventId, userData);
 	} catch (e) {
-		console.log('Error: ', e);
-		await sendTelegramMessage(`❌ Помилка (FacebookPixelEvent::trackPageView): ${e.message}\n\nStack:\n${e.stack}`);
+		console.error('Error: ', e);
 	}
 }
 
@@ -32,18 +32,18 @@ export const trackAddToCart = async (product, userSelectors) => {
 	const eventId    = uuidv4(),
 	      userData   = getHashedUserData(userSelectors),
 	      customData = {
-		      content_ids:  [product._id],
+		      content_ids:  [getProductId(product)],
 		      content_type: 'product',
-		      value:        product.price,
+		      value:        getProductPrice(product),
 		      currency:     'UAH',
 	      };
 
 	try {
 		if (window.fbq) {
 			window.fbq('track', 'AddToCart', {
-				content_ids:  [product._id],
+				content_ids:  [getProductId(product)],
 				content_type: 'product',
-				value:        product.price,
+				value:        getProductPrice(product),
 				currency:     'UAH',
 				user_data:    userData,
 			}, {eventID: eventId});
@@ -57,23 +57,21 @@ export const trackAddToCart = async (product, userSelectors) => {
 	try {
 		await sendConversionAPI("AddToCart", eventId, userData, customData);
 	} catch (e) {
-		console.log('Error: ', e);
-		await sendTelegramMessage(`❌ Помилка (FacebookPixelEvent::trackAddToCart): ${e.message}\n\nStack:\n${e.stack}`);
+		console.error('Error: ', e);
 	}
 
 	try {
 		if (window.gtag) {
 			window.gtag('event', 'conversion', {
 				'send_to':  'AW-16897946922/BDTiCKvd_a0bEKrqyPk-',
-				'value':    product.price,
+				'value':    getProductPrice(product),
 				'currency': 'UAH',
 			});
 		} else {
 			console.log('Warning: gtag is not defined');
 		}
 	} catch (e) {
-		console.log('Error: ', e);
-		await sendTelegramMessage(`❌ Помилка (Google Ads::trackAddToCart): ${e.message}\n\nStack:\n${e.stack}`);
+		console.error('Error: ', e);
 	}
 }
 
@@ -81,18 +79,18 @@ export const trackViewContent = async (product, userSelectors) => {
 	const eventId    = uuidv4(),
 	      userData   = getHashedUserData(userSelectors),
 	      customData = {
-		      content_ids:  [product._id],
+		      content_ids:  [getProductId(product)],
 		      content_type: 'product',
-		      value:        product.price,
+		      value:        getProductPrice(product),
 		      currency:     'UAH',
 	      };
 
 	try {
 		if (window.fbq) {
 			window.fbq('track', 'ViewContent', {
-				content_ids:  [product._id],
+				content_ids:  [getProductId(product)],
 				content_type: 'product',
-				value:        product.price,
+				value:        getProductPrice(product),
 				currency:     'UAH',
 				user_data:    userData,
 			}, {eventID: eventId});
@@ -106,8 +104,7 @@ export const trackViewContent = async (product, userSelectors) => {
 	try {
 		await sendConversionAPI("ViewContent", eventId, userData, customData);
 	} catch (e) {
-		console.log('Error: ', e);
-		await sendTelegramMessage(`❌ Помилка (FacebookPixelEvent::trackViewContent): ${e.message}\n\nStack:\n${e.stack}`);
+		console.error('Error: ', e);
 	}
 }
 
@@ -141,8 +138,7 @@ export const trackInitiateCheckout = async (totalCost, items, userSelectors = {}
 	try {
 		await sendConversionAPI('InitiateCheckout', eventId, userData, customData);
 	} catch (e) {
-		console.log('Error: ', e);
-		await sendTelegramMessage(`❌ Помилка (FacebookPixelEvent::trackInitiateCheckout): ${e.message}\n\nStack:\n${e.stack}`);
+		console.error('Error: ', e);
 	}
 
 	try {
@@ -156,8 +152,7 @@ export const trackInitiateCheckout = async (totalCost, items, userSelectors = {}
 			console.log('Warning: gtag is not defined');
 		}
 	} catch (e) {
-		console.log('Error: ', e);
-		await sendTelegramMessage(`❌ Помилка (Google Ads::trackInitiateCheckout): ${e.message}\n\nStack:\n${e.stack}`);
+		console.error('Error: ', e);
 	}
 }
 
@@ -190,8 +185,7 @@ export const trackPurchase = async (totalCost, items, userSelectors = {}) => {
 	try {
 		await sendConversionAPI('Purchase', eventId, userData, customData);
 	} catch (e) {
-		console.log('Error: ', e);
-		await sendTelegramMessage(`❌ Помилка (FacebookPixelEvent::trackPurchase): ${e.message}\n\nStack:\n${e.stack}`);
+		console.error('Error: ', e);
 	}
 
 	try {
@@ -206,25 +200,12 @@ export const trackPurchase = async (totalCost, items, userSelectors = {}) => {
 			console.log('Warning: gtag is not defined');
 		}
 	} catch (e) {
-		console.log('Error: ', e);
-		await sendTelegramMessage(`❌ Помилка (Google Ads::trackPurchase): ${e.message}\n\nStack:\n${e.stack}`);
-	}
-}
-
-async function sendTelegramMessage(message) {
-	try {
-		await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-			chat_id: TELEGRAM_CHAT_ID,
-			text:    message,
-		});
-	} catch (err) {
-		console.error('Помилка надсилання в Telegram:', err.message);
+		console.error('Error: ', e);
 	}
 }
 
 const sendConversionAPI = async (eventName, eventId, userData = null, customData = null) => {
-	if(true) {
-		// todo: remove this
+	if (!REACT_APP_API_URL) {
 		return;
 	}
 	const payload = {
@@ -241,7 +222,7 @@ const sendConversionAPI = async (eventName, eventId, userData = null, customData
 		payload.custom_data = customData;
 	}
 
-	await axios.post('/conversion', payload);
+	await axios.post(`${REACT_APP_API_URL}/conversion`, payload);
 };
 
 function getHashedUserData(userSelectors) {

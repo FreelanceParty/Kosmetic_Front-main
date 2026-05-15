@@ -99,7 +99,7 @@ const OrderPlacementPage = () => {
 
 	const handleInputChange = (e) => {
 		const {name, value} = e.target;
-		setFormData({...formData, [name]: value});
+		setFormData((prev) => ({...prev, [name]: value}));
 	};
 	useEffect(() => {
 		validateForm(false);
@@ -109,61 +109,61 @@ const OrderPlacementPage = () => {
 		if (totalAmount === 0) {
 			showErrorMessage("Для замовлення потрібно щось обрати!", withErrorMessage);
 			setIsValidForm(false);
-			return;
+			return false;
 		}
 		if (isOptUser && totalAmount < 3000) {
 			showErrorMessage("Мінімальна сума замовлення 3000 грн!", withErrorMessage);
 			setIsValidForm(false);
-			return;
+			return false;
 		}
 
 		if (!formData.city) {
 			showErrorMessage("Будь ласка, виберіть місто", withErrorMessage);
 			setIsValidForm(false);
-			return;
+			return false;
 		}
 		if (!formData.deliveryMethod) {
 			showErrorMessage("Будь ласка, виберіть спосіб доставки", withErrorMessage);
 			setIsValidForm(false);
-			return;
+			return false;
 		} else if (formData.deliveryMethod === "Доставка кур'єром") {
 			if (!formData.address) {
-				showErrorMessage("Будь ласка, виберіть місто", withErrorMessage);
+				showErrorMessage("Будь ласка, введіть адресу", withErrorMessage);
 				setIsValidForm(false);
-				return;
+				return false;
 			}
 			if (!formData.building) {
-				showErrorMessage("Будь ласка, виберіть будинок", withErrorMessage);
+				showErrorMessage("Будь ласка, введіть будинок", withErrorMessage);
 				setIsValidForm(false);
-				return;
+				return false;
 			}
 		} else if (formData.deliveryMethod === "Доставка на відділення") {
 			if (!formData.warehouse) {
 				showErrorMessage("Будь ласка, виберіть відділення НП", withErrorMessage);
 				setIsValidForm(false);
-				return;
+				return false;
 			}
 		}
 		if (orderNumber === "") {
 			showErrorMessage("Щось пішло не так, спробуйте ще раз, або зверніться до адміністратора", withErrorMessage);
 			setIsValidForm(false);
-			return;
+			return false;
 		}
 		if (!formData.firstName) {
 			showErrorMessage("Введіть ім'я отримувача.", withErrorMessage);
 			setIsValidForm(false);
-			return;
+			return false;
 		}
 		if (!formData.lastName) {
 			showErrorMessage("Введіть прізвище отримувача.", withErrorMessage);
 			setIsValidForm(false);
-			return;
+			return false;
 		}
 
 		if (!formData.number) {
 			showErrorMessage("Введіть номер телефону отримувача.", withErrorMessage);
 			setIsValidForm(false);
-			return;
+			return false;
 		}
 		const phonePattern = /^\+380\d{9}$/;
 		const trimmedValue = formData.number;
@@ -173,15 +173,17 @@ const OrderPlacementPage = () => {
 		if (!isPhoneValid) {
 			showErrorMessage("Введіть коректний номер телефону з 12 цифр, включаючи +380", withErrorMessage);
 			setIsValidForm(false);
-			return;
+			return false;
 		}
 		if (!formData.email) {
 			showErrorMessage("Введіть адресу вашої пошти.", withErrorMessage, {
 				className: "custom-toast",
 			});
 			setIsValidForm(false);
+			return false;
 		}
 		setIsValidForm(true);
+		return true;
 
 		function showErrorMessage(errorMessage, isShow, options) {
 			if (!isShow) {
@@ -194,8 +196,8 @@ const OrderPlacementPage = () => {
 	const submitOrder = async () => {
 
 		try {
-			validateForm(true);
-			if (!isValidForm) {
+			const isValid = validateForm(true);
+			if (!isValid) {
 				return;
 			}
 
@@ -206,7 +208,7 @@ const OrderPlacementPage = () => {
 			}
 			const response = await axios.post(`${API_URL}/orders`, dataToSend);
 
-			if (!response.status === 201) {
+			if (response.status !== 201) {
 				throw new Error(
 					response.data.message || "Помилка створення замовлення"
 				);

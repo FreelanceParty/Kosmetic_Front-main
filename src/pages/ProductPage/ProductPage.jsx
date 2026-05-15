@@ -1,12 +1,12 @@
 import axios from "axios";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useParams} from "react-router-dom";
 import {Loader} from "../../components/Loader/Loader";
 import Desktop from "./Contents/Desktop";
 import Mobile from "./Contents/Mobile";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCart} from "../../redux/cart/selectors";
-import {trackAddToCart} from "../../ads/AdEvents";
+import {trackAddToCart, trackViewContent} from "../../ads/AdEvents";
 import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../redux/auth/selectors";
 import {handleAddToCart,} from "../../utils/helpers/basket";
 import {toast} from "react-toastify";
@@ -27,6 +27,7 @@ const ProductPage = () => {
 	const [reviewsLength, setReviewsLength] = useState(0);
 	const [averageRating, setAverageRating] = useState(0);
 	const [reviewsCount, setReviewsCount] = useState('');
+	const viewedProductIdRef = useRef(null);
 
 	const isLoggedIn = useSelector(getIsLoggedIn);
 
@@ -48,6 +49,10 @@ const ProductPage = () => {
 	}
 
 	useEffect(() => {
+		if (!product) {
+			return;
+		}
+
 		const fetchReviews = async () => {
 			function getReviewWord(count) {
 				if (count % 100 >= 11 && count % 100 <= 19) {
@@ -81,6 +86,19 @@ const ProductPage = () => {
 
 		fetchReviews();
 	}, [product]);
+
+	useEffect(() => {
+		if (!product) {
+			return;
+		}
+
+		const productId = product._id || product.id || product.productId || product.code;
+		if (viewedProductIdRef.current === productId) {
+			return;
+		}
+		viewedProductIdRef.current = productId;
+		trackViewContent(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
+	}, [product, userEmail, userFirstName, userLastName, userNumber]);
 
 	useEffect(() => {
 		let isCancelled = false;

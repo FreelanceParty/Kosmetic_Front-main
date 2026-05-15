@@ -6,9 +6,10 @@ import Button from "../../components/ButtonNew/Button";
 import NumberInput from "../../components/NumberInput/NumberInput";
 import DeleteIcon from "../../components/Icons/DeleteIcon";
 import {handleRemoveFromCart} from "../../utils/helpers/basket";
-import {getIsLoggedIn, getOptUser} from "../../redux/auth/selectors";
+import {getIsLoggedIn, getOptUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../redux/auth/selectors";
 import {addToCart} from "../../redux/cart/slice";
 import {useNavigate} from "react-router-dom";
+import {trackInitiateCheckout} from "../../ads/AdEvents";
 
 const CartPage = () => {
 	const dispatch = useDispatch();
@@ -16,6 +17,10 @@ const CartPage = () => {
 	const isOptUser = useSelector(getOptUser);
 
 	const isLoggedIn = useSelector(getIsLoggedIn);
+	const userEmail = useSelector(getUserEmail);
+	const userFirstName = useSelector(getUserFirstName);
+	const userLastName = useSelector(getUserLastName);
+	const userNumber = useSelector(getUserNumber);
 	const cartItems = useSelector(selectCart);
 	const [notAvailableProductsAmount, setNotAvailableProductsAmount] = useState([])
 
@@ -42,6 +47,12 @@ const CartPage = () => {
 
 	function removeFromCart(product) {
 		handleRemoveFromCart({product, dispatch, isLoggedIn});
+	}
+
+	function checkout() {
+		const items = cartItems.map((item) => item.id || item.productId || item._id || item.code);
+		trackInitiateCheckout(totalAmount, items, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
+		navigate("/order");
 	}
 
 	useEffect(() => {
@@ -116,7 +127,7 @@ const CartPage = () => {
 							type={"primary"}
 							text={"ОФОРМИТИ ЗАМОВЛЕННЯ"}
 							classes={"w-full max-w-[335px] mx-auto bg-[#E667A4]"}
-							onClick={() => navigate("/order")}
+							onClick={checkout}
 							isDisabled={notAvailableProductsAmount.length > 0}
 						/>
 					</div>

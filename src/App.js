@@ -1,6 +1,6 @@
 import {ThemeProvider} from "styled-components";
 import {theme} from "./styles/theme";
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes, useLocation} from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import ProductPage from "./pages/ProductPage/ProductPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
@@ -24,20 +24,31 @@ import SharedLayoutWithoutFooter from "./components/SharedLayoutWithoutFooter/Sh
 import AuthorizationPage from "./pages/Authorization/AuthorizationPage";
 import RegisterOptCabinetPage from "./pages/Authorization/SubPages/RegisterOptCabinetPage";
 import RegisterPersonalCabinetPage from "./pages/Authorization/SubPages/RegisterPersonalCabinetPage";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {refreshUser} from "./redux/auth/operation";
 import ForgotPasswordPage from "./pages/Authorization/SubPages/ForgotPasswordPage";
 import AboutUsPageMobile from "./pages/AboutUsPage/AboutUsPageMobile";
 import CartPage from "./pages/CartPage/CartPage";
 import OrderPlacementPage from "./pages/OrderPlacementPage/OrderPlacementPage";
+import {trackPageView} from "./ads/AdEvents";
+import {getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "./redux/auth/selectors";
 
 function App() {
 	useMedia();
 	const dispatch = useDispatch();
+	const location = useLocation();
+	const userEmail = useSelector(getUserEmail);
+	const userFirstName = useSelector(getUserFirstName);
+	const userLastName = useSelector(getUserLastName);
+	const userNumber = useSelector(getUserNumber);
 
 	useEffect(() => {
 		dispatch(refreshUser());
 	}, [dispatch]);
+
+	useEffect(() => {
+		trackPageView({em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
+	}, [location.pathname, location.search, userEmail, userFirstName, userLastName, userNumber]);
 	return (
 		<ThemeProvider theme={theme}>
 			<Routes>

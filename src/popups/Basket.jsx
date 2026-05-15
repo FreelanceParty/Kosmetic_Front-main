@@ -5,11 +5,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectCart} from "../redux/cart/selectors";
 import CloseCrossIcon from "../components/Icons/CloseCrossIcon";
 import EmptyBasketIcon from "../components/Icons/EmptyBasketIcon";
-import {getIsLoggedIn, getOptUser} from "../redux/auth/selectors";
+import {getIsLoggedIn, getOptUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../redux/auth/selectors";
 import {addToCart} from "../redux/cart/slice";
 import {handleRemoveFromCart} from "../utils/helpers/basket";
 import DeleteIcon from "../components/Icons/DeleteIcon";
 import {useNavigate} from "react-router-dom";
+import {trackInitiateCheckout} from "../ads/AdEvents";
 
 const Basket = ({onClose}) => {
 	const dispatch = useDispatch();
@@ -17,6 +18,10 @@ const Basket = ({onClose}) => {
 
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const isOptUser = useSelector(getOptUser);
+	const userEmail = useSelector(getUserEmail);
+	const userFirstName = useSelector(getUserFirstName);
+	const userLastName = useSelector(getUserLastName);
+	const userNumber = useSelector(getUserNumber);
 	const cartItems = useSelector(selectCart);
 	const [notAvailableProductsAmount, setNotAvailableProductsAmount] = useState([])
 
@@ -43,6 +48,13 @@ const Basket = ({onClose}) => {
 
 	function removeFromCart(product) {
 		handleRemoveFromCart({product, dispatch, isLoggedIn});
+	}
+
+	function checkout() {
+		const items = cartItems.map((item) => item.id || item.productId || item._id || item.code);
+		trackInitiateCheckout(totalAmount, items, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
+		onClose();
+		navigate("/order");
 	}
 
 	useEffect(() => {
@@ -102,10 +114,7 @@ const Basket = ({onClose}) => {
 							type="primary"
 							text="ОФОРМИТИ ЗАМОВЛЕННЯ"
 							classes="w-full max-w-[294px] bg-[#E667A4]"
-							onClick={() => {
-								onClose();
-								navigate("/order");
-							}}
+							onClick={checkout}
 							isDisabled={notAvailableProductsAmount.length > 0}
 						/>
 					</div>

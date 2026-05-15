@@ -12,5 +12,5 @@ export const PrivateAdminRoute = ({component: Component, ...rest}) => {
 
 	return isAdmin
 		? <Component/>
-		: <Navigate to="/login" {...rest} />;
+		: <Navigate to="/authorization" {...rest} />;
 };
