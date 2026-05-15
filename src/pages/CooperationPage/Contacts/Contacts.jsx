@@ -1,5 +1,6 @@
 import {MainTitle} from "../CooperationPage.styled";
 import Canals from "./_elements/Canals";
+import instaIcon from "../../../assets/icons/insta.svg";
 
 const Contacts = () => {
 	return (
@@ -19,7 +20,7 @@ const Contacts = () => {
 						<div className="font-semibold text-xl leading-[14px]">НАШ ІНСТАГРАМ</div>
 						<a href="https://www.instagram.com/beauty_blossom_ua?igsh=OWs4ZjAwdTkyczd3&utm_source=qr" className="flex gap-4 justify-center lg:justify-start items-center hover:text-[#E667A4] cursor-pointer">
 							<img
-								src={require("../../../assets/icons/insta.svg").default}
+								src={instaIcon}
 								alt="insta"
 								width={16}
 								height={16}

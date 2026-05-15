@@ -1,9 +1,23 @@
+import basketIcon from "../../assets/icons/header/basket.svg";
+import cooperationIcon from "../../assets/icons/header/cooperation.svg";
+import mobMenuIcon from "../../assets/icons/header/mob-menu.svg";
+import searchIcon from "../../assets/icons/header/search.svg";
+import userIcon from "../../assets/icons/header/user.svg";
+
+const icons = {
+	basket:      basketIcon,
+	cooperation: cooperationIcon,
+	"mob-menu":  mobMenuIcon,
+	search:      searchIcon,
+	user:        userIcon,
+};
+
 const HeaderMenu = ({icon, title, onClick, classes, badgeCount}) => {
 	return (
 		<div className={`flex gap-3 items-center cursor-pointer h-full max-h-[44px] ${classes ?? ''}`} onClick={onClick}>
 			<div className="relative">
 				<img
-					src={require(`../../assets/icons/header/${icon}.svg`)}
+					src={icons[icon]}
 					alt={icon}
 					className="w-6 lg:w-[18px] h-6 lg:h-[18px]"
 				/>

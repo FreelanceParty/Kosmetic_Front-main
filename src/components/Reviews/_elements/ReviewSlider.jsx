@@ -1,12 +1,20 @@
 import React, {useState} from "react";
 import ChevronLeftIcon from "../../Icons/ChevronLeftIcon";
 import ChevronRightIcon from "../../Icons/ChevronRightIcon";
+import review1 from "../../../assets/images/reviews/photo_1_2026-05-04_09-18-29.jpg";
+import review2 from "../../../assets/images/reviews/photo_2_2026-05-04_09-18-29.jpg";
+import review3 from "../../../assets/images/reviews/photo_3_2026-05-04_09-18-29.jpg";
+import review4 from "../../../assets/images/reviews/photo_4_2026-05-04_09-18-29.jpg";
+import review5 from "../../../assets/images/reviews/photo_5_2026-05-04_09-18-29.jpg";
+import review6 from "../../../assets/images/reviews/photo_6_2026-05-04_09-18-29.jpg";
+import review7 from "../../../assets/images/reviews/photo_7_2026-05-04_09-18-29.jpg";
+import review8 from "../../../assets/images/reviews/photo_8_2026-05-04_09-18-29.jpg";
+import review9 from "../../../assets/images/reviews/photo_9_2026-05-04_09-18-29.jpg";
+import review10 from "../../../assets/images/reviews/photo_10_2026-05-04_09-18-29.jpg";
+import review11 from "../../../assets/images/reviews/photo_11_2026-05-04_09-18-29.jpg";
+import review12 from "../../../assets/images/reviews/photo_12_2026-05-04_09-18-29.jpg";
 
-const importAll = (r) => r.keys().map(r);
-
-const images = importAll(
-	require.context("../../../assets/images/reviews", false, /\.(png|jpe?g|webp|svg)$/)
-);
+const images = [review1, review2, review3, review4, review5, review6, review7, review8, review9, review10, review11, review12];
 
 const ReviewSlider = () => { // todo: update slider
 	const [index, setIndex] = useState(0);

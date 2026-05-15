@@ -1,7 +1,8 @@
 {
-	"name":            "kosmetic_front",
+	"name":            "beauty-blossom",
 	"version":         "0.1.0",
 	"private":         true,
+	"homepage":        ".",
 	"dependencies":    {
 		"@fontsource/montserrat":     "^5.2.6",
 		"@reduxjs/toolkit":           "^2.5.1",

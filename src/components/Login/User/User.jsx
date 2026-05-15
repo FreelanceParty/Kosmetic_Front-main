@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getIsAdmin, getIsLoggedIn} from "../../../redux/auth/selectors";
 import {logOut} from "../../../redux/auth/operation";
 import {DropDown} from "./user.styled";
+import userIcon from "../../../assets/icons/header/user.svg";
 
 const User = ({icon, title, onClick, classes}) => {
 	const [showDropdown, setShowDropdown] = useState(false);
@@ -45,7 +46,7 @@ const User = ({icon, title, onClick, classes}) => {
 			ref={dropdownRef}
 		>
 			<img
-				src={require(`../../../assets/icons/header/${icon}.svg`)}
+				src={userIcon}
 				alt={icon}
 				className="w-6 lg:w-[18px] h-6 lg:h-[18px]"
 			/>

@@ -1,28 +1,28 @@
 import React from "react";
 import Button from "../ButtonNew/Button";
 import {useNavigate} from "react-router-dom";
+import ellipseIcon from "../../assets/icons/cooperation/ellipse.svg";
+import cooperation1 from "../../assets/images/cooperation/1.png";
+import cooperation2 from "../../assets/images/cooperation/2.png";
+import cooperation3 from "../../assets/images/cooperation/3.png";
+import cooperation4 from "../../assets/images/cooperation/4.png";
 
 const advantages = [
 	{
-		icon: require("../../assets/icons/cooperation/ellipse.svg").default,
+		icon: ellipseIcon,
 		text: "пропонуємо вигідні умови для магазинів, салонів і дистриб’юторів.",
 	},
 	{
-		icon: require("../../assets/icons/cooperation/ellipse.svg").default,
+		icon: ellipseIcon,
 		text: "Надаємо консультації, підтримку на всіх етапах замовлення та швидку доставку.",
 	},
 	{
-		icon: require("../../assets/icons/cooperation/ellipse.svg").default,
+		icon: ellipseIcon,
 		text: "Зробимо співпрацю комфортною — і для вас, і для вашого бізнесу.",
 	},
 ];
 
-const images = [
-	require("../../assets/images/cooperation/1.png"),
-	require("../../assets/images/cooperation/2.png"),
-	require("../../assets/images/cooperation/3.png"),
-	require("../../assets/images/cooperation/4.png"),
-]
+const images = [cooperation1, cooperation2, cooperation3, cooperation4]
 
 const Cooperation = () => {
 	const navigate = useNavigate();

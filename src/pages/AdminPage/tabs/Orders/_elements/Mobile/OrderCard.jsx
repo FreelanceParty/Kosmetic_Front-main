@@ -50,8 +50,9 @@ const OrderCard = ({order, onEditClick}) => {
 		const updateOrderStatus = async () => {
 			try {
 				await axios.patch(`${API_URL}/orders/${order._id}/status`, {status: selectedStatus});
+				toast.success('Статус оновлено');
 			} catch (e) {
-				toast.error(e);
+				toast.error('Помилка оновлення статусу');
 			}
 		}
 		if (isStatusOpen) {

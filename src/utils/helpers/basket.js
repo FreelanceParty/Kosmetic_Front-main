@@ -40,8 +40,8 @@ export const handleRemoveFromCart = async ({product, dispatch, isLoggedIn}) => {
 
 	try {
 		if (isLoggedIn) {
-			// todo: {"message":"1677415 is not valid id"}
-			await axios.delete(`${API_URL}/basket/${product.id}`);
+			const productId = product._id || product.id || product.productId || product.code;
+			await axios.delete(`${API_URL}/basket/${productId}`);
 			scrollToTop();
 		}
 	} catch (e) {

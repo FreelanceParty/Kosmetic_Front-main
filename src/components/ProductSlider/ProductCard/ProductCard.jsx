@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import Tag from "./_elements/Tag";
 import {toast} from "react-toastify";
+import buyMobileIcon from "../../../assets/icons/buy_mobile.svg";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -91,7 +92,8 @@ const ProductCard = ({product, isSlider = false}) => {
 				console.log(e);
 			}
 		} else {
-			navigate(`/products/${product.id}`);
+			const productId = product._id || product.id || product.productId || product.code;
+			navigate(`/products/${productId}`);
 		}
 	}
 
@@ -134,7 +136,7 @@ const ProductCard = ({product, isSlider = false}) => {
 						{!productCartFind &&
 							<button>
 								<img
-									src={require("../../../assets/icons/buy_mobile.svg").default}
+									src={buyMobileIcon}
 									alt="to cart"
 									width={44}
 									height={44}
@@ -168,7 +170,7 @@ const ProductCard = ({product, isSlider = false}) => {
 						{!productCartFind &&
 							<button>
 								<img
-									src={require("../../../assets/icons/buy_mobile.svg").default}
+									src={buyMobileIcon}
 									alt="to cart"
 									width={44}
 									height={44}

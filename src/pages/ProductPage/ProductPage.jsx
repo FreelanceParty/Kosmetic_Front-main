@@ -118,7 +118,10 @@ const ProductPage = () => {
 				setProduct(response.data);
 				setLoading(false);
 			} catch (error) {
-				console.log(error);
+				console.error('Failed to fetch product:', error);
+				console.error('Error response:', error.response);
+				console.error('Error message:', error.message);
+				toast.error(`Помилка завантаження товару: ${error.response?.data?.message || error.message}`);
 				if (!isCancelled) {
 					setLoading(false);
 				}

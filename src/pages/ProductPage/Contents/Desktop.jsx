@@ -9,6 +9,7 @@ import {getIsAdmin, getOptUser} from "../../../redux/auth/selectors";
 import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 import Input from "../../../components/Input/Input";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
+import starPercentageIcon from "../../../assets/icons/star_percentage.svg";
 
 const Desktop = ({
 	product,
@@ -47,9 +48,13 @@ const Desktop = ({
 				<div className="flex gap-[10px] my-10 font-normal text-sm">
 					<a className="cursor-pointer" href="/">Головна</a>
 					<div className="border-[#000E55] border-l"></div>
-					<a className="cursor-pointer" href={getCategoryRoute(product.category)}>{product.category}</a>
-					<div className="border-[#000E55] border-l"></div>
-					<div className="">{product.name}</div>
+					{product?.category && (
+						<>
+							<a className="cursor-pointer" href={getCategoryRoute(product.category)}>{product.category}</a>
+							<div className="border-[#000E55] border-l"></div>
+						</>
+					)}
+					<div className="">{product?.name || ''}</div>
 				</div>
 				<div className="flex flex-col gap-[50px]">
 					<div className="flex gap-10">
@@ -127,7 +132,7 @@ const Desktop = ({
 							{!isOptUser && (
 								<div className="flex gap-3 items-center">
 									<img
-										src={require("../../../assets/icons/star_percentage.svg").default}
+										src={starPercentageIcon}
 										alt="tg"
 										width={28}
 										height={28}

@@ -1,4 +1,6 @@
 import React from "react";
+import heartFilledIcon from "../../assets/icons/heart-filled.svg";
+import heartEmptyIcon from "../../assets/icons/heart-empty.svg";
 
 const RateHearts = ({count, onRate, isReadonly = true, heartSize = 16, containerClasses}) => {
 	const handleClick = (index) => {
@@ -18,11 +20,7 @@ const RateHearts = ({count, onRate, isReadonly = true, heartSize = 16, container
 					<img
 						key={index}
 						className={`p-[1px] ${!isReadonly ? "cursor-pointer" : ""}`}
-						src={
-							isFilled
-								? require("../../assets/icons/heart-filled.svg").default
-								: require("../../assets/icons/heart-empty.svg").default
-						}
+						src={isFilled ? heartFilledIcon : heartEmptyIcon}
 						alt="heart"
 						width={heartSize}
 						height={heartSize}

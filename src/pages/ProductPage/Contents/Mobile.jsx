@@ -8,6 +8,7 @@ import {getIsAdmin, getOptUser} from "../../../redux/auth/selectors";
 import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 import Input from "../../../components/Input/Input";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
+import starPercentageIcon from "../../../assets/icons/star_percentage.svg";
 
 const Mobile = ({
 	isInCart,
@@ -118,7 +119,7 @@ const Mobile = ({
 						) : (
 							<div className="flex gap-3 items-center">
 								<img
-									src={require("../../../assets/icons/star_percentage.svg").default}
+									src={starPercentageIcon}
 									alt="tg"
 									width={28}
 									height={28}

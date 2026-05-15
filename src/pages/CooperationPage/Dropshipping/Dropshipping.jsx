@@ -2,6 +2,8 @@ import CooperationList from "../_elements/CooperationList";
 import {MainTitle, SecondaryTitle} from "../CooperationPage.styled";
 import Button from "../../../components/ButtonNew/Button";
 import {useNavigate} from "react-router-dom";
+import viberIcon from "../../../assets/icons/viber.svg";
+import telegIcon from "../../../assets/icons/teleg.svg";
 
 const Dropshipping = () => {
 	const navigate = useNavigate();
@@ -42,7 +44,7 @@ const Dropshipping = () => {
 					<div className="flex flex-col gap-6">
 						<a className="flex gap-4 items-center hover:text-[#E667A4] underline cursor-pointer" href="https://invite.viber.com/?g2=AQBbJ%2BXb2uClMFSC6vure1IGuhLvlb144kglbXjoA0lex1DPoo79HdiJ5Ef6o0No">
 							<img
-								src={require("../../../assets/icons/viber.svg").default}
+								src={viberIcon}
 								alt="viber"
 								width={16}
 								height={16}
@@ -51,7 +53,7 @@ const Dropshipping = () => {
 						</a>
 						<a className="flex gap-4 items-center hover:text-[#E667A4] underline cursor-pointer" href="https://t.me/+aQ3BwgOjRUQ5MDQy">
 							<img
-								src={require("../../../assets/icons/teleg.svg").default}
+								src={telegIcon}
 								alt="teleg"
 								width={16}
 								height={16}

@@ -1,3 +1,6 @@
+import viberIcon from "../../../../assets/icons/viber.svg";
+import telegIcon from "../../../../assets/icons/teleg.svg";
+
 const Canals = ({headerText, isOpt}) => {
 	const viberLink    = isOpt ? 'https://invite.viber.com/?g2=AQBjEaVPVoQvBVJyynmJykhGNyF1TYTNKqRX1LQe7fdkVyzcb%2BAcG6%2F4HUH74WIs' : 'https://invite.viber.com/?g2=AQBbJ%2BXb2uClMFSC6vure1IGuhLvlb144kglbXjoA0lex1DPoo79HdiJ5Ef6o0No',
 	      telegramLink = isOpt ? 'https://t.me/+Eejgotzs-ktiMTIy' : 'https://t.me/+aQ3BwgOjRUQ5MDQy';
@@ -7,7 +10,7 @@ const Canals = ({headerText, isOpt}) => {
 			<div className="flex flex-col gap-6">
 				<a className="flex gap-4 justify-center lg:justify-start items-center hover:text-[#E667A4]" href={viberLink}>
 					<img
-						src={require("../../../../assets/icons/viber.svg").default}
+						src={viberIcon}
 						alt="viber"
 						width={16}
 						height={16}
@@ -16,7 +19,7 @@ const Canals = ({headerText, isOpt}) => {
 				</a>
 				<a className="flex gap-4 justify-center lg:justify-start items-center hover:text-[#E667A4]" href={telegramLink}>
 					<img
-						src={require("../../../../assets/icons/teleg.svg").default}
+						src={telegIcon}
 						alt="tg"
 						width={16}
 						height={16}
