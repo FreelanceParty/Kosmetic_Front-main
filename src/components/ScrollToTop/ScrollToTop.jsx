@@ -11,10 +11,10 @@ const ScrollToTop = () => {
 	useEffect(() => {
 		const scrollEl = document.getElementById("app-scroll-container");
 		if (scrollEl) {
-			scrollEl.scrollTo({top: 0});
+			scrollEl.scrollTo({top: 0, behavior: "smooth"});
 			return;
 		}
-		window.scrollTo({top: 0});
+		window.scrollTo({top: 0, behavior: "smooth"});
 	}, [location.pathname, location.search]);
 
 	useEffect(() => {

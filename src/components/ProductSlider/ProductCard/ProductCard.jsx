@@ -6,12 +6,9 @@ import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserN
 import {selectCart} from "../../../redux/cart/selectors";
 import {trackAddToCart} from "../../../ads/AdEvents";
 import {useEffect, useState} from "react";
-import axios from "axios";
 import Tag from "./_elements/Tag";
 import {toast} from "react-toastify";
 import buyMobileIcon from "../../../assets/icons/buy_mobile.svg";
-
-const API_URL = process.env.REACT_APP_API_URL;
 
 const ProductCard = ({product, isSlider = false}) => {
 	const navigate = useNavigate();
@@ -41,38 +38,35 @@ const ProductCard = ({product, isSlider = false}) => {
 	}, [isOptUser])
 
 	useEffect(() => {
-		const fetchReviews = async () => {
-			function getReviewWord(count) {
-				if (count % 100 >= 11 && count % 100 <= 19) {
+		function getReviewWord(count) {
+			if (count % 100 >= 11 && count % 100 <= 19) {
+				return 'відгуків';
+			}
+			switch (count % 10) {
+				case 1:
+					return 'відгук';
+				case 2:
+				case 3:
+				case 4:
+					return 'відгуки';
+				default:
 					return 'відгуків';
-				}
-				switch (count % 10) {
-					case 1:
-						return 'відгук';
-					case 2:
-					case 3:
-					case 4:
-						return 'відгуки';
-					default:
-						return 'відгуків';
-				}
 			}
+		}
 
-			try {
-				const response = await axios.get(`${API_URL}/productReviews/forProduct/${product.id}`);
-				const reviews = response.data;
-				const count = reviews.length;
-				const totalRating = reviews.reduce((acc, review) => acc + review.rate, 0);
-				const average = totalRating / count;
-				setAverageRating(Math.ceil(average));
-				setReviewsCount(`${count} ${getReviewWord(count)}`);
-			} catch (error) {
-				console.error('Failed to fetch reviews:', error);
-			}
-		};
+		const count = Number(product?.reviewsCount ?? 0);
+		const avg = Number(product?.reviewsAvg ?? 0);
 
-		fetchReviews();
-	}, [product._id]);
+		if (!Number.isFinite(count) || count <= 0) {
+			setAverageRating(0);
+			setReviewsCount('0 відгуків');
+			return;
+		}
+
+		const avgValue = Number.isFinite(avg) && avg > 0 ? avg : 0;
+		setAverageRating(Math.ceil(avgValue));
+		setReviewsCount(`${count} ${getReviewWord(count)}`);
+	}, [product]);
 
 	const productCartFind = productCart?.find(
 		(item) => +item.id === +product.id

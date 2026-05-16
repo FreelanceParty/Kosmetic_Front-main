@@ -53,38 +53,27 @@ const ProductPage = () => {
 			return;
 		}
 
-		const fetchReviews = async () => {
-			function getReviewWord(count) {
-				if (count % 100 >= 11 && count % 100 <= 19) {
+		function getReviewWord(count) {
+			if (count % 100 >= 11 && count % 100 <= 19) {
+				return 'відгуків';
+			}
+			switch (count % 10) {
+				case 1:
+					return 'відгук';
+				case 2:
+				case 3:
+				case 4:
+					return 'відгуки';
+				default:
 					return 'відгуків';
-				}
-				switch (count % 10) {
-					case 1:
-						return 'відгук';
-					case 2:
-					case 3:
-					case 4:
-						return 'відгуки';
-					default:
-						return 'відгуків';
-				}
 			}
+		}
 
-			try {
-				const response = await axios.get(`${API_URL}/productReviews/forProduct/${product.id}`);
-				const reviews = response.data;
-				const count = reviews.length;
-				const totalRating = reviews.reduce((acc, review) => acc + review.rate, 0);
-				const average = totalRating / count;
-				setReviewsLength(count);
-				setAverageRating(Math.ceil(average));
-				setReviewsCount(`${count} ${getReviewWord(count)}`);
-			} catch (error) {
-				console.error('Failed to fetch reviews:', error);
-			}
-		};
-
-		fetchReviews();
+		const count = Number(product?.reviewsCount ?? 0);
+		const avg = Number(product?.reviewsAvg ?? 0);
+		setReviewsLength(Number.isFinite(count) && count > 0 ? count : 0);
+		setAverageRating(Number.isFinite(avg) && avg > 0 ? Math.ceil(avg) : 0);
+		setReviewsCount(`${Number.isFinite(count) && count > 0 ? count : 0} ${getReviewWord(Number.isFinite(count) && count > 0 ? count : 0)}`);
 	}, [product]);
 
 	useEffect(() => {
@@ -167,7 +156,9 @@ const ProductPage = () => {
 	return (
 		<>
 			{loading ? (
-				<Loader/>
+				<div className="w-full flex justify-center items-center min-h-[60vh]">
+					<Loader/>
+				</div>
 			) : (
 				<>
 					<Desktop

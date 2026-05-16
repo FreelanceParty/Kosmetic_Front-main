@@ -49,18 +49,36 @@
 	  -->
 	<title>Beauty blossom</title>
 
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-54B577SFCE"></script>
 	<script>
-		window.dataLayer = window.dataLayer || [];
+		window.__ENABLE_TRACKING__ = !(
+			window.location.hostname === 'localhost' ||
+			window.location.hostname === '127.0.0.1'
+		);
+	</script>
 
-		function gtag() {
-			dataLayer.push(arguments);
+	<!-- Google tag (gtag.js) -->
+	<script>
+		if (window.__ENABLE_TRACKING__) {
+			var s = document.createElement('script');
+			s.async = true;
+			s.src = 'https://www.googletagmanager.com/gtag/js?id=G-54B577SFCE';
+			document.head.appendChild(s);
 		}
+	</script>
+	<script>
+		if (!window.__ENABLE_TRACKING__) {
+			// Disable tracking scripts on localhost
+		} else {
+			window.dataLayer = window.dataLayer || [];
 
-		gtag('js', new Date());
+			function gtag() {
+				dataLayer.push(arguments);
+			}
 
-		gtag('config', 'G-54B577SFCE');
+			gtag('js', new Date());
+
+			gtag('config', 'G-54B577SFCE');
+		}
 	</script>
 
 
@@ -85,50 +103,64 @@
 
 
 	<script>
-		!function (f, b, e, v, n, t, s) {
-			if (f.fbq) {
-				return;
-			}
-			n = f.fbq = function () {
-				n.callMethod ?
-					n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-			};
-			if (!f._fbq) {
-				f._fbq = n;
-			}
-			n.push = n;
-			n.loaded = !0;
-			n.version = '2.0';
-			n.queue = [];
-			t = b.createElement(e);
-			t.async = !0;
-			t.src = v;
-			s = b.getElementsByTagName(e)[0];
-			s.parentNode.insertBefore(t, s)
-		}(window, document, 'script',
-			'https://connect.facebook.net/en_US/fbevents.js');
-		fbq('init', '789745059892711');
-		fbq('track', 'PageView');
+		if (window.__ENABLE_TRACKING__) {
+			!function (f, b, e, v, n, t, s) {
+				if (f.fbq) {
+					return;
+				}
+				n = f.fbq = function () {
+					n.callMethod ?
+						n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+				};
+				if (!f._fbq) {
+					f._fbq = n;
+				}
+				n.push = n;
+				n.loaded = !0;
+				n.version = '2.0';
+				n.queue = [];
+				t = b.createElement(e);
+				t.async = !0;
+				t.src = v;
+				s = b.getElementsByTagName(e)[0];
+				s.parentNode.insertBefore(t, s)
+			}(window, document, 'script',
+				'https://connect.facebook.net/en_US/fbevents.js');
+			fbq('init', '789745059892711');
+			fbq('track', 'PageView');
+		}
 	</script>
 	<noscript>
 		<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=789745059892711&ev=PageView&noscript=1"/>
 	</noscript>
-	<script async src="https://static.sppopups.com/assets/loader.js" data-chats-widget-id="a23a16d2-8dad-4f77-a8f2-6eba15f94086"></script>
+	<script>
+		if (window.__ENABLE_TRACKING__) {
+			var sp = document.createElement('script');
+			sp.async = true;
+			sp.src = 'https://static.sppopups.com/assets/loader.js';
+			sp.setAttribute('data-chats-widget-id', 'a23a16d2-8dad-4f77-a8f2-6eba15f94086');
+			document.head.appendChild(sp);
+		}
+	</script>
 </head>
 
-<script>(function (w, d, s, l, i) {
-	w[l] = w[l] || [];
-	w[l].push({
-		'gtm.start':
-			new Date().getTime(), event: 'gtm.js'
-	});
-	var f                          = d.getElementsByTagName(s)[0],
-	    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-	j.async = true;
-	j.src =
-		'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-	f.parentNode.insertBefore(j, f);
-})(window, document, 'script', 'dataLayer', 'GTM-NGF43NTK');</script>
+<script>
+	if (window.__ENABLE_TRACKING__) {
+		(function (w, d, s, l, i) {
+			w[l] = w[l] || [];
+			w[l].push({
+				'gtm.start':
+					new Date().getTime(), event: 'gtm.js'
+			});
+			var f                          = d.getElementsByTagName(s)[0],
+			    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+			j.async = true;
+			j.src =
+				'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+			f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-NGF43NTK');
+	}
+</script>
 
 <body class="sp_popup_b726bbc6-8448-44cd-9991-301550936064 font-sans overflow-hidden">
 	<noscript>You need to enable JavaScript to run this app.</noscript>
