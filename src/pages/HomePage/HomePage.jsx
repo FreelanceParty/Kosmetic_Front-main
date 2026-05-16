@@ -60,8 +60,8 @@ const HomePage = () => {
 		<div>
 			<CelimaxBanner/>
 			<div className="flex flex-col gap-[60px] items-center py-10 px-2 xl:px-10">
-				<ProductSlider title="BEAUTY ЗНИЖКИ %" products={discountProducts}/>
-				<ProductSlider title="НОВИНКИ" products={newProducts}/>
+				<ProductSlider title="BEAUTY ЗНИЖКИ %" products={discountProducts} buttonRoute={'marker=sale&'}/>
+				<ProductSlider title="НОВИНКИ" products={newProducts} buttonRoute={'marker=new&'}/>
 				<CategoryList/>
 				<Cooperation/>
 				<Reviews reviews={productReviews}/>

@@ -92,7 +92,7 @@ const ProductCard = ({product, isSlider = false}) => {
 				console.log(e);
 			}
 		} else {
-			const productId = product._id || product.id || product.productId || product.code;
+			const productId = product.id || product._id || product.productId || product.code;
 			navigate(`/products/${productId}`);
 		}
 	}
@@ -101,7 +101,7 @@ const ProductCard = ({product, isSlider = false}) => {
 		<>
 			<div className={`flex flex-col w-[159px] cursor-pointer ${isSlider ? 'md:hidden' : 'sm:hidden'} ${product.amount <= 0 ? 'opacity-50' : ''}`}
 				onClick={handleCardClick}>
-				<div className="relative flex items-center justify-center w-full aspect-square">
+				<div className="relative flex items-center justify-center w-full h-[160px]">
 					<img className="w-full h-full object-contain" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
 						<div className="absolute top-3 right-0 flex flex-col gap-3 z-9">
@@ -147,9 +147,9 @@ const ProductCard = ({product, isSlider = false}) => {
 				</div>
 			</div>
 
-			<div className={`hidden flex-col justify-between h-full ${isSlider ? 'md:flex w-full' : 'sm:flex w-[283px]'} cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`}
+			<div className={`hidden flex-col ${isSlider ? 'md:flex w-full' : 'sm:flex w-[283px]'} cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`}
 				onClick={handleCardClick}>
-				<div className="relative flex items-center justify-center w-full aspect-square">
+				<div className="relative flex items-center justify-center w-full h-[300px]">
 					<img className="w-full h-full object-contain" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
 						<div className="absolute top-4 right-0 flex flex-col gap-4 z-9">

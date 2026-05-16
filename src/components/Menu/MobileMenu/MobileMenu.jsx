@@ -124,21 +124,53 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 
 							return (
 								<li key={item.key}>
-									<button
-										type="button"
-										onClick={() => {
-											setOpenedSection(null);
-											setOpenedTop(isOpenTop ? null : item.key);
-										}}
-										className="flex w-full cursor-pointer items-center justify-between gap-3 border-b border-[#f2f2f2] bg-transparent px-4 py-[14px]"
-									>
-										<span className="text-[12px] font-bold uppercase tracking-[0.02em] text-[#000e55]">
-											{item.key}
-										</span>
-										<span className="min-w-4 w-4 text-center text-[18px] font-normal leading-none text-[#000e55]">
-											{isOpenTop ? "−" : "+"}
-										</span>
-									</button>
+									{item.type === "category" ? (
+										<div className="flex w-full items-center justify-between gap-3 border-b border-[#f2f2f2] bg-transparent px-4 py-[14px]">
+											<button
+												type="button"
+												onClick={() => go(item.href)}
+												className="flex-1 cursor-pointer bg-transparent text-left"
+											>
+												<span className="text-[12px] font-bold uppercase tracking-[0.02em] text-[#000e55]">
+													{item.key}
+												</span>
+											</button>
+											<button
+												type="button"
+												onClick={() => {
+													setOpenedSection(null);
+													setOpenedTop(isOpenTop ? null : item.key);
+												}}
+												aria-label={isOpenTop ? "Collapse" : "Expand"}
+												className="min-w-4 w-4 cursor-pointer bg-transparent text-center text-[18px] font-normal leading-none text-[#000e55]"
+											>
+												{isOpenTop ? "−" : "+"}
+											</button>
+										</div>
+									) : (
+										<div className="flex w-full items-center justify-between gap-3 border-b border-[#f2f2f2] bg-transparent px-4 py-[14px]">
+											<button
+												type="button"
+												onClick={() => go("/cooperation")}
+												className="flex-1 cursor-pointer bg-transparent text-left"
+											>
+												<span className="text-[12px] font-bold uppercase tracking-[0.02em] text-[#000e55]">
+													{item.key}
+												</span>
+											</button>
+											<button
+												type="button"
+												onClick={() => {
+													setOpenedSection(null);
+													setOpenedTop(isOpenTop ? null : item.key);
+												}}
+												aria-label={isOpenTop ? "Collapse" : "Expand"}
+												className="min-w-4 w-4 cursor-pointer bg-transparent text-center text-[18px] font-normal leading-none text-[#000e55]"
+											>
+												{isOpenTop ? "−" : "+"}
+											</button>
+										</div>
+									)}
 
 									{isOpenTop && item.type === "accordion" && (
 										<ul className="list-none m-0 p-0">
@@ -167,26 +199,27 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 
 													return (
 														<li key={section.title}>
-															<button
-																type="button"
-																onClick={() => {
-																	if (!hasItems) {
-																		go(`${openedCategoryHref}?category=${encodeURIComponent(section.title)}`);
-																		return;
-																	}
-																	setOpenedSection(isSectionOpen ? null : section.title);
-																}}
-																className="flex w-full cursor-pointer items-center justify-between gap-3 border-b border-[#f7f7f7] bg-transparent px-4 py-3 pl-6"
-															>
-																<span className="text-[12px] font-semibold text-[#000e55]">{section.title}</span>
+															<div className="flex w-full items-center justify-between gap-3 border-b border-[#f7f7f7] bg-transparent px-4 py-3 pl-6">
+																<button
+																	type="button"
+																	onClick={() => go(`${openedCategoryHref}?category=${encodeURIComponent(section.title)}`)}
+																	className="flex-1 cursor-pointer bg-transparent text-left"
+																>
+																	<span className="text-[12px] font-semibold text-[#000e55]">{section.title}</span>
+																</button>
 																{hasItems ? (
-																	<span className="min-w-4 w-4 text-center text-[18px] font-normal leading-none text-[#000e55]">
+																	<button
+																		type="button"
+																		onClick={() => setOpenedSection(isSectionOpen ? null : section.title)}
+																		aria-label={isSectionOpen ? "Collapse" : "Expand"}
+																		className="min-w-4 w-4 cursor-pointer bg-transparent text-center text-[18px] font-normal leading-none text-[#000e55]"
+																	>
 																		{isSectionOpen ? "−" : "+"}
-																	</span>
+																	</button>
 																) : (
 																	<span/>
 																)}
-															</button>
+															</div>
 
 															{hasItems && isSectionOpen && (
 																<ul className="list-none m-0 p-0">

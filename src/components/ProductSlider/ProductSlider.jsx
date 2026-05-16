@@ -6,7 +6,7 @@ import ChevronRightIcon from "../Icons/ChevronRightIcon";
 import {useNavigate} from "react-router-dom";
 import {Loader} from "../Loader/Loader";
 
-const ProductSlider = ({title, products}) => {
+const ProductSlider = ({title, products, buttonRoute = null}) => {
 	const navigate = useNavigate();
 	const [index, setIndex] = useState(0);
 
@@ -81,7 +81,7 @@ const ProductSlider = ({title, products}) => {
 				</button>
 			</div>
 
-			<Button classes="max-w-[177px]" type="primary" text="УСІ ТОВАРИ" onClick={() => navigate('/search?page=1&query=')}/>
+			<Button classes="max-w-[177px]" type="primary" text="УСІ ТОВАРИ" onClick={() => navigate(`/search?${buttonRoute === null ? '' : buttonRoute}page=1&query=`)}/>
 		</div>
 	);
 };
