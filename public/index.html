@@ -66,17 +66,14 @@
 		}
 	</script>
 	<script>
-		if (!window.__ENABLE_TRACKING__) {
-			// Disable tracking scripts on localhost
-		} else {
-			window.dataLayer = window.dataLayer || [];
+		window.dataLayer = window.dataLayer || [];
 
-			function gtag() {
-				dataLayer.push(arguments);
-			}
+		function gtag() {
+			dataLayer.push(arguments);
+		}
 
+		if (window.__ENABLE_TRACKING__) {
 			gtag('js', new Date());
-
 			gtag('config', 'G-54B577SFCE');
 		}
 	</script>

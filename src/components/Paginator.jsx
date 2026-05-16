@@ -4,7 +4,7 @@ import ChevronLeftIcon from "./Icons/ChevronLeftIcon";
 import {useState, useEffect, useRef} from "react";
 import GoToFirstIcon from "./Icons/GoToFirstIcon";
 
-const Paginator = ({currentPage = 1, totalPages = 1, onChange}) => {
+const Paginator = ({currentPage = 1, totalPages = 1, onChange, scrollToTopOnChange = true}) => {
 	const [_page, setPage] = useState(currentPage);
 	const rootRef = useRef(null);
 
@@ -21,7 +21,9 @@ const Paginator = ({currentPage = 1, totalPages = 1, onChange}) => {
 		}
 		setPage(page);
 		onChange?.(page);
-		scrollToTop();
+		if (scrollToTopOnChange) {
+			scrollToTop();
+		}
 	}
 
 	function scrollToTop() {
@@ -100,7 +102,7 @@ const Paginator = ({currentPage = 1, totalPages = 1, onChange}) => {
 					return (
 						<div
 							key={`dots-${idx}`}
-							className="flex items-center justify-center h-[33px] w-[33px] text-[#000E55]"
+							className="flex items-center justify-center h-[33px] min-w-[33px] px-2 text-[#000E55]"
 						>
 							<span>...</span>
 						</div>
@@ -111,7 +113,7 @@ const Paginator = ({currentPage = 1, totalPages = 1, onChange}) => {
 				return (
 					<div
 						key={page}
-						className={`flex items-center justify-center h-[33px] w-[33px] transition-colors ${
+						className={`flex items-center justify-center h-[33px] min-w-[33px] px-2 transition-colors ${
 							isActive ? "bg-[#000E55] text-white" : "hover:bg-gray-200"
 						}`}
 						onClick={() => handleClick(page)}
