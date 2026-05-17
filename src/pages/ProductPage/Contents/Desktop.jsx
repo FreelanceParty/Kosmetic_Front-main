@@ -82,7 +82,7 @@ const Desktop = ({
 										)}
 										<div className={`font-bold text-2xl leading-[17px] ${priceOld && 'text-[#B90003]'}`}>{price} ГРН</div>
 									</div>
-									<div className="font-normal text-lg leading-[13px]">Роздрібна ціна</div>
+									<div className="font-normal text-lg leading-[13px]">{isOptUser ? 'Оптова ціна' : 'Роздрібна ціна'}</div>
 								</div>
 								<div className="border-b"></div>
 								<div className="flex gap-4 font-normal text-sm">

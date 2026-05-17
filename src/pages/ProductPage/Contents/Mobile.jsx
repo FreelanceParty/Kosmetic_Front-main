@@ -70,7 +70,7 @@ const Mobile = ({
 									<div className="font-normal text-md line-through leading-[11px]">{priceOld} ГРН</div>
 								)}
 								<div className={`font-bold text-2xl leading-[17px] ${priceOld ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
-								<div className="font-normal text-lg leading-[8px]">Роздрібна ціна</div>
+								<div className="font-normal text-lg leading-[8px]">{isOptUser ? 'Оптова ціна' : 'Роздрібна ціна'}</div>
 							</div>
 							{isInCart ||
 								<NumberInput number={quantity} setNumber={setQuantity}/>

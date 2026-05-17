@@ -180,7 +180,7 @@ const ProductCard = ({product, isSlider = false}) => {
 							) : (
 								<div className="text-[#B90003]">Немає в наявності</div>
 							)}
-							<div>Роздрібна ціна</div>
+							<div>{isOptUser ? 'Оптова ціна' : 'Роздрібна ціна'}</div>
 						</div>
 						<div className={`flex flex-col ${priceOld ? 'justify-between' : 'justify-end'}`}>
 							{priceOld && (
