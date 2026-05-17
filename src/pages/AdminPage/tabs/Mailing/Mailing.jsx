@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import axios from "axios";
-import {AddDefaultEmailButton, DeleteButton, DivFilterInputContainer, Li, SearcInput, Textarea, Ul, Container, Input, Form, Button} from "./AdminEmailSenderPageStyled";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -147,47 +146,78 @@ const Mailing = () => {
 	};
 
 	return (
-		<Container>
-			<Form onSubmit={handleSubmit}>
-				<Input
+		<div className="flex flex-col gap-4 px-5">
+			<div className="hidden md:flex flex-col gap-4">
+				<div className="font-semibold text-lg leading-[13px]">ПОШТОВА РОЗСИЛКА</div>
+				<div className="border-t border-[#E8E8E8]"/>
+			</div>
+
+			<form onSubmit={handleSubmit} className="flex flex-col gap-3">
+				<input
 					type="text"
 					name="subject"
 					value={subject}
 					onChange={handleSubjectChange}
 					placeholder="Тема листа"
+					className="bg-[#F8F8F8] border border-[#E8E8E8] rounded-2xl px-4 py-3 outline-none"
 				/>
-				<Input
+				<input
 					type="text"
 					name="title"
 					value={title}
 					onChange={(e) => setTitle(e.target.value)}
 					placeholder="Привітання"
+					className="bg-[#F8F8F8] border border-[#E8E8E8] rounded-2xl px-4 py-3 outline-none"
 				/>
-				<Textarea
+				<textarea
 					name="text"
 					value={text}
 					onChange={handleTextChange}
 					placeholder="Введіть текст для листа"
+					className="bg-[#F8F8F8] border border-[#E8E8E8] rounded-2xl px-4 py-4 outline-none min-h-[200px] resize-y"
 				/>
-				<Input type="file" onChange={handleFileChange} multiple/>
-				<Button type="submit" disabled={toEmails.length === 0}>
-					Відправити
-				</Button>
-			</Form>
-			<DivFilterInputContainer style={{position: "relative"}}>
-				<SearcInput
+
+				<div className="flex flex-col md:flex-row md:items-center gap-3">
+					<input
+						type="file"
+						onChange={handleFileChange}
+						multiple
+						className="bg-white border border-[#E8E8E8] rounded-2xl px-4 py-3"
+					/>
+					<button
+						type="submit"
+						disabled={toEmails.length === 0}
+						className={`h-[53px] rounded-[30px] px-6 font-medium transition-colors ${
+							toEmails.length === 0
+								? "bg-[#000E55] text-white opacity-50 cursor-not-allowed"
+								: "bg-[#000E55] text-white hover:bg-[#E667A4]"
+						}`}
+					>
+						Відправити
+					</button>
+				</div>
+			</form>
+
+			<div className="flex flex-col md:flex-row gap-3 md:items-center">
+				<input
 					type="text"
 					value={filter}
 					onChange={handleFilterChange}
 					placeholder="Фільтр за ім'ям, прізвищем, email, номером"
+					className="bg-[#F8F8F8] border border-[#E8E8E8] rounded-2xl px-4 py-3 outline-none w-full"
 				/>
 
-				<AddDefaultEmailButton onClick={handleClick}>
+				<button
+					type="button"
+					onClick={handleClick}
+					className="h-[53px] rounded-[30px] px-5 font-medium bg-white text-[#000E55] border border-[#000E55] hover:bg-[#E667A4] hover:text-white hover:border-[#E667A4] transition-colors w-full md:w-auto"
+				>
 					Додати незареєстровану пошту
-				</AddDefaultEmailButton>
-			</DivFilterInputContainer>
+				</button>
+			</div>
+
 			{filter.trim() !== "" && (
-				<Ul>
+				<ul className="border border-[#E8E8E8] rounded-2xl p-3 bg-white flex flex-col gap-2">
 					{searchResults
 						.filter(
 							(result) =>
@@ -198,10 +228,15 @@ const Mailing = () => {
 						)
 						.slice(0, 10)
 						.map((result) => (
-							<Li key={result._id}>
-								{result.firstName} {result.lastName}, {result.email},{" "}
-								{result.number}
-								<DeleteButton
+							<li
+								key={result._id}
+								className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 p-3 rounded-xl border border-[#E8E8E8]"
+							>
+								<div className="text-sm text-[#111827]">
+									{result.firstName} {result.lastName}, {result.email}, {result.number}
+								</div>
+								<button
+									type="button"
 									onClick={() =>
 										handleCopyContact(
 											result.firstName,
@@ -210,30 +245,40 @@ const Mailing = () => {
 											result.number
 										)
 									}
+									className="h-[40px] rounded-[30px] px-4 font-medium bg-white text-[#000E55] border border-[#000E55] hover:bg-[#000E55] hover:text-white transition-colors w-fit"
 								>
 									Додати
-								</DeleteButton>
-							</Li>
+								</button>
+							</li>
 						))}
-				</Ul>
+				</ul>
 			)}
 
 			{toEmails.length > 0 && (
-				<div>
-					<h3>Список контактів до відправки:</h3>
-					<Ul>
+				<div className="flex flex-col gap-3">
+					<div className="font-semibold text-sm md:text-md text-[#111827]">
+						Список контактів до відправки:
+					</div>
+					<ul className="border border-[#E8E8E8] rounded-2xl p-3 bg-white flex flex-col gap-2">
 						{toEmails.map((contact, index) => (
-							<Li key={index}>
-								{contact}
-								<DeleteButton onClick={() => handleDeleteContact(index)}>
+							<li
+								key={index}
+								className="flex items-center justify-between gap-3 p-3 rounded-xl border border-[#E8E8E8]"
+							>
+								<div className="text-sm text-[#111827] break-all">{contact}</div>
+								<button
+									type="button"
+									onClick={() => handleDeleteContact(index)}
+									className="h-[40px] rounded-[30px] px-4 font-medium bg-white text-[#000E55] border border-[#000E55] hover:bg-[#000E55] hover:text-white transition-colors"
+								>
 									Видалити
-								</DeleteButton>
-							</Li>
+								</button>
+							</li>
 						))}
-					</Ul>
+					</ul>
 				</div>
 			)}
-		</Container>
+		</div>
 	);
 };
 export default Mailing;

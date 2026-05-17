@@ -28,60 +28,87 @@ const OrderHistory = () => {
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
 	const pageSize = 7;
-	const [currentPageItems, setCurrentPageItems] = useState(orders.slice(0, pageSize));
+
+	const buildDateRangeParams = (period) => {
+		const now = new Date();
+		const toYMD = (d) => {
+			const yyyy = d.getFullYear();
+			const mm = String(d.getMonth() + 1).padStart(2, "0");
+			const dd = String(d.getDate()).padStart(2, "0");
+			return `${yyyy}-${mm}-${dd}`;
+		};
+
+		switch (period) {
+			case "current_month": {
+				const start = new Date(now.getFullYear(), now.getMonth(), 1);
+				const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+				return {dateFrom: toYMD(start), dateTo: toYMD(end)};
+			}
+			case "current_year": {
+				const start = new Date(now.getFullYear(), 0, 1);
+				const end = new Date(now.getFullYear(), 11, 31);
+				return {dateFrom: toYMD(start), dateTo: toYMD(end)};
+			}
+			case "prev_year": {
+				const year = now.getFullYear() - 1;
+				const start = new Date(year, 0, 1);
+				const end = new Date(year, 11, 31);
+				return {dateFrom: toYMD(start), dateTo: toYMD(end)};
+			}
+			case "all":
+			default:
+				return {};
+		}
+	};
 
 	useEffect(() => {
 		const fetchOrders = async () => {
 			try {
 				setLoading(true);
-				const response = await axios.get(
-					`${REACT_APP_API_URL}/orders/byUser`, {
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
-					}
-				);
-				const ordersResponse = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-				setOrders(ordersResponse);
-				setCurrentPageItems(ordersResponse.slice(0, pageSize));
-				setTotalPages(Math.ceil(ordersResponse.length / pageSize));
+				const dateParams = buildDateRangeParams(activeTab);
+				const params = {
+					withMeta: true,
+					page,
+					limit:    pageSize,
+					...dateParams,
+				};
+
+				const response = await axios.get(`${REACT_APP_API_URL}/orders/byUser`, {
+					params,
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
+
+				const payload = response.data;
+				const items = Array.isArray(payload) ? payload : (payload?.items ?? []);
+				setOrders(items);
+
+				const metaPages = Number(payload?.meta?.pages);
+				const headerTotalPages = Number(response.headers?.["x-total-pages"]);
+				let nextTotalPages = Number.isFinite(metaPages) && metaPages > 0
+					? metaPages
+					: (Number.isFinite(headerTotalPages) && headerTotalPages > 0 ? headerTotalPages : 0);
+				setTotalPages(nextTotalPages);
 				setLoading(false);
 			} catch (error) {
 				console.log(error);
 				setLoading(false);
 			}
 		};
+
 		if (isLoggedIn) {
 			fetchOrders();
 		}
-	}, []);
+	}, [isLoggedIn, token, page, activeTab]);
 
 	function goToPage(pageNumber) {
-		const start = (pageNumber - 1) * pageSize;
-		const end = start + pageSize;
-		setCurrentPageItems(orders.slice(start, end));
 		setPage(pageNumber);
 	}
 
 	function loadByPeriod(period) {
 		setActiveTab(period);
-		const filteredOrders = orders.filter(order => {
-			const orderDate = new Date(order.createdAt);
-			const currentDate = new Date();
-			switch (period) {
-				case "all":
-					return orderDate;
-				case "current_month":
-					return orderDate.getMonth() === currentDate.getMonth() && orderDate.getFullYear() === currentDate.getFullYear();
-				case "current_year":
-					return orderDate.getFullYear() === currentDate.getFullYear();
-				case "prev_year":
-					return orderDate.getFullYear() === currentDate.getFullYear() - 1;
-			}
-		})
 		setPage(1);
-		setTotalPages(Math.ceil(filteredOrders.length / pageSize));
-		setCurrentPageItems(filteredOrders.slice(0, pageSize));
 	}
 
 	return (
@@ -130,11 +157,11 @@ const OrderHistory = () => {
 						))}
 					</Slider>
 					<div className="flex flex-col gap-4 md:gap-[10px] overflow-y-auto mb-[60px] max-w-[731px]">
-						{currentPageItems.length === 0
+						{orders.length === 0
 							?
 							<div>Немає замовлень</div>
 							:
-							currentPageItems.map((order, index) => (
+							orders.map((order, index) => (
 								<OrderBlock
 									key={index}
 									order={order}
