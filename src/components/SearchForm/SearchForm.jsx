@@ -26,8 +26,8 @@ const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 				try {
 					setCategories();
 					const encodedQuery = encodeURIComponent(searchQuery);
-					const result = await axios.get(`${API_URL}/goods/findByName/${encodedQuery}`);
-					const products = (result.data || []).slice();
+					const result = await axios.get(`${API_URL}/goods?search=${encodedQuery}`);
+					const products = (result.data.goods || []).slice();
 					products.sort(availabilityComparator);
 					if (requestId === latestRequestIdRef.current) {
 						setFoundProducts(products);

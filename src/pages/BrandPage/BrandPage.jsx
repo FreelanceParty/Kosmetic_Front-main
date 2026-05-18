@@ -24,6 +24,8 @@ const BrandPage = () => {
 	const [loading, setLoading] = useState(false);
 
 	const {brands} = useParams();
+	const decodedBrandName = decodeURIComponent(brands ?? "");
+	const encodedBrandName = encodeURIComponent(decodedBrandName);
 	const [brand, setBrand] = useState(null);
 	const [initialProducts, setInitialProducts] = useState(null);
 	const [categories, setCategories] = useState(null);
@@ -81,8 +83,18 @@ const BrandPage = () => {
 		const fetchBrand = async () => {
 			setLoading(true);
 			try {
-				const response = await axios.get(`${REACT_APP_API_URL}/brands/${brands}`);
-				setBrand(response.data);
+				try {
+					const response = await axios.get(`${REACT_APP_API_URL}/brands/${encodedBrandName}`);
+					setBrand(response.data);
+				} catch (e) {
+					const status = e?.response?.status;
+					if (status === 404) {
+						const response = await axios.get(`${REACT_APP_API_URL}/brands/${decodedBrandName}`);
+						setBrand(response.data);
+					} else {
+						throw e;
+					}
+				}
 			} catch (error) {
 				console.log(error);
 				setLoading(false);
@@ -90,7 +102,17 @@ const BrandPage = () => {
 		};
 		const fetchProducts = async () => {
 			try {
-				const response = await axios.get(`${REACT_APP_API_URL}/goods/findByBrandName/${brands}`);
+				let response;
+				try {
+					response = await axios.get(`${REACT_APP_API_URL}/goods/findByBrandName/${encodedBrandName}`);
+				} catch (e) {
+					const status = e?.response?.status;
+					if (status === 404) {
+						response = await axios.get(`${REACT_APP_API_URL}/goods/findByBrandName/${decodedBrandName}`);
+					} else {
+						throw e;
+					}
+				}
 				const products = response.data;
 
 				setInitialProducts(products);
@@ -173,7 +195,7 @@ const BrandPage = () => {
 	return (
 		<div className="flex flex-col gap-10 mx-auto w-full max-w-[1440px] pt-2 px-5">
 			<div className="flex md:hidden py-[10px] font-semibold text-lg justify-center border-b border-[#F6F6F6]">
-				{brands}
+				{decodedBrandName}
 			</div>
 			<div className="flex justify-between w-full">
 				<div className="gap-[10px] items-center text-[#000E55] text-sm hidden lg:flex h-6">
@@ -181,7 +203,7 @@ const BrandPage = () => {
 					<div className="border-l border-gray-700 h-full"></div>
 					<div className="cursor-pointer" onClick={() => navigate('/brands')}>Бренди</div>
 					<div className="border-l border-gray-700 h-full"></div>
-					<div>{brands}</div>
+					<div>{decodedBrandName}</div>
 				</div>
 				<button
 					type="button"
@@ -275,14 +297,21 @@ const BrandPage = () => {
 					<div className="flex justify-center w-full py-10">
 						<Loader/>
 					</div>
-				) : brand !== null && (
+				) : initialProducts !== null && (
 					<div className="flex flex-col gap-10 w-full">
-						<div className="flex gap-12 pr-0 md:pr-[55px]">
-							<div className="hidden md:block max-w-[150px]">
-								<img src={brand.logo} alt=""/>
+						{brand && (
+							<div className="flex gap-12 pr-0 md:pr-[55px]">
+								<div className="hidden md:block max-w-[150px]">
+									<img src={brand.logo} alt=""/>
+								</div>
+								<BrandDescription title={brand.name} text={brand.description}/>
 							</div>
-							<BrandDescription title={brand.name} text={brand.description}/>
-						</div>
+						)}
+						{!brand && (
+							<div className="font-semibold text-lg leading-[14px]">
+								{decodedBrandName}
+							</div>
+						)}
 						{categories !== null && (
 							<div className="flex flex-wrap gap-4">
 								{categories.map((category, index) => (

@@ -111,8 +111,8 @@ const SearchPage = () => {
 					products = response.data.goods;
 				} else {
 					const encodedQuery = encodeURIComponent(searchText ?? "");
-					response = await axios.get(`${REACT_APP_API_URL}/goods/findByName/${encodedQuery}`);
-					products = response.data;
+					response = await axios.get(`${REACT_APP_API_URL}/goods?search=${encodedQuery}`);
+					products = response.data.goods;
 				}
 
 				setInitialProducts(products);

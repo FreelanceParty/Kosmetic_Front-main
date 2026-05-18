@@ -35,21 +35,25 @@ const ProductsTable = ({orderId, products}) => {
 			</div>
 
 			<div className="flex flex-col overflow-y-auto max-h-[350px] gap-1 sm:gap-0">
-				{products.map((product) => (
-					<div key={product.productId} className="flex flex-col sm:flex-row items-center sm:min-h-[70px] sm:max-h-[70px] gap-4 sm:gap-0 py-4 sm:py-0 border-b-2 sm:border-none px-6 sm:px-0">
+				{products.map((product) => {
+					const isSalePrice = Boolean(product?.sale);
+					const priceClasses = isSalePrice ? "text-red-500" : "";
+
+					return (
+						<div key={product.productId} className="flex flex-col sm:flex-row items-center sm:min-h-[70px] sm:max-h-[70px] gap-4 sm:gap-0 py-4 sm:py-0 border-b-2 sm:border-none px-6 sm:px-0">
 						<div className="flex gap-[10px] w-full sm:max-w-[480px]">
 							<Checkbox defaultChecked={product.isChecked} onChange={(isChecked) => updateProductCheck(product.productId, isChecked)}/>
 							<img className="w-[50px] h-[50px] my-auto" src={product.images} alt="product"/>
 							<div className="w-full leading-4 line-clamp-4 sm:line-clamp-3">{product.name}</div>
 						</div>
-						<div className={`hidden sm:flex justify-center ${colWidthClasses.price}`}>{(product.amount / product.quantity).toFixed(2)}</div>
+						<div className={`hidden sm:flex justify-center ${colWidthClasses.price} ${priceClasses}`}>{(product.amount / product.quantity).toFixed(2)}</div>
 						<div className={`hidden sm:flex justify-center ${colWidthClasses.quantity}`}>{product.quantity} шт.</div>
 						<div className={`hidden sm:flex justify-center ${colWidthClasses.amount}`}>{product.amount.toFixed(2)}</div>
 						<div className="w-full sm:hidden border"></div>
 						<div className="sm:hidden flex justify-between w-full text-center text-sm">
 							<div className="flex flex-col gap-4">
 								<div className="leading-[10px]">Ціна, грн</div>
-								<div className="font-medium leading-[10px]">{(product.amount / product.quantity).toFixed(2)}</div>
+								<div className={`font-medium leading-[10px] ${priceClasses}`}>{(product.amount / product.quantity).toFixed(2)}</div>
 							</div>
 							<div className="flex flex-col gap-4">
 								<div className="leading-[10px]">К-сть</div>
@@ -60,8 +64,9 @@ const ProductsTable = ({orderId, products}) => {
 								<div className="font-medium leading-[10px]">{product.amount.toFixed(2)}</div>
 							</div>
 						</div>
-					</div>
-				))}
+						</div>
+					);
+				})}
 			</div>
 		</div>
 	);
