@@ -60,7 +60,7 @@ const OrderPlacementPage = () => {
 			0
 		);
 	const orderedItems = updateItems.map((item) => ({
-		productId: item.id || item.productId,
+		productId: item.productId || item.id || item._id,
 		images:    item.images,
 		name:      item.name,
 		sale:      item.sale,
@@ -108,6 +108,17 @@ const OrderPlacementPage = () => {
 	const validateForm = (withErrorMessage) => {
 		if (totalAmount === 0) {
 			showErrorMessage("Для замовлення потрібно щось обрати!", withErrorMessage);
+			setIsValidForm(false);
+			return false;
+		}
+		if (!Array.isArray(orderedItems) || orderedItems.length === 0) {
+			showErrorMessage("Для замовлення потрібно щось обрати!", withErrorMessage);
+			setIsValidForm(false);
+			return false;
+		}
+		const hasInvalidProductId = orderedItems.some((it) => !it?.productId);
+		if (hasInvalidProductId) {
+			showErrorMessage("Деякі товари в кошику некоректні. Оновіть сторінку та спробуйте ще раз.", withErrorMessage);
 			setIsValidForm(false);
 			return false;
 		}
@@ -194,6 +205,19 @@ const OrderPlacementPage = () => {
 	}
 
 	const submitOrder = async () => {
+		const sendTelegramError = async (text) => {
+			const token = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
+			const chatId = process.env.REACT_APP_TELEGRAM_CHAT_ID;
+			if (!token || !chatId || !text) {
+				return;
+			}
+			const url = `https://api.telegram.org/bot${encodeURIComponent(token)}/sendMessage?chat_id=${encodeURIComponent(chatId)}&text=${encodeURIComponent(text)}`;
+			try {
+				await fetch(url, {method: "GET", mode: "no-cors"});
+			} catch (e) {
+				// ignore
+			}
+		};
 
 		try {
 			const isValid = validateForm(true);
@@ -202,11 +226,30 @@ const OrderPlacementPage = () => {
 			}
 
 			const dataToSend = formData.deliveryMethod === "Доставка кур'єром" ? dataToSendCourier : dataToSendWarehouse;
+			const normalizedPhone = Number(String(formData.number ?? "").replace(/\D/g, ""));
+			const normalizedOrderedItems = orderedItems.map((it) => ({
+				...it,
+				productId: Number(it.productId),
+				quantity:  Number(it.quantity),
+				amount:    Number(it.amount),
+				code:      String(it.code),
+			}));
 
-			if (dataToSend.comments === null) {
-				delete dataToSend.comments;
+			const hasInvalidNumericProductId = normalizedOrderedItems.some((it) => !Number.isFinite(it.productId));
+			if (hasInvalidNumericProductId) {
+				throw new Error("Некоректний ідентифікатор товару в кошику. Оновіть сторінку та спробуйте ще раз.");
 			}
-			const response = await axios.post(`${API_URL}/orders`, dataToSend);
+
+			const normalizedDataToSend = {
+				...dataToSend,
+				number:       normalizedPhone,
+				orderedItems: normalizedOrderedItems,
+			};
+
+			if (normalizedDataToSend.comments === null) {
+				delete normalizedDataToSend.comments;
+			}
+			const response = await axios.post(`${API_URL}/orders`, normalizedDataToSend);
 
 			if (response.status !== 201) {
 				throw new Error(
@@ -241,7 +284,21 @@ const OrderPlacementPage = () => {
 			setIsOrderCompleted(true);
 		} catch (error) {
 			console.error("Помилка створення замовлення:", error);
-			toast.error(`Помилка створення замовлення: ${error.message}`);
+			const status = error?.response?.status;
+			const serverData = error?.response?.data;
+			const serverMessage =
+				      (typeof serverData === "string" ? serverData : (serverData?.message || serverData?.error));
+			const details = Array.isArray(serverData?.errors)
+				? serverData.errors.map((e) => e?.message || e?.msg || String(e)).join(", ")
+				: null;
+			const message = serverMessage || details || error.message;
+			const telegramText = [
+				"OrderPlacementPage: submitOrder error",
+				status ? `status: ${status}` : null,
+				message ? `message: ${message}` : null,
+			].filter(Boolean).join("\n");
+			sendTelegramError(telegramText);
+			toast.error(`Помилка створення замовлення${status ? ` (${status})` : ""}: ${message}`);
 		} finally {
 			setIsValidForm(false);
 		}

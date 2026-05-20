@@ -1,8 +1,8 @@
 const Using = ({product}) => {
 
 	return (
-		<div>
-			{"Спосіб застосування"}
+		<div className="whitespace-pre-line">
+			{product.usageInstructions}
 		</div>
 	);
 }

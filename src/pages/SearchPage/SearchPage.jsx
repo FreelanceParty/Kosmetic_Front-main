@@ -128,11 +128,19 @@ const SearchPage = () => {
 				merged.sort((a, b) => a.order - b.order);
 				setFilters(merged);
 
-				const prices = products.map(p => isOptUser ? p.priceOPT : p.price);
-				const min = Math.min(...prices);
-				const max = Math.max(...prices);
-				setMinPrice(min);
-				setMaxPrice(max);
+				const prices = (products ?? [])
+					.map(p => Number(isOptUser ? p?.priceOPT : p?.price))
+					.filter(Number.isFinite);
+
+				if (prices.length > 0) {
+					const min = Math.min(...prices);
+					const max = Math.max(...prices);
+					setMinPrice(min);
+					setMaxPrice(max);
+				} else {
+					setMinPrice(null);
+					setMaxPrice(null);
+				}
 				setLoading(false);
 			} catch (error) {
 				console.log(error);
@@ -233,7 +241,7 @@ const SearchPage = () => {
 					{brands.length > 0 &&
 						<BrandFilter title={"Бренди"} options={brands} onOptionChange={handleBrandOptionChange}/>
 					}
-					{(minPrice && maxPrice) &&
+					{(Number.isFinite(minPrice) && Number.isFinite(maxPrice)) &&
 						<PriceFilter title={'Ціна'} onChange={handlePriceChange} from={minPrice} to={maxPrice}/>
 					}
 				</div>
@@ -264,7 +272,7 @@ const SearchPage = () => {
 											onOptionChange={handleBrandOptionChange}
 										/>
 									)}
-									{(minPrice && maxPrice) && (
+									{(Number.isFinite(minPrice) && Number.isFinite(maxPrice)) && (
 										<PriceFilter
 											title={'Ціна'}
 											onChange={handlePriceChange}
