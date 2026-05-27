@@ -15,6 +15,15 @@ import {Provider} from "react-redux";
 import store, {persistor} from "./redux/store";
 import {PersistGate} from "redux-persist/integration/react";
 
+if (
+	process.env.NODE_ENV === "production" &&
+	window.location.hostname === "beautyblossom.com.ua"
+) {
+	window.location.replace(
+		`https://www.beautyblossom.com.ua${window.location.pathname}${window.location.search}${window.location.hash}`
+	);
+}
+
 const persistedToken = localStorage.getItem("token");
 if (persistedToken) {
 	axios.defaults.headers.common.Authorization = `Bearer ${persistedToken}`;

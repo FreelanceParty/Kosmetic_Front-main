@@ -128,7 +128,7 @@ const Orders = () => {
 					setStatusFilterOpen={setStatusFilterOpen}
 				/>
 				<div className="flex flex-col gap-10 items-center">
-					<div className="hidden md:flex flex-col gap-[1px] max-w-full overflow-x-auto relative">
+					<div className="hidden md:flex flex-col gap-[1px] max-w-full overflow-x-auto relative min-h-[120px]">
 						<div className="grid grid-cols-[165px_230px_182px_148px_140px_208px_110px] font-bold">
 							<TableCell title="Номер замовлення"/>
 							<TableCell title="Покупець"/>
@@ -159,25 +159,27 @@ const Orders = () => {
 							</div>
 						) : null)}
 					</div>
-					<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:hidden relative">
+					<div className="md:hidden relative w-full min-h-[180px]">
 						{loading && (
-							<div className="absolute inset-0 bg-white/60 flex items-center justify-center pointer-events-none z-50">
-								<Loader/>
+							<div className="absolute inset-0 bg-white/80 flex items-center justify-center pointer-events-none z-50">
+								<Loader size={64}/>
 							</div>
 						)}
-						{filteredItems.length > 0 ? (
-							filteredItems.map((order) => (
-								<OrderCard
-									key={order.orderNumber}
-									order={order}
-									onEditClick={() => openPopup(<OrderDetails orderId={order._id}/>)}
-								/>
-							))
-						) : (!loading ? (
-							<div className="col-span-full py-5 text-center text-gray-500 font-medium">
-								Не знайдено замовлень по фільтру.
-							</div>
-						) : null)}
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+							{filteredItems.length > 0 ? (
+								filteredItems.map((order) => (
+									<OrderCard
+										key={order.orderNumber}
+										order={order}
+										onEditClick={() => openPopup(<OrderDetails orderId={order._id}/>)}
+									/>
+								))
+							) : (!loading ? (
+								<div className="col-span-full py-5 text-center text-gray-500 font-medium">
+									Не знайдено замовлень по фільтру.
+								</div>
+							) : null)}
+						</div>
 					</div>
 					{totalPages > 1 &&
 						<Paginator
