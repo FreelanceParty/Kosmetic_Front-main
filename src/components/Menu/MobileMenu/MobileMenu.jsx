@@ -196,13 +196,15 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 												.map((section) => {
 													const isSectionOpen = openedSection === section.title;
 													const hasItems = (section.items ?? []).length > 0;
-
+													const sectionHref = section.link
+														? section.link
+														: `${openedCategoryHref}?category=${encodeURIComponent(section.title)}`;
 													return (
 														<li key={section.title}>
 															<div className="flex w-full items-center justify-between gap-3 border-b border-[#f7f7f7] bg-transparent px-4 py-3 pl-6">
 																<button
 																	type="button"
-																	onClick={() => go(`${openedCategoryHref}?category=${encodeURIComponent(section.title)}`)}
+																	onClick={() => go(sectionHref)}
 																	className="flex-1 cursor-pointer bg-transparent text-left"
 																>
 																	<span className="text-[12px] font-semibold text-[#000e55]">{section.title}</span>

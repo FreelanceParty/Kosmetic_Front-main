@@ -74,15 +74,18 @@ const authSlice = createSlice({
 				      state.isRefreshing = false;
 			      })
 			      .addCase(refreshUser.rejected, (state, action) => {
-				      state.firstName = null;
-				      state.lastName = null;
-				      state.number = null;
-				      state.email = null;
-				      state.isAdmin = false;
-				      state.optUser = false;
-				      state._id = null;
-				      state.token = null;
-				      state.isLoggedIn = false;
+				      const status = action.payload?.status;
+				      if (status === 401 || status === 403) {
+					      state.firstName = null;
+					      state.lastName = null;
+					      state.number = null;
+					      state.email = null;
+					      state.isAdmin = false;
+					      state.optUser = false;
+					      state._id = null;
+					      state.token = null;
+					      state.isLoggedIn = false;
+				      }
 				      state.isRefreshing = false;
 			      }),
 });

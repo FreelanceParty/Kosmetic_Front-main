@@ -70,8 +70,14 @@ export const refreshUser = createAsyncThunk(
 			const {data} = await axios.get(`${REACT_APP_API_URL}/auth/current`);
 			return data;
 		} catch (error) {
-			token.unset();
-			return thunkAPI.rejectWithValue(error.message);
+			const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+			if (status === 401 || status === 403) {
+				token.unset();
+			}
+			return thunkAPI.rejectWithValue({
+				status,
+				message: axios.isAxiosError(error) ? (error.response?.data?.message || error.message) : String(error),
+			});
 		}
 	}
 );

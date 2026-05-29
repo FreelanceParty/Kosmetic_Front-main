@@ -73,6 +73,10 @@ const ProductCard = ({product, isSlider = false}) => {
 	);
 
 	const handleCardClick = (e) => {
+		if ((product?.amount ?? 0) <= 0) {
+			toast.error("Немає в наявності");
+			return;
+		}
 		const el = e.target;
 		const isIcon = el.closest('button');
 		if (isIcon) {

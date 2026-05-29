@@ -5,7 +5,20 @@ import scrollToTop from "../../components/ScrollToTop/ScrollToTop";
 const API_URL = process.env.REACT_APP_API_URL;
 
 export const handleAddToCart = async ({product, quantity, dispatch, isLoggedIn}) => {
-	dispatch(addToCart({...product, quantity}));
+	const availableAmount = Number(product?.amount ?? 0);
+	const requestedQuantity = Number(quantity ?? 0);
+
+	if (!Number.isFinite(requestedQuantity) || requestedQuantity <= 0) {
+		return;
+	}
+	if (!Number.isFinite(availableAmount) || availableAmount <= 0) {
+		return;
+	}
+	if (requestedQuantity > availableAmount) {
+		return;
+	}
+
+	dispatch(addToCart({...product, quantity: requestedQuantity}));
 
 	// todo: Error: Invalid hook call. Hooks can only be called inside of the body of a function component.
 	try {
@@ -17,7 +30,7 @@ export const handleAddToCart = async ({product, quantity, dispatch, isLoggedIn})
 				amount:         product.amount,
 				description:    product.description,
 				priceOPT:       product.priceOPT,
-				quantity:       quantity,
+				quantity:       requestedQuantity,
 				price:          product.price,
 				brand:          product.brand,
 				images:         product.images,

@@ -50,7 +50,7 @@ const CooperationPage = () => {
 					<div className="border-l border-gray-700 h-full"></div>
 					<div>Співпраця</div>
 				</div>
-				<div className="flex gap-20">
+				<div className="flex gap-20 justify-center">
 					<div className="flex-col gap-[30px] lg:flex hidden">
 						{tabs.map((tab, index) => (
 							<SliderElement
