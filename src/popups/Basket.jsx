@@ -7,7 +7,7 @@ import CloseCrossIcon from "../components/Icons/CloseCrossIcon";
 import EmptyBasketIcon from "../components/Icons/EmptyBasketIcon";
 import {getIsLoggedIn, getOptUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../redux/auth/selectors";
 import {addToCart} from "../redux/cart/slice";
-import {handleRemoveFromCart} from "../utils/helpers/basket";
+import {handleRemoveFromCart, refreshCartAvailability} from "../utils/helpers/basket";
 import DeleteIcon from "../components/Icons/DeleteIcon";
 import {useNavigate} from "react-router-dom";
 import {trackInitiateCheckout} from "../ads/AdEvents";
@@ -24,6 +24,7 @@ const Basket = ({onClose}) => {
 	const userNumber = useSelector(getUserNumber);
 	const cartItems = useSelector(selectCart);
 	const [notAvailableProductsAmount, setNotAvailableProductsAmount] = useState([])
+	const getItemKey = (item) => item?.id || item?.productId || item?._id || item?.code;
 
 	const totalAmount = isOptUser
 		? cartItems.reduce(
@@ -36,13 +37,31 @@ const Basket = ({onClose}) => {
 		);
 
 	function updateQuantity(product, value) {
-		if (value >= 1) {
-			dispatch(addToCart({...product, quantity: value}));
+		const nextQuantityRaw = Number(value);
+		const availableAmount = Number(product?.amount ?? 0);
+		const productKey = getItemKey(product);
+		if (!Number.isFinite(nextQuantityRaw)) {
+			return;
 		}
-		if (value > product.amount) {
-			setNotAvailableProductsAmount([...notAvailableProductsAmount, product.id])
+		if (!Number.isFinite(availableAmount) || availableAmount <= 0) {
+			if (productKey) {
+				setNotAvailableProductsAmount((prev) => (prev.includes(productKey) ? prev : [...prev, productKey]));
+			}
+			return;
+		}
+		const nextQuantity = Math.max(1, Math.min(Math.trunc(nextQuantityRaw), availableAmount));
+		dispatch(addToCart({...product, quantity: nextQuantity}));
+
+		if (nextQuantityRaw > availableAmount) {
+			if (!productKey) {
+				return;
+			}
+			setNotAvailableProductsAmount((prev) => (prev.includes(productKey) ? prev : [...prev, productKey]));
 		} else {
-			setNotAvailableProductsAmount(notAvailableProductsAmount.filter(id => id !== product.id))
+			if (!productKey) {
+				return;
+			}
+			setNotAvailableProductsAmount((prev) => prev.filter(id => id !== productKey));
 		}
 	}
 
@@ -50,17 +69,33 @@ const Basket = ({onClose}) => {
 		handleRemoveFromCart({product, dispatch, isLoggedIn});
 	}
 
-	function checkout() {
-		const items = cartItems.map((item) => item.id || item.productId || item._id || item.code);
+	async function checkout() {
+		const refreshed = await refreshCartAvailability({cartItems, dispatch});
+		const hasUnavailable = refreshed.some((item) => {
+			const q = Number(item?.quantity ?? 0);
+			const available = Number(item?.amount ?? 0);
+			return !Number.isFinite(q) || q <= 0 || !Number.isFinite(available) || available <= 0 || q > available;
+		});
+		if (hasUnavailable) {
+			return;
+		}
+		const items = refreshed.map((item) => item.id || item.productId || item._id || item.code);
 		trackInitiateCheckout(totalAmount, items, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
 		onClose();
 		navigate("/order");
 	}
 
 	useEffect(() => {
-		if (notAvailableProductsAmount.length === 0) {
-			setNotAvailableProductsAmount(cartItems.filter(item => item.amount < item.quantity).map(item => item.id))
-		}
+		setNotAvailableProductsAmount(
+			cartItems
+				.filter((item) => {
+					const q = Number(item?.quantity ?? 0);
+					const available = Number(item?.amount ?? 0);
+					return !Number.isFinite(q) || !Number.isFinite(available) || available <= 0 || q > available;
+				})
+				.map(getItemKey)
+				.filter(Boolean)
+		)
 	}, [cartItems])
 
 	return (
@@ -83,8 +118,8 @@ const Basket = ({onClose}) => {
 				<>
 					<div className="flex flex-col gap-5 mb-10 max-h-[433px] overflow-y-auto">
 						{cartItems.map((product, index) => (
-							<div key={index} className="relative flex h-[150px]">
-								{notAvailableProductsAmount.includes(product.id) &&
+							<div key={getItemKey(product) ?? index} className="relative flex h-[150px]">
+								{notAvailableProductsAmount.includes(getItemKey(product)) &&
 									<div className="absolute font-extrabold text-2xl text-[#DA469A] top-[45%]">**</div>
 								}
 								<div className="flex items-center justify-center h-full aspect-square ml-[22px]">
@@ -95,6 +130,9 @@ const Basket = ({onClose}) => {
 										<div className="text-md line-clamp-2">{product.name}</div>
 										<div className="font-semibold text-xl whitespace-nowrap">{isOptUser ? product.priceOPT : product.price} ГРН</div>
 									</div>
+									{Number(product?.amount ?? 0) <= 0 && (
+										<div className="font-semibold text-xs text-[#DA469A]">Товар відсутній на складі</div>
+									)}
 									<div className="flex justify-between items-center">
 										<NumberInput number={product.quantity} setNumber={value => updateQuantity(product, value)}/>
 										<DeleteIcon onClick={() => removeFromCart(product)} classes="cursor-pointer"/>
@@ -107,7 +145,7 @@ const Basket = ({onClose}) => {
 						<div className="text-lg">ВСЬОГО:</div>
 						<div className="text-xl">{totalAmount} ГРН</div>
 					</div>
-					<div className={`font-semibold text-md text-[#DA469A] mb-[24px] mx-[22px]`}>{notAvailableProductsAmount.length > 0 && '*Дана кількість не доступна на складі'}</div>
+					<div className={`font-semibold text-md text-[#DA469A] mb-[24px] mx-[22px]`}>{notAvailableProductsAmount.length > 0 && '*Даний товар/кількість не доступні на складі'}</div>
 					<div className="flex justify-between items-center gap-[51px] mx-[22px]">
 						<div className="text-[15px] leading-[16px]"><span className="text-[#E667A4]">Увага!</span> Ваша корзина автоматично анулюється через 10 днів.</div>
 						<Button

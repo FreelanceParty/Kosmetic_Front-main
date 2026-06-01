@@ -6,23 +6,31 @@ const cartSlice = createSlice({
 	initialState: [],
 	reducers:     {
 		setCart:            (state, action) => {
-			const itemsToAdd = action.payload.filter((item) => item.amount !== 0);
+			const itemsToAdd = Array.isArray(action.payload) ? action.payload : [];
 			state.length = 0;
 			state.push(...itemsToAdd);
 		},
 		addToCart:          (state, action) => {
-			const {_id, quantity} = action.payload;
-			const existingItem = state.find((item) => item._id === _id);
+			const {quantity} = action.payload;
+			const key = action.payload?._id || action.payload?.id || action.payload?.productId || action.payload?.code;
+			const existingItem = state.find((item) => {
+				const itemKey = item?._id || item?.id || item?.productId || item?.code;
+				return itemKey != null && String(itemKey) === String(key);
+			});
 
 			if (existingItem) {
 				existingItem.quantity = quantity;
+				Object.assign(existingItem, action.payload);
 			} else {
 				state.push(action.payload);
 			}
 		},
 		removeFromCart:     (state, action) => {
-			const {_id} = action.payload;
-			return state.filter(item => item._id !== _id);
+			const key = action.payload?._id || action.payload?.id || action.payload?.productId || action.payload?.code;
+			return state.filter((item) => {
+				const itemKey = item?._id || item?.id || item?.productId || item?.code;
+				return String(itemKey) !== String(key);
+			});
 		},
 		removeQuantityCart: (state, action) => {
 			const {_id, quantity} = action.payload;

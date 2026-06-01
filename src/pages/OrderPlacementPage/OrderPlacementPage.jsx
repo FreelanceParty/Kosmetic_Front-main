@@ -42,14 +42,7 @@ const OrderPlacementPage = () => {
 	})();
 
 	const cartItems = useSelector(selectCart);
-	const updateItems = cartItems.filter((card) =>
-		cartItems.some((item) => {
-			if (item.code === card.code && item.amount === 0) {
-				return false;
-			}
-			return item.code === card.code;
-		})
-	);
+	const updateItems = cartItems;
 	const totalAmount = isOptUser
 		? updateItems.reduce(
 			(total, item) => total + item.priceOPT * item.quantity,
@@ -68,6 +61,12 @@ const OrderPlacementPage = () => {
 		quantity:  item.quantity,
 		amount:    (isOptUser ? item.priceOPT : item.price) * item.quantity,
 	}));
+
+	const hasUnavailableItems = updateItems.some((item) => {
+		const q = Number(item?.quantity ?? 0);
+		const available = Number(item?.amount ?? 0);
+		return !Number.isFinite(q) || q <= 0 || !Number.isFinite(available) || available <= 0 || q > available;
+	});
 
 	const [formData, setFormData] = useState({
 		email:          userEmail,
@@ -105,9 +104,33 @@ const OrderPlacementPage = () => {
 		validateForm(false);
 	}, [formData]);
 
+	useEffect(() => {
+		setFormData((prev) => ({
+			...prev,
+			amount: totalAmount,
+			orderedItems: orderedItems,
+		}));
+	}, [totalAmount, orderedItems]);
+
 	const validateForm = (withErrorMessage) => {
 		if (totalAmount === 0) {
 			showErrorMessage("Для замовлення потрібно щось обрати!", withErrorMessage);
+			setIsValidForm(false);
+			return false;
+		}
+		const hasInvalidQuantities = updateItems.some((item) => {
+			const q = Number(item?.quantity);
+			const available = Number(item?.amount ?? 0);
+			if (!Number.isFinite(q) || q <= 0) {
+				return true;
+			}
+			if (!Number.isFinite(available) || available <= 0) {
+				return true;
+			}
+			return q > available;
+		});
+		if (hasInvalidQuantities) {
+			showErrorMessage("Деякі товари в кошику мають некоректну кількість (перевищує наявність або <= 0). Перевірте кошик.", withErrorMessage);
 			setIsValidForm(false);
 			return false;
 		}
@@ -230,10 +253,15 @@ const OrderPlacementPage = () => {
 			const normalizedOrderedItems = orderedItems.map((it) => ({
 				...it,
 				productId: Number(it.productId),
-				quantity:  Number(it.quantity),
+				quantity:  Math.max(1, Math.trunc(Number(it.quantity))),
 				amount:    Number(it.amount),
 				code:      String(it.code),
 			}));
+
+			const hasInvalidQuantity = normalizedOrderedItems.some((it) => !Number.isFinite(it.quantity) || it.quantity <= 0);
+			if (hasInvalidQuantity) {
+				throw new Error("Некоректна кількість товару в кошику. Перевірте кошик та спробуйте ще раз.");
+			}
 
 			const hasInvalidNumericProductId = normalizedOrderedItems.some((it) => !Number.isFinite(it.productId));
 			if (hasInvalidNumericProductId) {
@@ -330,6 +358,11 @@ const OrderPlacementPage = () => {
 										</div>
 										<div className="flex flex-col gap-5 py-[10px] px-3">
 											<div className="text-[13px] line-clamp-4 w-full leading-[15px]">{product.name}</div>
+
+											{Number(product?.amount ?? 0) <= 0 && (
+												<div className="font-semibold text-xs text-[#DA469A]">Товар відсутній на складі</div>
+											)}
+
 											<div className="flex justify-between">
 												<div className="text-md">{product.quantity} шт.</div>
 												<div className="font-semibold text-md">{isOptUser ? product.priceOPT : product.price} грн</div>
@@ -360,6 +393,7 @@ const OrderPlacementPage = () => {
 							text="ОФОРМИТИ ЗАМОВЛЕННЯ"
 							classes="h-[51px] w-full"
 							onClick={submitOrder}
+							isDisabled={hasUnavailableItems}
 							//isDisabled={!isValidForm}
 						/>
 						<div className="flex gap-[10px]">
@@ -379,6 +413,9 @@ const OrderPlacementPage = () => {
 									</div>
 									<div className="flex gap-5 py-[10px] px-3 items-center">
 										<div className="text-[13px] line-clamp-3 w-3/5 leading-[15px]">{product.name}</div>
+										{Number(product?.amount ?? 0) <= 0 && (
+											<div className="font-semibold text-xs text-[#DA469A]">Товар відсутній на складі</div>
+										)}
 										<div className="text-md w-1/5 text-center">{product.quantity} шт.</div>
 										<div className="font-semibold text-md w-1/5 text-end">{isOptUser ? product.priceOPT : product.price} грн</div>
 									</div>
@@ -395,6 +432,7 @@ const OrderPlacementPage = () => {
 								text="ОФОРМИТИ ЗАМОВЛЕННЯ"
 								classes="h-[51px] w-full max-w-full lg:max-w-[293px]"
 								onClick={submitOrder}
+								isDisabled={hasUnavailableItems}
 								//isDisabled={!isValidForm}
 							/>
 							<div className="flex gap-[10px]">
