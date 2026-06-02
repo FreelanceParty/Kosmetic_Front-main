@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import DangerIcon from "../../components/Icons/DangerIcon";
 import Button from "../../components/ButtonNew/Button";
 import {useDispatch, useSelector} from "react-redux";
@@ -23,6 +23,7 @@ const OrderPlacementPage = () => {
 	const dispatch = useDispatch();
 
 	const [isOrderCompleted, setIsOrderCompleted] = useState(false);
+	const [completedOrderNumber, setCompletedOrderNumber] = useState(null);
 	const [isValidForm, setIsValidForm] = useState(false);
 
 	const userEmail = useSelector(getUserEmail);
@@ -32,14 +33,15 @@ const OrderPlacementPage = () => {
 	const isOptUser = useSelector(getOptUser);
 	const isLoggedIn = useSelector(getIsLoggedIn);
 
-	const orderNumber = (() => {
+	const generateOrderNumber = () => {
 		const currentTime = new Date();
 		const hours = currentTime.getHours();
 		const minutes = String(currentTime.getMinutes()).padStart(2, "0");
 		const seconds = String(currentTime.getSeconds()).padStart(2, "0");
 		const ms = String(currentTime.getMilliseconds()).padStart(3, "0");
 		return `${hours}${minutes}${seconds}${ms}`;
-	})();
+	};
+	const orderNumberRef = useRef(generateOrderNumber());
 
 	const cartItems = useSelector(selectCart);
 	const updateItems = cartItems;
@@ -76,7 +78,7 @@ const OrderPlacementPage = () => {
 		city:           null,
 		paymentMethod:  "Оплата за реквізитами",
 		deliveryMethod: null,
-		orderNumber:    orderNumber,
+		orderNumber:    orderNumberRef.current,
 		isOptUser:      isOptUser,
 		comments:       null,
 		status:         "Новий",
@@ -178,7 +180,7 @@ const OrderPlacementPage = () => {
 				return false;
 			}
 		}
-		if (orderNumber === "") {
+		if (orderNumberRef.current === "") {
 			showErrorMessage("Щось пішло не так, спробуйте ще раз, або зверніться до адміністратора", withErrorMessage);
 			setIsValidForm(false);
 			return false;
@@ -284,9 +286,20 @@ const OrderPlacementPage = () => {
 					response.data.message || "Помилка створення замовлення"
 				);
 			}
+			const responseOrderNumber =
+				response?.data?.orderNumber ||
+				response?.data?.data?.orderNumber ||
+				response?.data?._id ||
+				response?.data?.id ||
+				orderNumberRef.current;
+			setCompletedOrderNumber(String(responseOrderNumber));
 			try {
 				const userDataSelectors = {em: userEmail, ph: userNumber, fn: userFirstName, ln: userLastName};
-				await trackPurchase(totalAmount, orderedItems, userDataSelectors)
+				const purchaseItemIds = normalizedOrderedItems
+					.map((it) => it?.productId)
+					.filter((id) => typeof id === "string" || typeof id === "number")
+					.map((id) => (typeof id === "number" ? id : String(id)));
+				await trackPurchase(totalAmount, purchaseItemIds, userDataSelectors);
 			} catch (error) {
 				console.error("Помилка розміщення замовлення:", error);
 			}
@@ -294,6 +307,7 @@ const OrderPlacementPage = () => {
 				removeCartItem();
 			}
 			dispatch(deleteAll());
+			orderNumberRef.current = generateOrderNumber();
 			setFormData({
 				email:          userEmail || "",
 				firstName:      userFirstName || "",
@@ -343,7 +357,7 @@ const OrderPlacementPage = () => {
 		<>
 			{isOrderCompleted
 				?
-				<CompletedOrder orderNumber={orderNumber}/>
+				<CompletedOrder orderNumber={completedOrderNumber}/>
 				:
 				<div
 					className="flex flex-col sm:flex-row gap-8 sm:gap-[clamp(10px,2vw,80px)] pt-10 px-5 justify-start sm:justify-center items-center sm:items-start">

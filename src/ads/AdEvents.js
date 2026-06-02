@@ -3,13 +3,16 @@ import {v4 as uuidv4} from 'uuid';
 import CryptoJS from "crypto-js";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
-const IS_PROD = process.env.APP_ENV === 'production';
+const IS_PROD = process.env.REACT_APP_APP_ENV === 'production';
+const IS_TRACKING_ENABLED =
+	      IS_PROD &&
+	      (typeof window === 'undefined' || window.__ENABLE_TRACKING__ !== false);
 
 const getProductId = (product) => product?._id || product?.id || product?.productId || product?.code;
 const getProductPrice = (product) => Number(product?.price ?? product?.priceOPT ?? 0);
 
 export const trackPageView = async (userSelectors = {}) => {
-	if (!IS_PROD) {
+	if (!IS_TRACKING_ENABLED) {
 		return;
 	}
 	const eventId  = uuidv4(),
@@ -33,7 +36,7 @@ export const trackPageView = async (userSelectors = {}) => {
 }
 
 export const trackAddToCart = async (product, userSelectors) => {
-	if (!IS_PROD) {
+	if (!IS_TRACKING_ENABLED) {
 		return;
 	}
 	const eventId    = uuidv4(),
@@ -83,7 +86,7 @@ export const trackAddToCart = async (product, userSelectors) => {
 }
 
 export const trackViewContent = async (product, userSelectors) => {
-	if (!IS_PROD) {
+	if (!IS_TRACKING_ENABLED) {
 		return;
 	}
 	const eventId    = uuidv4(),
@@ -119,7 +122,7 @@ export const trackViewContent = async (product, userSelectors) => {
 }
 
 export const trackInitiateCheckout = async (totalCost, items, userSelectors = {}) => {
-	if (!IS_PROD) {
+	if (!IS_TRACKING_ENABLED) {
 		return;
 	}
 	const eventId    = uuidv4(),
@@ -170,7 +173,7 @@ export const trackInitiateCheckout = async (totalCost, items, userSelectors = {}
 }
 
 export const trackPurchase = async (totalCost, items, userSelectors = {}) => {
-	if (!IS_PROD) {
+	if (!IS_TRACKING_ENABLED) {
 		return;
 	}
 	const eventId    = uuidv4(),
@@ -221,7 +224,7 @@ export const trackPurchase = async (totalCost, items, userSelectors = {}) => {
 }
 
 const sendConversionAPI = async (eventName, eventId, userData = null, customData = null) => {
-	if (!IS_PROD) {
+	if (!IS_TRACKING_ENABLED) {
 		return;
 	}
 	if (!REACT_APP_API_URL) {

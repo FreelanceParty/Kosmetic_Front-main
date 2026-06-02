@@ -73,13 +73,13 @@ const ProductCard = ({product, isSlider = false}) => {
 	);
 
 	const handleCardClick = (e) => {
-		if ((product?.amount ?? 0) <= 0) {
-			toast.error("Немає в наявності");
-			return;
-		}
 		const el = e.target;
 		const isIcon = el.closest('button');
 		if (isIcon) {
+			if ((product?.amount ?? 0) <= 0) {
+				toast.error("Немає в наявності");
+				return;
+			}
 			el.closest('button').classList.toggle('hidden');
 			handleAddToCart({product, quantity: 1, dispatch, isLoggedIn, event: e});
 			try {
