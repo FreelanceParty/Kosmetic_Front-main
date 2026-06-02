@@ -8,8 +8,63 @@ const IS_TRACKING_ENABLED =
 	      IS_PROD &&
 	      (typeof window === 'undefined' || window.__ENABLE_TRACKING__ !== false);
 
-const getProductId = (product) => product?._id || product?.id || product?.productId || product?.code;
+const getProductId = (product) => product?.id || product?.productId || product?.code || product?._id;
 const getProductPrice = (product) => Number(product?.price ?? product?.priceOPT ?? 0);
+
+const normalizeContentId = (id) => {
+	if (id == null) {
+		return null;
+	}
+	if (typeof id === 'string') {
+		return id;
+	}
+	if (typeof id === 'number' && Number.isFinite(id)) {
+		return String(id);
+	}
+	return String(id);
+};
+
+const isItemObject = (it) => it != null && typeof it === 'object' && !Array.isArray(it);
+
+const extractContentIds = (items) => {
+	if (!Array.isArray(items)) {
+		return [];
+	}
+	return items
+		.map((it) => {
+			if (isItemObject(it)) {
+				return normalizeContentId(getProductId(it) ?? it?.id ?? it?.productId ?? it?._id ?? it?.code);
+			}
+			return normalizeContentId(it);
+		})
+		.filter(Boolean);
+};
+
+const extractContents = (items) => {
+	if (!Array.isArray(items)) {
+		return null;
+	}
+	const contents = items
+		.filter(isItemObject)
+		.map((it) => {
+			const id = normalizeContentId(getProductId(it) ?? it?.id ?? it?.productId ?? it?._id ?? it?.code);
+			const quantity = Math.max(1, Math.trunc(Number(it?.quantity ?? it?.qty ?? 1)));
+			const itemPriceRaw = it?.item_price ?? it?.price ?? it?.priceOPT;
+			const itemPriceFromAmount = Number(it?.amount) && Number(quantity) ? Number(it?.amount) / Number(quantity) : null;
+			const item_price = Number(itemPriceRaw ?? itemPriceFromAmount ?? 0);
+			if (!id) {
+				return null;
+			}
+			return {
+				id,
+				quantity,
+				item_price,
+			};
+		})
+		.filter(Boolean);
+
+	return contents.length > 0 ? contents : null;
+};
 
 export const trackPageView = async (userSelectors = {}) => {
 	if (!IS_TRACKING_ENABLED) {
@@ -41,8 +96,9 @@ export const trackAddToCart = async (product, userSelectors) => {
 	}
 	const eventId    = uuidv4(),
 	      userData   = getHashedUserData(userSelectors),
+	      contentId  = normalizeContentId(getProductId(product)),
 	      customData = {
-		      content_ids:  [getProductId(product)],
+		      content_ids:  contentId ? [contentId] : [],
 		      content_type: 'product',
 		      value:        getProductPrice(product),
 		      currency:     'UAH',
@@ -51,7 +107,7 @@ export const trackAddToCart = async (product, userSelectors) => {
 	try {
 		if (window.fbq) {
 			window.fbq('track', 'AddToCart', {
-				content_ids:  [getProductId(product)],
+				content_ids:  contentId ? [contentId] : [],
 				content_type: 'product',
 				value:        getProductPrice(product),
 				currency:     'UAH',
@@ -91,8 +147,9 @@ export const trackViewContent = async (product, userSelectors) => {
 	}
 	const eventId    = uuidv4(),
 	      userData   = getHashedUserData(userSelectors),
+	      contentId  = normalizeContentId(getProductId(product)),
 	      customData = {
-		      content_ids:  [getProductId(product)],
+		      content_ids:  contentId ? [contentId] : [],
 		      content_type: 'product',
 		      value:        getProductPrice(product),
 		      currency:     'UAH',
@@ -101,7 +158,7 @@ export const trackViewContent = async (product, userSelectors) => {
 	try {
 		if (window.fbq) {
 			window.fbq('track', 'ViewContent', {
-				content_ids:  [getProductId(product)],
+				content_ids:  contentId ? [contentId] : [],
 				content_type: 'product',
 				value:        getProductPrice(product),
 				currency:     'UAH',
@@ -127,12 +184,18 @@ export const trackInitiateCheckout = async (totalCost, items, userSelectors = {}
 	}
 	const eventId    = uuidv4(),
 	      userData   = getHashedUserData(userSelectors),
+	      contentIds = extractContentIds(items),
+	      contents   = extractContents(items),
 	      customData = {
 		      value:        totalCost,
 		      currency:     'UAH',
-		      content_ids:  items,
+		      content_ids:  contentIds,
 		      content_type: 'product',
 	      };
+
+	if (contents) {
+		customData.contents = contents;
+	}
 
 	try {
 		if (window.fbq) {
@@ -140,8 +203,9 @@ export const trackInitiateCheckout = async (totalCost, items, userSelectors = {}
 				source:       'manual',
 				value:        totalCost,
 				currency:     'UAH',
-				content_ids:  items,
+				content_ids:  contentIds,
 				content_type: 'product',
+				...(contents ? {contents} : null),
 				user_data:    userData,
 			}, {eventID: eventId});
 		} else {
@@ -178,20 +242,27 @@ export const trackPurchase = async (totalCost, items, userSelectors = {}) => {
 	}
 	const eventId    = uuidv4(),
 	      userData   = getHashedUserData(userSelectors),
+	      contentIds = extractContentIds(items),
+	      contents   = extractContents(items),
 	      customData = {
 		      value:        totalCost,
 		      currency:     'UAH',
-		      content_ids:  items,
+		      content_ids:  contentIds,
 		      content_type: 'product',
 	      };
+
+	if (contents) {
+		customData.contents = contents;
+	}
 
 	try {
 		if (window.fbq) {
 			window.fbq('track', 'Purchase', {
 				value:        totalCost,
 				currency:     'UAH',
-				content_ids:  items,
+				content_ids:  contentIds,
 				content_type: 'product',
+				...(contents ? {contents} : null),
 				user_data:    userData,
 			}, {eventID: eventId});
 		} else {

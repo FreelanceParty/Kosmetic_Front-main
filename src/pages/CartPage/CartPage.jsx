@@ -78,8 +78,7 @@ const CartPage = () => {
 		if (hasUnavailable) {
 			return;
 		}
-		const items = refreshed.map((item) => item.id || item.productId || item._id || item.code);
-		trackInitiateCheckout(totalAmount, items, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
+		trackInitiateCheckout(totalAmount, refreshed, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
 		navigate("/order");
 	}
 

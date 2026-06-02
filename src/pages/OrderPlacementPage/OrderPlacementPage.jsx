@@ -295,11 +295,7 @@ const OrderPlacementPage = () => {
 			setCompletedOrderNumber(String(responseOrderNumber));
 			try {
 				const userDataSelectors = {em: userEmail, ph: userNumber, fn: userFirstName, ln: userLastName};
-				const purchaseItemIds = normalizedOrderedItems
-					.map((it) => it?.productId)
-					.filter((id) => typeof id === "string" || typeof id === "number")
-					.map((id) => (typeof id === "number" ? id : String(id)));
-				await trackPurchase(totalAmount, purchaseItemIds, userDataSelectors);
+				await trackPurchase(totalAmount, normalizedOrderedItems, userDataSelectors);
 			} catch (error) {
 				console.error("Помилка розміщення замовлення:", error);
 			}
