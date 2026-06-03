@@ -43,13 +43,20 @@ const HomePage = () => {
 	useEffect(() => {
 		const fetchProduct = async () => {
 			try {
-				const response = await axios.get(`${API_URL}/goods`);
-				const goods = response.data.goods;
-				const availableProducts = goods.filter(product => product.amount > 0);
-				const discountProducts = availableProducts.filter(product => product.sale === true);
-				const newProducts = availableProducts.filter(product => product.new === true);
-				setDiscountProducts(discountProducts.slice(0, 8));
-				setNewProducts(newProducts.slice(8, 16));
+				const [saleResponse, newResponse] = await Promise.all([
+					axios.get(`${API_URL}/goods/fetchPage`, {
+						params: {page: 1, limit: 8, sale: true, onlyAvailable: true, sort: 'newest'}
+					}),
+					axios.get(`${API_URL}/goods/fetchPage`, {
+						params: {page: 1, limit: 8, new: true, onlyAvailable: true, sort: 'newest'}
+					}),
+				]);
+
+				const saleGoods = saleResponse?.data?.goods ?? saleResponse?.data ?? [];
+				const newGoods = newResponse?.data?.goods ?? newResponse?.data ?? [];
+
+				setDiscountProducts(Array.isArray(saleGoods) ? saleGoods : []);
+				setNewProducts(Array.isArray(newGoods) ? newGoods : []);
 			} catch (error) {
 				console.log(error);
 			}

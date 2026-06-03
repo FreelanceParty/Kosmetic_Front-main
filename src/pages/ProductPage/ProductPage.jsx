@@ -127,11 +127,11 @@ const ProductPage = () => {
 	useEffect(() => {
 		const fetchRecommendedProducts = async () => {
 			try {
-				const response = await axios.get(`${API_URL}/goods`);
-				const goods = response?.data?.goods ?? [];
-				const eligible = goods.filter((p) => (p?.new || p?.sale) && (p?.amount ?? 0) > 0 && String(p?.id) !== String(product?.id));
-				const shuffled = [...eligible].sort(() => Math.random() - 0.5);
-				setRecommendedProducts(shuffled.slice(0, 12));
+				const response = await axios.get(`${API_URL}/goods/recommended`, {
+					params: {excludeId: product?.id, onlyAvailable: true}
+				});
+				const goods = response?.data?.goods ?? response?.data ?? [];
+				setRecommendedProducts(Array.isArray(goods) ? goods : []);
 			} catch (error) {
 				console.log(error);
 			}
