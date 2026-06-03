@@ -1,6 +1,6 @@
 import {ThemeProvider} from "styled-components";
 import {theme} from "./styles/theme";
-import {Navigate, Route, Routes, useLocation} from "react-router-dom";
+import {Navigate, Route, Routes, useLocation, useParams} from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import ProductPage from "./pages/ProductPage/ProductPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
@@ -32,6 +32,12 @@ import CartPage from "./pages/CartPage/CartPage";
 import OrderPlacementPage from "./pages/OrderPlacementPage/OrderPlacementPage";
 import {trackPageView} from "./ads/AdEvents";
 import {getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "./redux/auth/selectors";
+
+
+function RedirectProductToProducts() {
+	const {id} = useParams();
+	return <Navigate to={`/products/${id}`} replace/>;
+}
 
 function App() {
 	useMedia();
@@ -173,6 +179,15 @@ function App() {
 						element={
 							<Suspense fallback={<Loader/>}>
 								<ProductPage/>
+							</Suspense>
+						}
+					/>
+
+					<Route
+						path="/product/:id"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<RedirectProductToProducts/>
 							</Suspense>
 						}
 					/>

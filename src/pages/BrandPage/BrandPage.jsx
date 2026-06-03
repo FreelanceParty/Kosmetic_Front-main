@@ -1,4 +1,4 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import ChevronRightIcon from "../../components/Icons/ChevronRightIcon";
 import axios from "axios";
@@ -199,9 +199,9 @@ const BrandPage = () => {
 			</div>
 			<div className="flex justify-between w-full">
 				<div className="gap-[10px] items-center text-[#000E55] text-sm hidden lg:flex h-6">
-					<div className="cursor-pointer" onClick={() => navigate('/')}>Головна</div>
+					<Link className="cursor-pointer" to="/">Головна</Link>
 					<div className="border-l border-gray-700 h-full"></div>
-					<div className="cursor-pointer" onClick={() => navigate('/brands')}>Бренди</div>
+					<Link className="cursor-pointer" to="/brands">Бренди</Link>
 					<div className="border-l border-gray-700 h-full"></div>
 					<div>{decodedBrandName}</div>
 				</div>

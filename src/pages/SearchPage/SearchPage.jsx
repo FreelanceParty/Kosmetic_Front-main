@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import ChevronRightIcon from "../../components/Icons/ChevronRightIcon";
 import axios from "axios";
 import ProductCard from "../../components/ProductSlider/ProductCard/ProductCard";
@@ -191,7 +191,7 @@ const SearchPage = () => {
 		<div className="flex flex-col gap-8 md:gap-10 mx-auto w-full max-w-[1440px] pt-2 px-5">
 			<div className="flex justify-between w-full">
 				<div className="gap-[10px] items-center text-[#000E55] text-sm hidden lg:flex h-6">
-					<div className="cursor-pointer" onClick={() => navigate('/')}>Головна</div>
+					<Link className="cursor-pointer" to="/">Головна</Link>
 					<div className="border-l border-gray-700 h-full"></div>
 					<div>Пошук: "{searchText}"</div>
 				</div>

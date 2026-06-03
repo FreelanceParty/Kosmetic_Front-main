@@ -3,11 +3,9 @@ import ProductCard from "./ProductCard/ProductCard";
 import Button from "../ButtonNew/Button";
 import ChevronLeftIcon from "../Icons/ChevronLeftIcon";
 import ChevronRightIcon from "../Icons/ChevronRightIcon";
-import {useNavigate} from "react-router-dom";
 import {Loader} from "../Loader/Loader";
 
 const ProductSlider = ({title, products, buttonRoute = null}) => {
-	const navigate = useNavigate();
 	const [index, setIndex] = useState(0);
 
 	const itemsPerPage = 4;
@@ -81,7 +79,7 @@ const ProductSlider = ({title, products, buttonRoute = null}) => {
 				</button>
 			</div>
 
-			<Button classes="max-w-[177px]" type="primary" text="УСІ ТОВАРИ" onClick={() => navigate(`/search?${buttonRoute === null ? '' : buttonRoute}page=1&query=`)}/>
+			<Button classes="max-w-[177px]" type="primary" text="УСІ ТОВАРИ" to={`/search?${buttonRoute === null ? '' : buttonRoute}page=1&query=`}/>
 		</div>
 	);
 };

@@ -1,8 +1,7 @@
 import RateHearts from "../../RateHearts/RateHearts";
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const ProductReview = ({review}) => {
-	const navigate = useNavigate();
 
 	const formatDate = (dateString) => {
 		const date = new Date(dateString);
@@ -14,7 +13,7 @@ const ProductReview = ({review}) => {
 
 	return (
 		<div className="flex flex-col">
-			<div className="flex gap-4 px-4 py-5 rounded-[8px] bg-[#EDF8FF] cursor-pointer" onClick={() => navigate(`/products/${review.product.id}`)}>
+			<Link className="flex gap-4 px-4 py-5 rounded-[8px] bg-[#EDF8FF] cursor-pointer" to={`/products/${review.product.id}`}>
 				<div className="w-full h-full max-w-[80px] max-h-[80px]">
 					<img src={review.product.images} alt="product" className="rounded-[8px] w-full h-full object-cover object-center"/>
 				</div>
@@ -22,7 +21,7 @@ const ProductReview = ({review}) => {
 					<div className="line-clamp-1 font-semibold">{review.product.brand}</div>
 					<div className="line-clamp-3 leading-[18px]">{review.product.name}</div>
 				</div>
-			</div>
+			</Link>
 			<div className="flex flex-col gap-4 px-4 py-5 text-md">
 				<div className="flex flex-col md:flex-row gap-4 justify-between">
 					<div className="flex gap-4">

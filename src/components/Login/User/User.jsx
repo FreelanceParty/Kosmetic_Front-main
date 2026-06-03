@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getIsAdmin, getIsLoggedIn} from "../../../redux/auth/selectors";
 import {logOut} from "../../../redux/auth/operation";
@@ -11,7 +11,6 @@ const User = ({icon, title, onClick, classes}) => {
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const isAdmin = useSelector(getIsAdmin);
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 	const dropdownRef = useRef(null);
 
 	useEffect(() => {
@@ -36,7 +35,11 @@ const User = ({icon, title, onClick, classes}) => {
 	const logoutDispatch = () => {
 		dispatch(logOut());
 		setShowDropdown(false);
-		navigate("/");
+	};
+
+	const closeDropdown = (e) => {
+		e.stopPropagation();
+		setShowDropdown(false);
 	};
 
 	return (
@@ -55,13 +58,13 @@ const User = ({icon, title, onClick, classes}) => {
 			{showDropdown && (
 				<DropDown className="flex flex-col top-full -right-6 divide-y">
 					{isAdmin && (
-						<div className={`py-2 px-4 truncate cursor-pointer hover:bg-[#FFE8F5]`} onClick={() => navigate("/admin-panel")}>
+						<Link className={`py-2 px-4 truncate cursor-pointer hover:bg-[#FFE8F5]`} to="/admin-panel" onClick={closeDropdown}>
 							панель адміністратора
-						</div>
+						</Link>
 					)}
-					<div className={`py-2 px-4 truncate cursor-pointer hover:bg-[#FFE8F5]`} onClick={() => navigate("/cabinet")}>
+					<Link className={`py-2 px-4 truncate cursor-pointer hover:bg-[#FFE8F5]`} to="/cabinet" onClick={closeDropdown}>
 						особистий кабінет
-					</div>
+					</Link>
 					<div className={`py-2 px-4 truncate cursor-pointer hover:bg-[#FFE8F5]`} onClick={() => logoutDispatch()}>
 						вихід
 					</div>

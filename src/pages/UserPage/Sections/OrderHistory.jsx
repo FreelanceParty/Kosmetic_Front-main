@@ -132,7 +132,7 @@ const OrderHistory = () => {
 						type="primary"
 						text="ВПЕРЕД ЗА ПОКУПКАМИ"
 						classes="h-[53px] w-full max-w-[409px]"
-						onClick={() => navigate('/search?page=1&query=')}
+						to="/search?page=1&query="
 					/>
 				</div>
 

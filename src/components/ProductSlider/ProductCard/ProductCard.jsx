@@ -1,5 +1,5 @@
 import RateHearts from "../../RateHearts/RateHearts";
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {handleAddToCart} from "../../../utils/helpers/basket";
 import {useDispatch, useSelector} from "react-redux";
 import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber, getOptUser} from "../../../redux/auth/selectors";
@@ -11,7 +11,6 @@ import {toast} from "react-toastify";
 import buyMobileIcon from "../../../assets/icons/buy_mobile.svg";
 
 const ProductCard = ({product, isSlider = false}) => {
-	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const productCart = useSelector(selectCart);
@@ -72,33 +71,34 @@ const ProductCard = ({product, isSlider = false}) => {
 		(item) => +item.id === +product.id
 	);
 
-	const handleCardClick = (e) => {
-		const el = e.target;
-		const isIcon = el.closest('button');
-		if (isIcon) {
-			if ((product?.amount ?? 0) <= 0) {
-				toast.error("Немає в наявності");
-				return;
-			}
-			el.closest('button').classList.toggle('hidden');
-			handleAddToCart({product, quantity: 1, dispatch, isLoggedIn, event: e});
-			try {
-				trackAddToCart(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
-				toast.success("Товар додано в корзину");
-			} catch (e) {
-				toast.error("Помилка додавання товару в корзину");
-				console.log(e);
-			}
-		} else {
-			const productId = product.id || product._id || product.productId || product.code;
-			navigate(`/products/${productId}`);
+	const productId = product?.id || product?._id || product?.productId || product?.code;
+	const productLink = `/products/${productId}`;
+
+	const handleAddToCartClick = async (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if ((product?.amount ?? 0) <= 0) {
+			toast.error("Немає в наявності");
+			return;
 		}
-	}
+
+		handleAddToCart({product, quantity: 1, dispatch, isLoggedIn, event: e});
+		try {
+			trackAddToCart(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
+			toast.success("Товар додано в корзину");
+		} catch (err) {
+			toast.error("Помилка додавання товару в корзину");
+			console.log(err);
+		}
+	};
 
 	return (
 		<>
-			<div className={`flex flex-col w-[159px] cursor-pointer ${isSlider ? 'md:hidden' : 'sm:hidden'} ${product.amount <= 0 ? 'opacity-50' : ''}`}
-				onClick={handleCardClick}>
+			<Link
+				to={productLink}
+				className={`flex flex-col w-[159px] cursor-pointer ${isSlider ? 'md:hidden' : 'sm:hidden'} ${product.amount <= 0 ? 'opacity-50' : ''}`}
+			>
 				<div className="relative flex items-center justify-center w-full h-[160px]">
 					<img className="w-full h-full object-contain" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
@@ -132,7 +132,7 @@ const ProductCard = ({product, isSlider = false}) => {
 							</div>
 						</div>
 						{!productCartFind &&
-							<button>
+							<button onClick={handleAddToCartClick}>
 								<img
 									src={buyMobileIcon}
 									alt="to cart"
@@ -143,10 +143,12 @@ const ProductCard = ({product, isSlider = false}) => {
 						}
 					</div>
 				</div>
-			</div>
+			</Link>
 
-			<div className={`hidden flex-col ${isSlider ? 'md:flex w-full' : 'sm:flex w-[283px]'} cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`}
-				onClick={handleCardClick}>
+			<Link
+				to={productLink}
+				className={`hidden flex-col ${isSlider ? 'md:flex w-full' : 'sm:flex w-[283px]'} cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`}
+			>
 				<div className="relative flex items-center justify-center w-full h-[300px]">
 					<img className="w-full h-full object-contain" src={product.images} alt="product"/>
 					{(product.sale || product.new) &&
@@ -166,7 +168,7 @@ const ProductCard = ({product, isSlider = false}) => {
 							<div className="font-semibold text-sm leading-[11px] uppercase">{product.brand}</div>
 						</div>
 						{!productCartFind &&
-							<button>
+							<button onClick={handleAddToCartClick}>
 								<img
 									src={buyMobileIcon}
 									alt="to cart"
@@ -194,7 +196,7 @@ const ProductCard = ({product, isSlider = false}) => {
 						</div>
 					</div>
 				</div>
-			</div>
+			</Link>
 		</>
 	)
 }

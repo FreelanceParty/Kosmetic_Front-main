@@ -1,5 +1,5 @@
 import {useState, useEffect, useMemo, useRef} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 
 import {useMedia} from "../../utils/hooks/useMedia";
 import Promo from "../Promo/Promo";
@@ -123,7 +123,9 @@ const Header = () => {
 					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<HeaderMenu icon="mob-menu" classes="flex lg:hidden" onClick={() => setIsMobileMenuOpen(true)}/>
 						<HeaderMenu icon="search" title="ПОШУК" onClick={() => handleSearchIconClick()}/>
-						<HeaderMenu icon="cooperation" title="СПІВПРАЦЯ" classes="hidden lg:flex" onClick={() => navigate("/cooperation")}/>
+						<Link to="/cooperation" className="hidden lg:flex">
+							<HeaderMenu icon="cooperation" title="СПІВПРАЦЯ"/>
+						</Link>
 					</div>
 					<Logo/>
 					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">

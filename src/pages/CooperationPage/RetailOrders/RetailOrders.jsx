@@ -1,10 +1,8 @@
 import CooperationList from "../_elements/CooperationList";
 import {MainTitle, SecondaryTitle} from "../CooperationPage.styled";
 import Button from "../../../components/ButtonNew/Button";
-import {useNavigate} from "react-router-dom";
 
 const RetailOrders = () => {
-	const navigate = useNavigate();
 	const orderConditionsListItems = [
 		{firstPart: "БЕЗ МІНІМАЛЬНОЇ СУМИ ЗАМОВЛЕННЯ", secondPart: " — замовляй хоч один крем 😉"},
 		{firstPart: "БЕЗКОШТОВНА ДОСТАВКА", secondPart: " — при умові від 2000 грн"},
@@ -64,7 +62,7 @@ const RetailOrders = () => {
 					</div>
 				</div>
 			</div>
-			<Button type="primary" text="ВПЕРЕД ЗА ПОКУПКАМИ" onClick={() => navigate('/search?page=1&query=')}/>
+			<Button type="primary" text="ВПЕРЕД ЗА ПОКУПКАМИ" to="/search?page=1&query="/>
 		</div>
 	);
 };

@@ -80,13 +80,13 @@ const AboutUsPage = () => {
 							type="primary"
 							text="ПЕРЕЙТИ ДО КАТАЛОГУ"
 							classes="!w-full"
-							onClick={() => navigate('/search?page=1&query=')}
+							to="/search?page=1&query="
 						/>
 						<Button
 							type="secondary"
 							text="ЗАРЕЄСТРУВАТИСЬ/УВІЙТИ"
 							classes="!w-full"
-							onClick={() => navigate('/authorization')}
+							to="/authorization"
 						/>
 					</div>
 				</div>

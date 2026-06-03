@@ -22,11 +22,8 @@ import product5cut from '../../assets/images/banner/celimax/product_5_cut.png';
 import product6 from '../../assets/images/banner/celimax/product_6.png';
 import product6cut from '../../assets/images/banner/celimax/product_6_cut.png';
 import Button from "../ButtonNew/Button";
-import {useNavigate} from "react-router-dom";
 
 const CelimaxBanner = () => {
-	const navigate = useNavigate();
-
 	return (
 		<div className="overflow-hidden font-stolzl">
 			<div
@@ -94,7 +91,7 @@ const CelimaxBanner = () => {
 							text="переглянути продукти"
 							classes="!h-[41px] !w-full max-w-[91px] bg-[#57647499] rounded-full opacity-[0.9] border !border-gray-400 "
 							textClasses="!text-[9px] !font-medium leading-[9px] "
-							onClick={() => navigate('/brands/celimax')}
+							to="/brands/celimax"
 						/>
 					</div>
 				</div>
@@ -211,7 +208,7 @@ const CelimaxBanner = () => {
 						text="переглянути продукти"
 						classes="!h-[50px] !w-full max-w-[388px] bg-[#57647499] rounded-full z-[3]"
 						textClasses="!text-[14px]"
-						onClick={() => navigate('/brands/celimax')}
+						to="/brands/celimax"
 					/>
 				</div>
 			</div>

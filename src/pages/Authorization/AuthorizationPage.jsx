@@ -1,7 +1,7 @@
 import Input from "../../components/Input/Input";
 import Button from "../../components/ButtonNew/Button";
 import InfoIcon from "../../components/Icons/InfoIcon";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {logIn} from "../../redux/auth/operation";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
@@ -99,7 +99,7 @@ const AuthorizationPage = () => {
 						/>
 					</div>
 				</div>
-				<a onClick={() => navigate('/forgot-password')} className="underline cursor-pointer mb-[50px]">Я забула(-в) свій пароль</a>
+				<Link to="/forgot-password" className="underline cursor-pointer mb-[50px]">Я забула(-в) свій пароль</Link>
 				<Button
 					type="primary"
 					text="УВІЙТИ"
@@ -120,7 +120,7 @@ const AuthorizationPage = () => {
 						text="СТВОРИТИ ОПТОВИЙ КАБІНЕТ"
 						classes="h-[53px] w-full max-w-[425px] px-2"
 						textClasses="font-medium text-sm md:text-lg"
-						onClick={() => navigate("/reg-opt-cabinet")}
+						to="/reg-opt-cabinet"
 					/>
 					<div className="flex gap-2 items-center">
 						<InfoIcon/>
@@ -133,7 +133,7 @@ const AuthorizationPage = () => {
 						text="СТВОРИТИ РОЗДРІБНИЙ КАБІНЕТ"
 						classes="h-[53px] w-full max-w-[425px] px-2"
 						textClasses="font-medium text-sm md:text-lg"
-						onClick={() => navigate("/reg-personal-cabinet")}
+						to="/reg-personal-cabinet"
 					/>
 					<div className="flex gap-2 items-center">
 						<InfoIcon/>

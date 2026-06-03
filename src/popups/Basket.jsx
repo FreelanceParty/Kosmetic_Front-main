@@ -9,7 +9,7 @@ import {getIsLoggedIn, getOptUser, getUserEmail, getUserFirstName, getUserLastNa
 import {addToCart} from "../redux/cart/slice";
 import {handleRemoveFromCart, refreshCartAvailability} from "../utils/helpers/basket";
 import DeleteIcon from "../components/Icons/DeleteIcon";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {trackInitiateCheckout} from "../ads/AdEvents";
 
 const Basket = ({onClose}) => {
@@ -109,10 +109,9 @@ const Basket = ({onClose}) => {
 					<EmptyBasketIcon classes={"w-[350px] h-[350px] py-[30px]"}/>
 					<div className="font-semibold text-lg mb-6 leading-[13px]">КОШИК ПОРОЖНІЙ</div>
 					<div className="font-semibold text-lg text-[#64759B] leading-[13px] mb-10">Але це ніколи не пізно виправити</div>
-					<Button type="primary" text="ВПЕРЕД ЗА ПОКУПКАМИ" onClick={() => {
-						navigate('/search?page=1&query=');
-						onClose();
-					}}/>
+					<Link to="/search?page=1&query=" onClick={onClose}>
+						<Button type="primary" text="ВПЕРЕД ЗА ПОКУПКАМИ"/>
+					</Link>
 				</div>
 			) : (
 				<>

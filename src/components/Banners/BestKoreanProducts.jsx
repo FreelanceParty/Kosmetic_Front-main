@@ -7,11 +7,8 @@ import retinolMobile from '../../assets/images/banner/bestKorean/retinol_mobile.
 import axisMobile from '../../assets/images/banner/bestKorean/axis_mobile.png';
 
 import Button from "../ButtonNew/Button";
-import {useNavigate} from "react-router-dom";
 
 const BestKoreanProducts = () => {
-	const navigate = useNavigate();
-
 	return (
 		<div className="overflow-hidden ">
 			<div
@@ -34,7 +31,7 @@ const BestKoreanProducts = () => {
 						text="детальніше"
 						classes="!h-[29px] !w-[179px] bg-[#000E67] rounded-full"
 						textClasses="!text-[14px]"
-						onClick={() => navigate('/novynky')}
+						to="/novynky"
 					/>
 				</div>
 				<div
@@ -68,7 +65,7 @@ const BestKoreanProducts = () => {
 						text="детальніше"
 						classes="!h-[clamp(29px,7vw,65px)] !w-[clamp(180px,35vw,380px)] bg-[#000E67] rounded-full"
 						textClasses="text-[clamp(16px,3.5vw,30px)]"
-						onClick={() => navigate('/novynky')}
+						to="/novynky"
 					/>
 				</div>
 				<div

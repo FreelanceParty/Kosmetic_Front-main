@@ -1,9 +1,6 @@
 import Button from "../../components/ButtonNew/Button";
-import {useNavigate} from "react-router-dom";
 
 const CompletedOrder = ({orderNumber}) => {
-	const navigate = useNavigate();
-
 	return (
 		<div className="flex flex-col gap-6 md:gap-[50px] items-center py-10 md:py-[60px] px-[35px] md:px-[50px] bg-[#FFE8F5] text-center w-fit mx-auto top-[200px]">
 			<div className="flex flex-col gap-[30px]">
@@ -17,7 +14,7 @@ const CompletedOrder = ({orderNumber}) => {
 				type="secondary"
 				text="НА ГОЛОВНУ СТОРІНКУ"
 				classes="w-full max-w-[264px] md:max-w-[289px] h-[51px] md:h-[53px]"
-				onClick={() => navigate('/')}
+				to="/"
 			/>
 		</div>
 	)

@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "../ButtonNew/Button";
-import {useNavigate} from "react-router-dom";
 import ellipseIcon from "../../assets/icons/cooperation/ellipse.svg";
 import cooperation1 from "../../assets/images/cooperation/1.png";
 import cooperation2 from "../../assets/images/cooperation/2.png";
@@ -25,8 +24,6 @@ const advantages = [
 const images = [cooperation1, cooperation2, cooperation3, cooperation4]
 
 const Cooperation = () => {
-	const navigate = useNavigate();
-
 	return (
 		<div className="flex flex-col border-t border-[#E8E8E8] w-full max-w-[1241px]">
 			<div className="font-semibold text-[24px] leading-[17px] text-center py-10">ОПТОВА СПІВПРАЦЯ</div>
@@ -53,7 +50,7 @@ const Cooperation = () => {
 							type="primary"
 							text="УМОВИ СПІВПРАЦІ"
 							classes="max-w-[246px]"
-							onClick={() => navigate("/cooperation")}
+							to="/cooperation"
 						/>
 					</div>
 				</div>

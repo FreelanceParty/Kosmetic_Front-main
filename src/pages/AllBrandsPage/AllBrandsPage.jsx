@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {fetchBrands} from "../../redux/brands/operation";
 import {selectedBrand} from "../../redux/brands/selectors";
 import SearchInput from "../../components/SearchForm/SearchInput";
 
 const AllBrandsPage = () => {
-	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const [searchQuery, setSearchQuery] = useState("");
@@ -60,7 +59,7 @@ const AllBrandsPage = () => {
 
 	const handleCloseCrossClick = () => setSearchQuery("");
 
-	const handleItemClick = brand => navigate("/brands/" + encodeURIComponent(brand.name));
+	const closeSearch = () => setSearchQuery("");
 
 	const handleLetterClick = (letter) => {
 		if (selectedLetter === letter) {
@@ -77,7 +76,7 @@ const AllBrandsPage = () => {
 					БРЕНДИ
 				</div>
 				<div className="hidden md:flex gap-[10px]">
-					<div className="py-[7px] cursor-pointer">Головна</div>
+					<Link className="py-[7px] cursor-pointer" to="/">Головна</Link>
 					<div className="border-r border-[#000E55] h-full"></div>
 					<div className="py-[7px]">Бренди</div>
 				</div>
@@ -108,13 +107,14 @@ const AllBrandsPage = () => {
 					<div className="absolute left-0 top-32 w-full">
 						<div className="px-[100px] flex flex-col max-h-[200px] overflow-y-auto bg-white border-b border-[#E8E8E8]">
 							{foundBrands.map(brand => (
-								<div
-									onClick={() => handleItemClick(brand)}
+								<Link
 									key={brand.name}
+									to={"/brands/" + encodeURIComponent(brand.name)}
+									onClick={closeSearch}
 									className="flex items-center gap-3 h-[36px] py-[10px] cursor-pointer"
 								>
 									<div className="font-medium leading-[10px]">{brand.name}</div>
-								</div>
+								</Link>
 							))}
 						</div>
 					</div>
@@ -127,13 +127,13 @@ const AllBrandsPage = () => {
 						<div className="text-[#DA469A] text-[40px] leading-[28px] font-semibold w-[30px]">{letter}</div>
 						<div className="flex flex-col gap-4">
 							{groupedBrands[letter]?.map(brand => (
-								<div
+								<Link
 									key={brand.name}
 									className="font-medium text-md leading-[13px] cursor-pointer uppercase"
-									onClick={() => handleItemClick(brand)}
+									to={"/brands/" + encodeURIComponent(brand.name)}
 								>
 									{brand.name}
-								</div>
+								</Link>
 							))}
 						</div>
 					</div>

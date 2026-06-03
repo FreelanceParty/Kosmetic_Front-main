@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
+import {Link, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import ChevronRightIcon from "../../components/Icons/ChevronRightIcon";
 import axios from "axios";
 import ProductCard from "../../components/ProductSlider/ProductCard/ProductCard";
@@ -222,7 +222,7 @@ const Category = () => {
 			</div>
 			<div className="flex justify-between w-full">
 				<div className="gap-[10px] items-center text-[#000E55] text-sm hidden lg:flex h-6">
-					<div className="cursor-pointer" onClick={() => navigate('/')}>Головна</div>
+					<Link className="cursor-pointer" to="/">Головна</Link>
 					<div className="border-l border-gray-700 h-full"></div>
 					<div>{category}</div>
 				</div>

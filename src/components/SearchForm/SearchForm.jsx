@@ -3,7 +3,7 @@ import axios from "axios";
 import SearchInput from "./SearchInput";
 import {CATEGORIES} from "../../utils/enums/categories";
 import CategoryIcon from "../Icons/CategoryIcon";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {getOptUser} from "../../redux/auth/selectors";
 import {availabilityComparator} from "../../utils/helpers/sort";
@@ -86,7 +86,7 @@ const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 					))}
 					<div className="flex flex-col overflow-y-auto max-h-full md:max-h-[306px]">
 						{foundProducts.slice(0, 5).map((product, index) => (
-							<div onClick={() => handleItemClick(`/products/${product.id}`)} key={index}
+							<Link onClick={() => handleItemClick(`/products/${product.id}`)} key={index} to={`/products/${product.id}`}
 								className={`w-full py-4 md:py-[10px] w-full h-[82px] md:h-[102px] cursor-pointer pr-2 border-b border-[#f6f6f6] ${product.amount <= 0 ? 'opacity-50' : ''}`}>
 								<div className="flex gap-3 w-full h-[58px] md:h-[82px]">
 									<div className="flex items-center justify-center h-[58px] md:h-[72px] aspect-square">
@@ -97,7 +97,7 @@ const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 										<div className="font-semibold text-md leading-[11px] my-auto whitespace-nowrap">{isOptUser ? product.priceOPT : product.price} грн</div>
 									</div>
 								</div>
-							</div>
+							</Link>
 						))}
 					</div>
 					{foundProducts.length > 5 &&

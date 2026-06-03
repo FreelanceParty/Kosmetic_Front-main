@@ -2,11 +2,8 @@ import React from "react";
 import CooperationList from "../_elements/CooperationList";
 import {MainTitle, SecondaryTitle} from "../CooperationPage.styled";
 import Button from "../../../components/ButtonNew/Button";
-import {useNavigate} from "react-router-dom";
 
 const Business = () => {
-	const navigate = useNavigate();
-
 	const orderConditionsListItems = [
 		{firstPart: "МІНІМАЛЬНЕ ЗАМОВЛЕННЯ ЛИШЕ 3000 ГРН", secondPart: ""},
 		{firstPart: "ПОВНА ОПЛАТА НА РАХУНОК ФОП", secondPart: ""},
@@ -32,8 +29,8 @@ const Business = () => {
 				<div className="flex flex-col gap-8">
 					<SecondaryTitle>ЩОБ ПОБАЧИТИ ОПТОВІ ЦІНИ – ЗАРЕЄСТРУЙТЕСЬ АБО УВІЙДІТЬ, ЯК ОПТОВИЙ ПОКУПЕЦЬ!</SecondaryTitle>
 					<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
-						<Button type="primary" text="ЗАРЕЄСТРУВАТИСЬ" onClick={() => navigate('/reg-opt-cabinet')}/>
-						<Button type="secondary" text="УВІЙТИ В КАБІНЕТ" onClick={() => navigate('/authorization')}/>
+						<Button type="primary" text="ЗАРЕЄСТРУВАТИСЬ" to="/reg-opt-cabinet"/>
+						<Button type="secondary" text="УВІЙТИ В КАБІНЕТ" to="/authorization"/>
 					</div>
 				</div>
 				<div className="flex flex-col gap-10">

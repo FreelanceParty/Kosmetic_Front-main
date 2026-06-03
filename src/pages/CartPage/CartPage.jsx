@@ -114,7 +114,7 @@ const CartPage = () => {
 							type="primary"
 							text="ВПЕРЕД ЗА ПОКУПКАМИ"
 							classes={"w-[275px]"}
-							onClick={() => navigate('/search?page=1&query=')}
+							to="/search?page=1&query="
 						/>
 					</div>
 				</div>
