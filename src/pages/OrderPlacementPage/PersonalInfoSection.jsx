@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import DangerIcon from "../../components/Icons/DangerIcon";
 import Select from "../../components/Select/Select";
 import TextArea from "../../components/TextArea/TextArea";
+import PhoneInputField from "../../components/PhoneInputField/PhoneInputField";
 
 const COURIER_DELIVERY_TYPE = 1;
 const POST_OFFICE_DELIVERY_TYPE = 2;
@@ -20,6 +21,8 @@ const PersonalInfoSection = ({
 	      const apiKey = "c9cfd468abe7e624f872ca0e59a29184";
 
 	      const [deliveryType, setDeliveryType] = useState(0);
+	      const [paymentType, setPaymentType] = useState(0);
+	      const [phoneError, setPhoneError] = useState(null);
 
 	      const [city, setCity] = useState(null);
 	      const [warehouse, setWarehouse] = useState(null);
@@ -225,6 +228,11 @@ const PersonalInfoSection = ({
 		      setFormData({...formData, [key]: value});
 	      }
 
+	      const validatePhone = (raw) => {
+		      const phonePattern = /^\+[1-9]\d{6,14}$/;
+		      return phonePattern.test(String(raw ?? "").trim());
+	      };
+
 	      return (
 		      <div className="flex flex-col gap-6 w-full min-w-[335px] max-w-[400px]">
 			      <div className="flex flex-col gap-4">
@@ -245,13 +253,17 @@ const PersonalInfoSection = ({
 					      onChange={handleInputChange}
 					      inputClasses={'h-[43px]'}
 				      />
-				      <Input
-					      type="text"
+				      <PhoneInputField
 					      name="number"
-					      placeholder="Номер телефону"
 					      value={formData.number}
 					      onChange={handleInputChange}
-					      inputClasses={'h-[43px]'}
+					      onBlur={() => {
+						      const isPhoneValid = validatePhone(formData.number);
+						      setPhoneError(isPhoneValid ? null : "Невірний формат номеру");
+					      }}
+					      placeholder="Номер телефону"
+					      inputClasses="h-[43px] !bg-[#F8F8F8]"
+					      errorMessage={phoneError}
 				      />
 				      <Input
 					      type="email"
@@ -345,9 +357,26 @@ const PersonalInfoSection = ({
 						      {id: PAYMENT_BY_BANK_TRANSFER, label: "Оплата за реквізитами"},
 					      ]}
 					      onSelect={(option) => {
+						      setPaymentType(option.id);
 						      updateFormData('paymentMethod', option.label);
 					      }}
 				      />
+				      {paymentType === POST_PAYMENT && (
+					      <div className="flex gap-[10px]">
+						      <DangerIcon classes="mt-1 min-h-[14px] min-w-[14px]"/>
+						      <div className="text-md">
+							      Накладний платіж тільки по передоплаті 100 грн за реквізитами ФОП
+						      </div>
+					      </div>
+				      )}
+				      {paymentType === PAYMENT_BY_BANK_TRANSFER && (
+					      <div className="flex gap-[10px]">
+						      <DangerIcon classes="mt-1 min-h-[14px] min-w-[14px]"/>
+						      <div className="text-md">
+							      Реквізити надсилає менеджер після збору замовлення
+						      </div>
+					      </div>
+				      )}
 			      </div>
 			      <div className="flex flex-col gap-4">
 				      <div className="font-semibold text-md leading-[11px]">КОМЕНТАР ДО ЗАМОВЛЕННЯ</div>

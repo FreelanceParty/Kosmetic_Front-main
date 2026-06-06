@@ -1,0 +1,32 @@
+.phone-input-field .react-tel-input {
+	width: 100%;
+}
+
+.phone-input-field .react-tel-input .flag-dropdown:hover,
+.phone-input-field .react-tel-input .flag-dropdown:focus,
+.phone-input-field .react-tel-input .flag-dropdown.open {
+	background: #F8F8F8;
+}
+
+.phone-input-field .react-tel-input .selected-flag {
+	width: 100%;
+	height: 100%;
+	padding: 0 !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	background: transparent;
+}
+
+.phone-input-field .react-tel-input .selected-flag:hover,
+.phone-input-field .react-tel-input .selected-flag:focus {
+	background: transparent;
+}
+
+.phone-input-field .react-tel-input .selected-flag .arrow {
+	position: static;
+	margin: 0;
+	left: auto;
+	top: auto;
+}

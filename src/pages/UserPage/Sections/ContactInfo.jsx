@@ -5,6 +5,7 @@ import {useEffect, useRef, useState} from "react";
 import {getUserEmail, getUserFirstName, getUserId, getUserLastName, getUserNumber} from "../../../redux/auth/selectors";
 import axios from "axios";
 import {toast} from "react-toastify";
+import PhoneInputField from "../../../components/PhoneInputField/PhoneInputField";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -82,8 +83,9 @@ const ContactInfo = () => {
 	}, [formData.lastName])
 
 	useEffect(() => {
-		const phonePattern = /^\+380\d{9}$/;
-		const isPhoneValid = phonePattern.test(formData.number);
+		const phonePattern = /^\+[1-9]\d{6,14}$/;
+		const trimmedValue = String(formData.number ?? "").trim();
+		const isPhoneValid = phonePattern.test(trimmedValue);
 		if (isPhoneValid) {
 			setErrors({...errors, ['number']: null});
 		} else {
@@ -140,8 +142,7 @@ const ContactInfo = () => {
 				</div>
 				<div className="flex flex-col md:flex-row justify-between gap-2 md:gap-0">
 					<div className="text-sm md:text-lg">ТЕЛЕФОН<span className="text-[#E667A4]">*</span></div>
-					<Input
-						type="text"
+					<PhoneInputField
 						name="number"
 						value={formData.number}
 						containerClasses={`max-w-[409px]`}

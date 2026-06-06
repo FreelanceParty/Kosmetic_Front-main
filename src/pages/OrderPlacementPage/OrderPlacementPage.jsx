@@ -201,13 +201,13 @@ const OrderPlacementPage = () => {
 			setIsValidForm(false);
 			return false;
 		}
-		const phonePattern = /^\+380\d{9}$/;
-		const trimmedValue = formData.number;
+		const phonePattern = /^\+[1-9]\d{6,14}$/;
+		const trimmedValue = String(formData.number ?? "").trim();
 
 		const isPhoneValid = phonePattern.test(trimmedValue);
 
 		if (!isPhoneValid) {
-			showErrorMessage("Введіть коректний номер телефону з 12 цифр, включаючи +380", withErrorMessage);
+			showErrorMessage("Введіть коректний номер телефону у міжнародному форматі, наприклад +380XXXXXXXXX", withErrorMessage);
 			setIsValidForm(false);
 			return false;
 		}
@@ -251,7 +251,7 @@ const OrderPlacementPage = () => {
 			}
 
 			const dataToSend = formData.deliveryMethod === "Доставка кур'єром" ? dataToSendCourier : dataToSendWarehouse;
-			const normalizedPhone = Number(String(formData.number ?? "").replace(/\D/g, ""));
+			const normalizedPhone = String(formData.number ?? "").trim();
 			const normalizedOrderedItems = orderedItems.map((it) => ({
 				...it,
 				productId: Number(it.productId),
