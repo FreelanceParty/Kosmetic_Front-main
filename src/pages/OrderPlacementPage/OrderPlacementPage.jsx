@@ -324,19 +324,61 @@ const OrderPlacementPage = () => {
 			});
 			setIsOrderCompleted(true);
 		} catch (error) {
-			console.error("Помилка створення замовлення:", error);
 			const status = error?.response?.status;
+			const statusText = error?.response?.statusText;
 			const serverData = error?.response?.data;
+			const requestUrl = error?.config?.url || `${API_URL}/orders`;
+			const requestMethod = (error?.config?.method || "post").toUpperCase();
+			const errorCode = error?.code;
 			const serverMessage =
 				      (typeof serverData === "string" ? serverData : (serverData?.message || serverData?.error));
 			const details = Array.isArray(serverData?.errors)
 				? serverData.errors.map((e) => e?.message || e?.msg || String(e)).join(", ")
 				: null;
 			const message = serverMessage || details || error.message;
+			const serverDataPreview = (() => {
+				if (serverData == null) {
+					return null;
+				}
+				try {
+					const raw = typeof serverData === "string" ? serverData : JSON.stringify(serverData);
+					return raw.length > 500 ? `${raw.slice(0, 500)}...` : raw;
+				} catch {
+					return String(serverData);
+				}
+			})();
+
+			console.error("Помилка створення замовлення:", {
+				status,
+				statusText,
+				errorCode,
+				requestMethod,
+				requestUrl,
+				message,
+				serverData,
+				deliveryMethod: formData?.deliveryMethod,
+				paymentMethod:  formData?.paymentMethod,
+				city:           formData?.city,
+				orderNumber:    orderNumberRef.current,
+				itemsCount:     orderedItems.length,
+				totalAmount,
+				error,
+			});
+
 			const telegramText = [
 				"OrderPlacementPage: submitOrder error",
-				status ? `status: ${status}` : null,
+				`time: ${new Date().toISOString()}`,
+				status ? `status: ${status}${statusText ? ` ${statusText}` : ""}` : null,
+				errorCode ? `code: ${errorCode}` : null,
+				`request: ${requestMethod} ${requestUrl}`,
 				message ? `message: ${message}` : null,
+				`deliveryMethod: ${formData?.deliveryMethod || "-"}`,
+				`paymentMethod: ${formData?.paymentMethod || "-"}`,
+				`city: ${formData?.city || "-"}`,
+				`orderNumber: ${orderNumberRef.current}`,
+				`itemsCount: ${orderedItems.length}`,
+				`totalAmount: ${totalAmount}`,
+				serverDataPreview ? `serverData: ${serverDataPreview}` : null,
 			].filter(Boolean).join("\n");
 			sendTelegramError(telegramText);
 			toast.error(`Помилка створення замовлення${status ? ` (${status})` : ""}: ${message}`);
