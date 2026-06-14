@@ -24,7 +24,7 @@ const Basket = ({onClose}) => {
 	const userNumber = useSelector(getUserNumber);
 	const cartItems = useSelector(selectCart);
 	const [notAvailableProductsAmount, setNotAvailableProductsAmount] = useState([])
-	const getItemKey = (item) => item?.id || item?.productId || item?._id || item?.code;
+	const getItemKey = (item) => item?.id ?? item?.productId;
 
 	const totalAmount = isOptUser
 		? cartItems.reduce(
@@ -79,7 +79,7 @@ const Basket = ({onClose}) => {
 		if (hasUnavailable) {
 			return;
 		}
-		const items = refreshed.map((item) => item.id || item.productId || item._id || item.code);
+		const items = refreshed.map((item) => item.id ?? item.productId);
 		trackInitiateCheckout(totalAmount, items, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
 		onClose();
 		navigate("/order");

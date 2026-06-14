@@ -8,7 +8,7 @@ const IS_TRACKING_ENABLED =
 	      IS_PROD &&
 	      (typeof window === 'undefined' || window.__ENABLE_TRACKING__ !== false);
 
-const getProductId = (product) => product?.id || product?.productId || product?.code || product?._id;
+const getProductId = (product) => product?.id ?? product?.productId;
 const getProductPrice = (product) => Number(product?.price ?? product?.priceOPT ?? 0);
 
 const normalizeContentId = (id) => {
@@ -33,7 +33,7 @@ const extractContentIds = (items) => {
 	return items
 		.map((it) => {
 			if (isItemObject(it)) {
-				return normalizeContentId(getProductId(it) ?? it?.id ?? it?.productId ?? it?._id ?? it?.code);
+				return normalizeContentId(getProductId(it));
 			}
 			return normalizeContentId(it);
 		})
@@ -47,7 +47,7 @@ const extractContents = (items) => {
 	const contents = items
 		.filter(isItemObject)
 		.map((it) => {
-			const id = normalizeContentId(getProductId(it) ?? it?.id ?? it?.productId ?? it?._id ?? it?.code);
+			const id = normalizeContentId(getProductId(it));
 			const quantity = Math.max(1, Math.trunc(Number(it?.quantity ?? it?.qty ?? 1)));
 			const itemPriceRaw = it?.item_price ?? it?.price ?? it?.priceOPT;
 			const itemPriceFromAmount = Number(it?.amount) && Number(quantity) ? Number(it?.amount) / Number(quantity) : null;
@@ -206,7 +206,7 @@ export const trackInitiateCheckout = async (totalCost, items, userSelectors = {}
 				content_ids:  contentIds,
 				content_type: 'product',
 				...(contents ? {contents} : null),
-				user_data:    userData,
+				user_data: userData,
 			}, {eventID: eventId});
 		} else {
 			console.log('Warning: fbq is not defined');
@@ -263,7 +263,7 @@ export const trackPurchase = async (totalCost, items, userSelectors = {}) => {
 				content_ids:  contentIds,
 				content_type: 'product',
 				...(contents ? {contents} : null),
-				user_data:    userData,
+				user_data: userData,
 			}, {eventID: eventId});
 		} else {
 			console.log('Warning: fbq is not defined');

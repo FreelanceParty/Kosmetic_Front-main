@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import DangerIcon from "../../components/Icons/DangerIcon";
 import Button from "../../components/ButtonNew/Button";
 import {useDispatch, useSelector} from "react-redux";
@@ -45,24 +45,27 @@ const OrderPlacementPage = () => {
 
 	const cartItems = useSelector(selectCart);
 	const updateItems = cartItems;
-	const totalAmount = isOptUser
-		? updateItems.reduce(
-			(total, item) => total + item.priceOPT * item.quantity,
-			0
-		)
-		: updateItems.reduce(
-			(total, item) => total + item.price * item.quantity,
-			0
-		);
-	const orderedItems = updateItems.map((item) => ({
-		productId: item.productId || item.id || item._id,
-		images:    item.images,
-		name:      item.name,
-		sale:      item.sale,
-		code:      item.code.toString(),
-		quantity:  item.quantity,
-		amount:    (isOptUser ? item.priceOPT : item.price) * item.quantity,
-	}));
+	const totalAmount = useMemo(
+		() =>
+			updateItems.reduce(
+				(total, item) => total + (isOptUser ? item.priceOPT : item.price) * item.quantity,
+				0
+			),
+		[updateItems, isOptUser]
+	);
+	const orderedItems = useMemo(
+		() =>
+			updateItems.map((item) => ({
+				productId: item.id ?? item.productId,
+				images:    item.images,
+				name:      item.name,
+				sale:      item.sale,
+				code:      item.code.toString(),
+				quantity:  item.quantity,
+				amount:    (isOptUser ? item.priceOPT : item.price) * item.quantity,
+			})),
+		[updateItems, isOptUser]
+	);
 
 	const hasUnavailableItems = updateItems.some((item) => {
 		const q = Number(item?.quantity ?? 0);
@@ -109,7 +112,7 @@ const OrderPlacementPage = () => {
 	useEffect(() => {
 		setFormData((prev) => ({
 			...prev,
-			amount: totalAmount,
+			amount:       totalAmount,
 			orderedItems: orderedItems,
 		}));
 	}, [totalAmount, orderedItems]);
@@ -287,11 +290,11 @@ const OrderPlacementPage = () => {
 				);
 			}
 			const responseOrderNumber =
-				response?.data?.orderNumber ||
-				response?.data?.data?.orderNumber ||
-				response?.data?._id ||
-				response?.data?.id ||
-				orderNumberRef.current;
+				      response?.data?.orderNumber ||
+				      response?.data?.data?.orderNumber ||
+				      response?.data?._id ||
+				      response?.data?.id ||
+				      orderNumberRef.current;
 			setCompletedOrderNumber(String(responseOrderNumber));
 			try {
 				const userDataSelectors = {em: userEmail, ph: userNumber, fn: userFirstName, ln: userLastName};

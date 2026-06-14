@@ -144,7 +144,7 @@ const ProductPage = () => {
 
 	const updateProductCountHandler = async () => {
 		try {
-			await axios.patch(`${API_URL}/goods/${product._id}/amount`, {
+			await axios.patch(`${API_URL}/goods/${product.id}/amount`, {
 				amount: productCount
 			});
 			toast.success("Кількість товару успішно оновлено");

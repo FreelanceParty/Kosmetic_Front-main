@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {Fragment, useEffect, useRef, useState} from "react";
 import ChevronIcon from "../Icons/ChevronIcon";
 
 const Select = ({
@@ -66,16 +66,15 @@ const Select = ({
 
 					{options.length > 0 ? (
 						options.map((option, idx) => (
-							<>
+							<Fragment key={option.id ?? option.value ?? idx}>
 								<div
-									key={option.id}
 									onClick={() => handleSelect(option)}
 									className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
 								>
 									{option.label}
 								</div>
 								{idx < options.length - 1 && <hr className="mx-4"/>}
-							</>
+							</Fragment>
 						))
 					) : (
 						<div className="py-2 px-4 text-gray-400 text-sm">

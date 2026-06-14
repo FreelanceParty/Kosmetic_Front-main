@@ -56,7 +56,7 @@ export const refreshCartAvailability = async ({cartItems, dispatch}) => {
 
 	const results = await Promise.all(
 		items.map(async (item) => {
-			const productId = item?.productId || item?.id || item?._id;
+			const productId = item?.id ?? item?.productId;
 			if (!productId) {
 				return item;
 			}
@@ -68,6 +68,9 @@ export const refreshCartAvailability = async ({cartItems, dispatch}) => {
 					amount: Number.isFinite(nextAmount) ? nextAmount : item?.amount,
 				};
 			} catch (e) {
+				if (e?.response?.status === 404) {
+					return null;
+				}
 				return item;
 			}
 		})
@@ -82,9 +85,12 @@ export const handleRemoveFromCart = async ({product, dispatch, isLoggedIn}) => {
 
 	try {
 		if (isLoggedIn) {
-			const productId = product._id || product.id || product.productId || product.code;
-			await axios.delete(`${API_URL}/basket/${productId}`);
-			scrollToTop();
+			// Basket items on the server are matched by the product integer id (productId).
+			const productId = product?.id ?? product?.productId;
+			if (productId != null) {
+				await axios.delete(`${API_URL}/basket/${productId}`);
+				scrollToTop();
+			}
 		}
 	} catch (e) {
 		console.log(e);

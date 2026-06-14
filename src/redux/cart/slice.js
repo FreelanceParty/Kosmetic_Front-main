@@ -12,9 +12,9 @@ const cartSlice = createSlice({
 		},
 		addToCart:          (state, action) => {
 			const {quantity} = action.payload;
-			const key = action.payload?._id || action.payload?.id || action.payload?.productId || action.payload?.code;
+			const key = action.payload?.id ?? action.payload?.productId;
 			const existingItem = state.find((item) => {
-				const itemKey = item?._id || item?.id || item?.productId || item?.code;
+				const itemKey = item?.id ?? item?.productId;
 				return itemKey != null && String(itemKey) === String(key);
 			});
 
@@ -26,9 +26,9 @@ const cartSlice = createSlice({
 			}
 		},
 		removeFromCart:     (state, action) => {
-			const key = action.payload?._id || action.payload?.id || action.payload?.productId || action.payload?.code;
+			const key = action.payload?.id ?? action.payload?.productId;
 			return state.filter((item) => {
-				const itemKey = item?._id || item?.id || item?.productId || item?.code;
+				const itemKey = item?.id ?? item?.productId;
 				return String(itemKey) !== String(key);
 			});
 		},
