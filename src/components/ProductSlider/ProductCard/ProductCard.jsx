@@ -74,6 +74,8 @@ const ProductCard = ({product, isSlider = false}) => {
 	const productId = product?.id || product?._id || product?.productId || product?.code;
 	const productLink = `/products/${productId}`;
 
+	const hasDiscount = Boolean(product.sale && priceOld);
+
 	const handleAddToCartClick = async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -124,11 +126,11 @@ const ProductCard = ({product, isSlider = false}) => {
 							) : (
 								<div className="text-[#B90003] text-[10px] leading-[7px] truncate">Немає в наявності</div>
 							)}
-							<div className={`flex flex-col h-[27px] ${priceOld ? 'justify-between' : 'justify-end'}`}>
-								{priceOld && (
+							<div className={`flex flex-col h-[27px] ${hasDiscount ? 'justify-between' : 'justify-end'}`}>
+								{hasDiscount && (
 									<div className="font-normal text-[10px] line-through leading-[7px] text-nowrap">{priceOld} ГРН</div>
 								)}
-								<div className={`font-bold text-sm leading-[10px] text-nowrap ${priceOld ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
+								<div className={`font-bold text-sm leading-[10px] text-nowrap ${hasDiscount ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
 							</div>
 						</div>
 						{!productCartFind &&
@@ -188,11 +190,11 @@ const ProductCard = ({product, isSlider = false}) => {
 							)}
 							<div>{isOptUser ? 'Оптова ціна' : 'Роздрібна ціна'}</div>
 						</div>
-						<div className={`flex flex-col ${priceOld ? 'justify-between' : 'justify-end'}`}>
-							{priceOld && (
+						<div className={`flex flex-col ${hasDiscount ? 'justify-between' : 'justify-end'}`}>
+							{hasDiscount && (
 								<div className="font-normal text-sm line-through leading-[10px] text-nowrap">{priceOld} ГРН</div>
 							)}
-							<div className={`font-bold text-md leading-[11px] text-nowrap ${!priceOld ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
+							<div className={`font-bold text-md leading-[11px] text-nowrap ${!hasDiscount ? '' : 'text-[#B90003]'}`}>{price} ГРН</div>
 						</div>
 					</div>
 				</div>

@@ -113,6 +113,14 @@ const Category = () => {
 
 	useEffect(() => {
 		const fetchProducts = async () => {
+			if (!category) {
+				setLoading(false);
+				setInitialProducts([]);
+				setFilteredItems([]);
+				setCurrentPageItems([]);
+				setTotalPages(0);
+				return;
+			}
 			try {
 				setLoading(true);
 				const searchFromPrice = searchParams.get("fromPrice");

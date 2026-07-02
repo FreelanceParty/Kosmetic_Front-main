@@ -40,6 +40,8 @@ const Mobile = ({
 		}
 	}, [isOptUser])
 
+	const hasDiscount = Boolean(product.sale && priceOld);
+
 	return (
 		<div className="flex md:hidden w-full flex-col p-5 pb-[60px] text-[#000E55]">
 			<div className="flex flex-col items-center">
@@ -66,10 +68,10 @@ const Mobile = ({
 					<div className="flex flex-col gap-6">
 						<div className="flex justify-between items-center">
 							<div className="flex flex-col gap-4">
-								{priceOld && (
+								{hasDiscount && (
 									<div className="font-normal text-md line-through leading-[11px]">{priceOld} ГРН</div>
 								)}
-								<div className={`font-bold text-2xl leading-[17px] ${priceOld ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
+								<div className={`font-bold text-2xl leading-[17px] ${hasDiscount ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
 								<div className="font-normal text-lg leading-[8px]">{isOptUser ? 'Оптова ціна' : 'Роздрібна ціна'}</div>
 							</div>
 							{isInCart ||

@@ -42,6 +42,8 @@ const Desktop = ({
 		}
 	}, [isOptUser])
 
+	const hasDiscount = Boolean(product.sale && priceOld);
+
 	return (
 		<div className="hidden md:flex w-full justify-center relative">
 			<div className="flex flex-col max-w-[1240px] mx-20 text-[#000E55]">
@@ -77,10 +79,10 @@ const Desktop = ({
 								</div>
 								<div className="flex gap-4 items-end">
 									<div className="flex flex-col gap-4">
-										{priceOld && (
+										{hasDiscount && (
 											<div className="font-normal text-md line-through leading-[11px]">{priceOld} ГРН</div>
 										)}
-										<div className={`font-bold text-2xl leading-[17px] ${priceOld && 'text-[#B90003]'}`}>{price} ГРН</div>
+										<div className={`font-bold text-2xl leading-[17px] ${hasDiscount && 'text-[#B90003]'}`}>{price} ГРН</div>
 									</div>
 									<div className="font-normal text-lg leading-[13px]">{isOptUser ? 'Оптова ціна' : 'Роздрібна ціна'}</div>
 								</div>

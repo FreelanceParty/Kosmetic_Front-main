@@ -37,12 +37,25 @@ export function routeHelper() {
 	];
 
 	const getCategoryRoute = (category) => {
-		category = category.toLowerCase().trim();
-		return categories.find(cat => cat.name.toLowerCase().trim() === category).route;
+		if (!category) {
+			return "/katehoriji";
+		}
+		const normalized = category.toLowerCase().trim();
+		const found = categories.find(cat => cat.name.toLowerCase().trim() === normalized);
+		return found ? found.route : "/katehoriji";
 	};
 
 	const getCategoryByRoute = (route) => {
-		return categories.find(category => category.route === route).name;
+		if (!route) {
+			return null;
+		}
+		const segments = route.split("/").filter(Boolean);
+		const baseRoute = segments.length >= 2
+			? `/${segments[0]}/${segments[1]}`
+			: `/${segments[0] ?? ""}`;
+		const found = categories.find(category => category.route === baseRoute)
+			?? categories.find(category => category.route === route);
+		return found ? found.name : null;
 	};
 
 	return {getCategoryRoute, getCategoryByRoute};
