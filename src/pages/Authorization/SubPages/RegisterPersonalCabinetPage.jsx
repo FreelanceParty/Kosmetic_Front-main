@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {register} from "../../../redux/auth/operation";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
+import {extractFieldErrors, resolveAuthMessage} from "../../../utils/helpers/authErrors";
 
 const RegisterPersonalCabinetPage = () => {
 	const navigate = useNavigate();
@@ -24,6 +25,7 @@ const RegisterPersonalCabinetPage = () => {
 		optUser:     false,
 	});
 	const [phoneError, setPhoneError] = useState(null);
+	const [fieldErrors, setFieldErrors] = useState({});
 
 	const dispatch = useDispatch();
 
@@ -39,12 +41,15 @@ const RegisterPersonalCabinetPage = () => {
 			toast.error("Введіть коректний номер телефону у міжнародному форматі, наприклад +380XXXXXXXXX");
 			return;
 		}
+		setFieldErrors({});
 		dispatch(register(formData))
 			.then((response) => {
 				if (response.type === "auth/register/fulfilled") {
 					navigate('/');
 				} else {
-					toast.error("Сталась помилка, спробуйте ще раз");
+					const payload = response.payload;
+					setFieldErrors(extractFieldErrors(payload));
+					toast.error(resolveAuthMessage(payload));
 				}
 			})
 			.catch((error) => {
@@ -76,7 +81,7 @@ const RegisterPersonalCabinetPage = () => {
 							}}
 							placeholder={input.label}
 							inputClasses="h-[53px]"
-							errorMessage={phoneError}
+							errorMessage={phoneError || fieldErrors[input.key]}
 						/>
 					) : (
 						<Input
@@ -86,6 +91,7 @@ const RegisterPersonalCabinetPage = () => {
 							name={input.key}
 							placeholder={input.label}
 							onChange={(e) => setFormData(prev => ({...prev, [e.target.name]: e.target.value}))}
+							errorMessage={fieldErrors[input.key]}
 						/>
 					)
 				))}

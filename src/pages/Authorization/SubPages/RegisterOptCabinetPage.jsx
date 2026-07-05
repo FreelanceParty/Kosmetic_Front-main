@@ -7,6 +7,7 @@ import {register} from "../../../redux/auth/operation";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import Checkbox from "../../../components/Inputs/Checkbox";
+import {extractFieldErrors, resolveAuthMessage} from "../../../utils/helpers/authErrors";
 
 const RegisterOptCabinetPage = () => {
 	const navigate = useNavigate();
@@ -25,6 +26,7 @@ const RegisterOptCabinetPage = () => {
 		optUser:     true,
 	});
 	const [phoneError, setPhoneError] = useState(null);
+	const [fieldErrors, setFieldErrors] = useState({});
 
 	const dispatch = useDispatch();
 
@@ -40,12 +42,16 @@ const RegisterOptCabinetPage = () => {
 			toast.error("Введіть коректний номер телефону у міжнародному форматі, наприклад +380XXXXXXXXX");
 			return;
 		}
+		setFieldErrors({});
 		dispatch(register(formData))
 			.then((response) => {
 				if (response.type === "auth/register/fulfilled") {
 					navigate('/');
 				} else {
-					toast.error("Сталась помилка, спробуйте ще раз");
+					const payload = response.payload;
+					console.log(payload)
+					setFieldErrors(extractFieldErrors(payload));
+					toast.error(resolveAuthMessage(payload));
 				}
 			})
 			.catch((error) => {
@@ -80,7 +86,7 @@ const RegisterOptCabinetPage = () => {
 								}}
 								placeholder={input.label}
 								inputClasses="h-[53px]"
-								errorMessage={phoneError}
+								errorMessage={phoneError || fieldErrors[input.key]}
 							/>
 						) : (
 							<Input
@@ -90,6 +96,7 @@ const RegisterOptCabinetPage = () => {
 								name={input.key}
 								placeholder={input.label}
 								onChange={(e) => setFormData(prev => ({...prev, [e.target.name]: e.target.value}))}
+								errorMessage={fieldErrors[input.key]}
 							/>
 						)
 					))}

@@ -6,6 +6,7 @@ import {logIn} from "../../redux/auth/operation";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
+import {resolveAuthMessage} from "../../utils/helpers/authErrors";
 
 const AuthorizationPage = () => {
 	const navigate = useNavigate();
@@ -53,15 +54,13 @@ const AuthorizationPage = () => {
 	function loginDispatch() {
 		dispatch(logIn(formData))
 			.then((response) => {
-				if (response.payload === "Email or password invalid") {
-					toast.error("Логін або пароль ваказано не вірно!");
-				}
-
 				if (response.type === "auth/login/fulfilled") {
 					navigate('/');
 				} else if (response.type === "auth/login/rejected") {
+					const message = resolveAuthMessage(response.payload, wrongCredsMessage);
 					setIsShowEmailError(true);
-					setErrorMessage(wrongCredsMessage);
+					setErrorMessage(message);
+					toast.error(message);
 				}
 			})
 			.catch((error) => {
