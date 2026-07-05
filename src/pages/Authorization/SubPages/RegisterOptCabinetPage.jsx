@@ -63,7 +63,7 @@ const RegisterOptCabinetPage = () => {
 	]
 
 	return (
-		<div className="flex flex-col mx-auto w-full items-center pt-10 px-[100px]">
+		<div className="flex flex-col mx-auto w-full items-center pt-10 px-5 md:px-[100px]">
 			<div className="font-semibold text-lg uppercase mb-[50px]">Реєстрація оптового кабінету</div>
 			<div className="flex flex-col md:flex-row gap-[clamp(50px,7vw,99px)] justify-center w-full max-w-[909px]">
 				<div className="flex flex-col gap-[30px] w-full">

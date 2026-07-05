@@ -60,7 +60,7 @@ const RegisterPersonalCabinetPage = () => {
 		{key: "number", label: "Номер телефону*"},
 	]
 	return (
-		<div className="flex flex-col mx-auto max-w-[409px] pt-10">
+		<div className="flex flex-col mx-auto max-w-[409px] pt-10 px-5 md:px-0">
 			<div className="font-semibold text-lg uppercase mb-[50px]">Реєстрація Особистого кабінету</div>
 			<div className="flex flex-col gap-[30px] mb-10 w-full">
 				{inputs.map((input, index) => (
