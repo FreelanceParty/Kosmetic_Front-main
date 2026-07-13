@@ -52,7 +52,23 @@ export function getUserSortFunction(optionId) {
 	}
 }
 
+export function saleNewComparator(a, b) {
+	const priorityOf = (item) => {
+		if (item.sale) return 0;
+		if (item.new) return 1;
+		return 2;
+	};
+
+	return priorityOf(a) - priorityOf(b);
+}
+
 export function combinedSortComparator(a, b, optionId) {
+	const saleNewResult = saleNewComparator(a, b);
+
+	if (saleNewResult !== 0) {
+		return saleNewResult;
+	}
+
 	const availabilityResult = availabilityComparator(a, b);
 
 	if (availabilityResult !== 0) {
