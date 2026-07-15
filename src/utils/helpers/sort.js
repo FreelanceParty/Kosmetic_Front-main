@@ -63,16 +63,16 @@ export function saleNewComparator(a, b) {
 }
 
 export function combinedSortComparator(a, b, optionId) {
-	const saleNewResult = saleNewComparator(a, b);
-
-	if (saleNewResult !== 0) {
-		return saleNewResult;
-	}
-
 	const availabilityResult = availabilityComparator(a, b);
 
 	if (availabilityResult !== 0) {
 		return availabilityResult;
+	}
+
+	const saleNewResult = saleNewComparator(a, b);
+
+	if (saleNewResult !== 0) {
+		return saleNewResult;
 	}
 
 	const userSortFunction = getUserSortFunction(optionId);
