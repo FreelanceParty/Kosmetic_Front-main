@@ -10,14 +10,20 @@ const Contacts = () => {
 					<MainTitle>
 						КОНТАКТИ
 					</MainTitle>
-					<div className="flex flex-col gap-8">
-						<div className="font-semibold text-xl leading-[14px]">ТЕЛЕФОН ДЛЯ ДЗВІНКІВ</div>
-						<div className="font-medium text-md"><a className="hover:text-[#E667A4]" href="tel:+380500529100">+380 500 52 91 00</a> <br className="lg:hidden"/>(VIBER, TELEGRAM)</div>
+					<div className="flex flex-col lg:flex-row justify-between gap-[50px]">
+						<div className="flex flex-col gap-5">
+							<div className="font-semibold text-xl leading-[22px]">ТЕЛЕФОН ДЛЯ ДЗВІНКІВ</div>
+							<div className="font-medium text-md"><a className="hover:text-[#E667A4]" href="tel:+380500529100">+380 500 52 91 00</a> <br className="lg:hidden"/>(VIBER, TELEGRAM)</div>
+						</div>
+						<div className="flex flex-col gap-5">
+							<div className="font-semibold text-xl leading-[22px]">ЕЛЕКТРОННА ПОШТА ДЛЯ ПИТАНЬ ТА ПРОПОЗИЦІЙ/СПІВПРАЦЬ</div>
+							<div className="font-medium text-md"><a className="hover:text-[#E667A4]" href="mailto:beautyblossom.opt@gmail.com">beautyblossom.opt@gmail.com</a></div>
+						</div>
 					</div>
 				</div>
-				<div className="flex flex-col lg:flex-row gap-[60px]">
-					<div className="flex flex-col gap-8 ">
-						<div className="font-semibold text-xl leading-[14px]">НАШ ІНСТАГРАМ</div>
+				<div className="flex flex-col lg:flex-row gap-[50px] justify-between">
+					<div className="flex flex-col gap-5 max-w-fit">
+						<div className="font-semibold text-xl leading-[22px]">НАШ ІНСТАГРАМ</div>
 						<a href="https://www.instagram.com/beauty_blossom_ua?igsh=OWs4ZjAwdTkyczd3&utm_source=qr" className="flex gap-4 justify-center lg:justify-start items-center hover:text-[#E667A4] cursor-pointer">
 							<img
 								src={instaIcon}
