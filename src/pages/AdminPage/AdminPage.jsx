@@ -4,9 +4,13 @@ import {Slider, SliderElement} from "./AdminPage.styled";
 import Orders from "./tabs/Orders/Orders";
 import Feedbacks from "./tabs/Feedbacks/Feedbacks";
 import Mailing from "./tabs/Mailing/Mailing";
+import Products from "./tabs/Products/Products";
+import Brands from "./tabs/Brands/Brands";
 
 const tabs = [
 	{id: "orders", label: "ЗАМОВЛЕННЯ", component: <Orders/>, styles: "w-full max-w-[240px]"},
+	{id: "products", label: "ТОВАРИ", component: <Products/>, styles: "w-full max-w-[200px]"},
+	{id: "brands", label: "БРЕНДИ", component: <Brands/>, styles: "w-full max-w-[200px]"},
 	{id: "feedbacks", label: "ВІДГУКИ", component: <Feedbacks/>, styles: "w-full max-w-[200px]"},
 	{id: "mailing", label: "ПОШТОВІ РОЗСИЛКИ", component: <Mailing/>, styles: "w-full max-w-[248px]"},
 ];
