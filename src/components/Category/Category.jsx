@@ -11,7 +11,8 @@ import PriceFilter from "./_elements/PriceFilter";
 import {combinedSortComparator, sortOptions} from "../../utils/helpers/sort";
 import {applyFiltersToProducts, defaultFilters, getConvertedFiltersForProducts} from "../../utils/helpers/filter";
 import {useSelector} from "react-redux";
-import {getOptUser} from "../../redux/auth/selectors";
+import {getOptUser, getDropUser} from "../../redux/auth/selectors";
+import {resolveUserPrice} from "../../utils/helpers/priceByUser";
 import {filterProductsBy} from "../../utils/enums/headerMegaMenu";
 import FilterIcon from "../Icons/FilterIcon";
 import CloseCrossIcon from "../Icons/CloseCrossIcon";
@@ -22,6 +23,7 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const Category = () => {
 	const isOptUser = useSelector(getOptUser);
+	const isDropUser = useSelector(getDropUser);
 	const {getCategoryByRoute} = routeHelper();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -146,7 +148,7 @@ const Category = () => {
 					const from = searchFromPrice ? Number(searchFromPrice) : null;
 					const to = searchToPrice ? Number(searchToPrice) : null;
 					products = (products ?? []).filter((p) => {
-						const price = Number(isOptUser ? p?.priceOPT : p?.price);
+						const price = Number(resolveUserPrice(p, {isOptUser, isDropUser}));
 						if (!Number.isFinite(price)) {
 							return false;
 						}
@@ -171,7 +173,7 @@ const Category = () => {
 				merged.sort((a, b) => a.order - b.order);
 				setFilters(merged);
 
-				const prices = products.map(p => isOptUser ? p.priceOPT : p.price);
+				const prices = products.map(p => resolveUserPrice(p, {isOptUser, isDropUser}));
 				const min = Math.min(...prices);
 				const max = Math.max(...prices);
 				setMinPrice(min);
@@ -190,7 +192,7 @@ const Category = () => {
 		setChosenBrands([]);
 		setPriceFilter(null);
 		fetchProducts();
-	}, [category, location.search, isOptUser]);
+	}, [category, location.search, isOptUser, isDropUser]);
 
 	useEffect(() => {
 		if (isMobileFiltersOpen) {

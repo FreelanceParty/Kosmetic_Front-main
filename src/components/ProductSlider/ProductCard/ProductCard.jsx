@@ -2,7 +2,8 @@ import RateHearts from "../../RateHearts/RateHearts";
 import {Link} from "react-router-dom";
 import {handleAddToCart} from "../../../utils/helpers/basket";
 import {useDispatch, useSelector} from "react-redux";
-import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber, getOptUser} from "../../../redux/auth/selectors";
+import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber, getOptUser, getDropUser} from "../../../redux/auth/selectors";
+import {resolveUserPrice, resolveUserPriceOld, getPriceLabel} from "../../../utils/helpers/priceByUser";
 import {selectCart} from "../../../redux/cart/selectors";
 import {trackAddToCart} from "../../../ads/AdEvents";
 import {useEffect, useState} from "react";
@@ -15,6 +16,7 @@ const ProductCard = ({product, isSlider = false}) => {
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const productCart = useSelector(selectCart);
 	const isOptUser = useSelector(getOptUser);
+	const isDropUser = useSelector(getDropUser);
 	const [price, setPrice] = useState(0);
 	const [priceOld, setPriceOld] = useState(0);
 
@@ -27,14 +29,9 @@ const ProductCard = ({product, isSlider = false}) => {
 	const [reviewsCount, setReviewsCount] = useState('');
 
 	useEffect(() => {
-		if (isOptUser) {
-			setPrice(product.priceOPT);
-			setPriceOld(product.priceOldOPT);
-		} else {
-			setPrice(product.price);
-			setPriceOld(product.priceOld);
-		}
-	}, [isOptUser])
+		setPrice(resolveUserPrice(product, {isOptUser, isDropUser}));
+		setPriceOld(resolveUserPriceOld(product, {isOptUser, isDropUser}));
+	}, [isOptUser, isDropUser])
 
 	useEffect(() => {
 		function getReviewWord(count) {
@@ -188,7 +185,7 @@ const ProductCard = ({product, isSlider = false}) => {
 							) : (
 								<div className="text-[#B90003]">Немає в наявності</div>
 							)}
-							<div>{isOptUser ? 'Оптова ціна' : 'Роздрібна ціна'}</div>
+							<div>{getPriceLabel({isOptUser, isDropUser})}</div>
 						</div>
 						<div className={`flex flex-col ${hasDiscount ? 'justify-between' : 'justify-end'}`}>
 							{hasDiscount && (

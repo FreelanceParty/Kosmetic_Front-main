@@ -2,7 +2,8 @@ import React, {useEffect, useMemo, useRef, useState} from "react";
 import DangerIcon from "../../components/Icons/DangerIcon";
 import Button from "../../components/ButtonNew/Button";
 import {useDispatch, useSelector} from "react-redux";
-import {getIsLoggedIn, getOptUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../redux/auth/selectors";
+import {getIsLoggedIn, getOptUser, getDropUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../redux/auth/selectors";
+import {resolveUserPrice} from "../../utils/helpers/priceByUser";
 import {selectCart} from "../../redux/cart/selectors";
 import PersonalInfoSection from "./PersonalInfoSection";
 import axios from "axios";
@@ -31,6 +32,7 @@ const OrderPlacementPage = () => {
 	const userLastName = useSelector(getUserLastName);
 	const userNumber = useSelector(getUserNumber);
 	const isOptUser = useSelector(getOptUser);
+	const isDropUser = useSelector(getDropUser);
 	const isLoggedIn = useSelector(getIsLoggedIn);
 
 	const generateOrderNumber = () => {
@@ -48,10 +50,10 @@ const OrderPlacementPage = () => {
 	const totalAmount = useMemo(
 		() =>
 			updateItems.reduce(
-				(total, item) => total + (isOptUser ? item.priceOPT : item.price) * item.quantity,
+				(total, item) => total + resolveUserPrice(item, {isOptUser, isDropUser}) * item.quantity,
 				0
 			),
-		[updateItems, isOptUser]
+		[updateItems, isOptUser, isDropUser]
 	);
 	const orderedItems = useMemo(
 		() =>
@@ -62,9 +64,9 @@ const OrderPlacementPage = () => {
 				sale:      item.sale,
 				code:      item.code.toString(),
 				quantity:  item.quantity,
-				amount:    (isOptUser ? item.priceOPT : item.price) * item.quantity,
+				amount:    resolveUserPrice(item, {isOptUser, isDropUser}) * item.quantity,
 			})),
-		[updateItems, isOptUser]
+		[updateItems, isOptUser, isDropUser]
 	);
 
 	const hasUnavailableItems = updateItems.some((item) => {
@@ -83,6 +85,7 @@ const OrderPlacementPage = () => {
 		deliveryMethod: null,
 		orderNumber:    orderNumberRef.current,
 		isOptUser:      isOptUser,
+		isDropUser:     isDropUser,
 		comments:       null,
 		status:         "Новий",
 		amount:         totalAmount,
@@ -321,6 +324,7 @@ const OrderPlacementPage = () => {
 				building:       "",
 				apartment:      "",
 				isOptUser:      isOptUser,
+				isDropUser:     isDropUser,
 			});
 			setIsOrderCompleted(true);
 		} catch (error) {
@@ -420,7 +424,7 @@ const OrderPlacementPage = () => {
 
 											<div className="flex justify-between">
 												<div className="text-md">{product.quantity} шт.</div>
-												<div className="font-semibold text-md">{isOptUser ? product.priceOPT : product.price} грн</div>
+												<div className="font-semibold text-md">{resolveUserPrice(product, {isOptUser, isDropUser})} грн</div>
 											</div>
 										</div>
 									</div>
@@ -472,7 +476,7 @@ const OrderPlacementPage = () => {
 											<div className="font-semibold text-xs text-[#DA469A]">Товар відсутній на складі</div>
 										)}
 										<div className="text-md w-1/5 text-center">{product.quantity} шт.</div>
-										<div className="font-semibold text-md w-1/5 text-end">{isOptUser ? product.priceOPT : product.price} грн</div>
+										<div className="font-semibold text-md w-1/5 text-end">{resolveUserPrice(product, {isOptUser, isDropUser})} грн</div>
 									</div>
 								</div>
 							))}

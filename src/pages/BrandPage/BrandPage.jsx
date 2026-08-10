@@ -10,7 +10,8 @@ import Filter from "../../components/Category/_elements/Filter";
 import PriceFilter from "../../components/Category/_elements/PriceFilter";
 import {applyFiltersToProducts, defaultFilters, getConvertedFiltersForProducts} from "../../utils/helpers/filter";
 import {useSelector} from "react-redux";
-import {getOptUser} from "../../redux/auth/selectors";
+import {getOptUser, getDropUser} from "../../redux/auth/selectors";
+import {resolveUserPrice} from "../../utils/helpers/priceByUser";
 import FilterIcon from "../../components/Icons/FilterIcon";
 import CloseCrossIcon from "../../components/Icons/CloseCrossIcon";
 import Button from "../../components/ButtonNew/Button";
@@ -20,6 +21,7 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const BrandPage = () => {
 	const isOptUser = useSelector(getOptUser);
+	const isDropUser = useSelector(getDropUser);
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
 
@@ -126,7 +128,7 @@ const BrandPage = () => {
 				merged.sort((a, b) => a.order - b.order);
 				setFilters(merged);
 
-				const prices = products.map(p => isOptUser ? p.priceOPT : p.price);
+				const prices = products.map(p => resolveUserPrice(p, {isOptUser, isDropUser}));
 				const min = Math.min(...prices);
 				const max = Math.max(...prices);
 				setMinPrice(min);

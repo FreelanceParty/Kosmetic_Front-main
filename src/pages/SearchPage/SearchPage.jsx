@@ -10,7 +10,8 @@ import PriceFilter from "../../components/Category/_elements/PriceFilter";
 import {combinedSortComparator, sortOptions} from "../../utils/helpers/sort";
 import {applyFiltersToProducts, defaultFilters, getConvertedFiltersForProducts} from "../../utils/helpers/filter";
 import {useSelector} from "react-redux";
-import {getOptUser} from "../../redux/auth/selectors";
+import {getOptUser, getDropUser} from "../../redux/auth/selectors";
+import {resolveUserPrice} from "../../utils/helpers/priceByUser";
 import FilterIcon from "../../components/Icons/FilterIcon";
 import CloseCrossIcon from "../../components/Icons/CloseCrossIcon";
 import Button from "../../components/ButtonNew/Button";
@@ -24,6 +25,7 @@ const SearchPage = () => {
 	const searchMarker = searchParams.get('marker');
 
 	const isOptUser = useSelector(getOptUser);
+	const isDropUser = useSelector(getDropUser);
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
 
@@ -129,7 +131,7 @@ const SearchPage = () => {
 				setFilters(merged);
 
 				const prices = (products ?? [])
-					.map(p => Number(isOptUser ? p?.priceOPT : p?.price))
+					.map(p => Number(resolveUserPrice(p, {isOptUser, isDropUser})))
 					.filter(Number.isFinite);
 
 				if (prices.length > 0) {

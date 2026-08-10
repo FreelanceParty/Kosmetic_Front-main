@@ -5,7 +5,8 @@ import {CATEGORIES} from "../../utils/enums/categories";
 import CategoryIcon from "../Icons/CategoryIcon";
 import {Link, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {getOptUser} from "../../redux/auth/selectors";
+import {getOptUser, getDropUser} from "../../redux/auth/selectors";
+import {resolveUserPrice} from "../../utils/helpers/priceByUser";
 import {availabilityComparator} from "../../utils/helpers/sort";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -13,6 +14,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 	const navigate = useNavigate();
 	const isOptUser = useSelector(getOptUser);
+	const isDropUser = useSelector(getDropUser);
 	const latestRequestIdRef = useRef(0);
 
 	const [searchQuery, setSearchQuery] = useState("");
@@ -94,7 +96,7 @@ const SearchForm = ({isSearchOpen, setIsSearchOpen}) => {
 									</div>
 									<div className="flex flex-col md:flex-row gap-4 md:gap-5 justify-between w-full">
 										<div className="line-clamp-2 md:line-clamp-3 text-md w-full leading-[15px]">{product.name}</div>
-										<div className="font-semibold text-md leading-[11px] my-auto whitespace-nowrap">{isOptUser ? product.priceOPT : product.price} грн</div>
+										<div className="font-semibold text-md leading-[11px] my-auto whitespace-nowrap">{resolveUserPrice(product, {isOptUser, isDropUser})} грн</div>
 									</div>
 								</div>
 							</Link>

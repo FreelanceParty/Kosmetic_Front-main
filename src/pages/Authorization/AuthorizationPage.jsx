@@ -129,6 +129,19 @@ const AuthorizationPage = () => {
 				<div className="flex flex-col gap-3">
 					<Button
 						type="secondary"
+						text="СТВОРИТИ ДРОПШИПІНГ КАБІНЕТ"
+						classes="h-[53px] w-full max-w-[425px] px-2"
+						textClasses="font-medium text-sm md:text-lg"
+						to="/reg-drop-cabinet"
+					/>
+					<div className="flex gap-2 items-center">
+						<InfoIcon/>
+						<div>Доступ до дроп цін</div>
+					</div>
+				</div>
+				<div className="flex flex-col gap-3">
+					<Button
+						type="secondary"
 						text="СТВОРИТИ РОЗДРІБНИЙ КАБІНЕТ"
 						classes="h-[53px] w-full max-w-[425px] px-2"
 						textClasses="font-medium text-sm md:text-lg"

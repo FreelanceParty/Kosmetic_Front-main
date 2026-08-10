@@ -5,7 +5,8 @@ import Button from "../../../components/ButtonNew/Button";
 import Details from "../Sections/Details";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {getIsAdmin, getOptUser} from "../../../redux/auth/selectors";
+import {getIsAdmin, getOptUser, getDropUser} from "../../../redux/auth/selectors";
+import {resolveUserPrice, resolveUserPriceOld, getPriceLabel} from "../../../utils/helpers/priceByUser";
 import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 import Input from "../../../components/Input/Input";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
@@ -26,6 +27,7 @@ const Desktop = ({
 	updateProductCountHandler
 }) => {
 	const isOptUser = useSelector(getOptUser);
+	const isDropUser = useSelector(getDropUser);
 	const isAdmin = useSelector(getIsAdmin);
 
 	const {getCategoryRoute} = routeHelper();
@@ -33,14 +35,9 @@ const Desktop = ({
 	const [priceOld, setPriceOld] = useState(0);
 
 	useEffect(() => {
-		if (isOptUser) {
-			setPrice(product.priceOPT);
-			setPriceOld(product.priceOldOPT);
-		} else {
-			setPrice(product.price);
-			setPriceOld(product.priceOld);
-		}
-	}, [isOptUser])
+		setPrice(resolveUserPrice(product, {isOptUser, isDropUser}));
+		setPriceOld(resolveUserPriceOld(product, {isOptUser, isDropUser}));
+	}, [isOptUser, isDropUser])
 
 	const hasDiscount = Boolean(product.sale && priceOld);
 
@@ -84,7 +81,7 @@ const Desktop = ({
 										)}
 										<div className={`font-bold text-2xl leading-[17px] ${hasDiscount && 'text-[#B90003]'}`}>{price} ГРН</div>
 									</div>
-									<div className="font-normal text-lg leading-[13px]">{isOptUser ? 'Оптова ціна' : 'Роздрібна ціна'}</div>
+									<div className="font-normal text-lg leading-[13px]">{getPriceLabel({isOptUser, isDropUser})}</div>
 								</div>
 								<div className="border-b"></div>
 								<div className="flex gap-4 font-normal text-sm">
@@ -131,7 +128,7 @@ const Desktop = ({
 									/>
 								</div>
 							)}
-							{!isOptUser && (
+							{!isOptUser && !isDropUser && (
 								<div className="flex gap-3 items-center">
 									<img
 										src={starPercentageIcon}

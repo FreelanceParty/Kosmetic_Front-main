@@ -5,7 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectCart} from "../redux/cart/selectors";
 import CloseCrossIcon from "../components/Icons/CloseCrossIcon";
 import EmptyBasketIcon from "../components/Icons/EmptyBasketIcon";
-import {getIsLoggedIn, getOptUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../redux/auth/selectors";
+import {getIsLoggedIn, getOptUser, getDropUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../redux/auth/selectors";
+import {resolveUserPrice} from "../utils/helpers/priceByUser";
 import {addToCart} from "../redux/cart/slice";
 import {handleRemoveFromCart, refreshCartAvailability} from "../utils/helpers/basket";
 import DeleteIcon from "../components/Icons/DeleteIcon";
@@ -18,6 +19,7 @@ const Basket = ({onClose}) => {
 
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const isOptUser = useSelector(getOptUser);
+	const isDropUser = useSelector(getDropUser);
 	const userEmail = useSelector(getUserEmail);
 	const userFirstName = useSelector(getUserFirstName);
 	const userLastName = useSelector(getUserLastName);
@@ -26,9 +28,9 @@ const Basket = ({onClose}) => {
 	const [notAvailableProductsAmount, setNotAvailableProductsAmount] = useState([])
 	const getItemKey = (item) => item?.id ?? item?.productId;
 
-	const totalAmount = isOptUser
+	const totalAmount = (isOptUser || isDropUser)
 		? cartItems.reduce(
-			(total, item) => total + item.priceOPT * item.quantity,
+			(total, item) => total + resolveUserPrice(item, {isOptUser, isDropUser}) * item.quantity,
 			0
 		)
 		: cartItems.reduce(
@@ -127,7 +129,7 @@ const Basket = ({onClose}) => {
 								<div className="flex flex-col gap-[30px] px-4 py-5">
 									<div className="flex gap-[30px]">
 										<div className="text-md line-clamp-2">{product.name}</div>
-										<div className="font-semibold text-xl whitespace-nowrap">{isOptUser ? product.priceOPT : product.price} ГРН</div>
+										<div className="font-semibold text-xl whitespace-nowrap">{resolveUserPrice(product, {isOptUser, isDropUser})} ГРН</div>
 									</div>
 									{Number(product?.amount ?? 0) <= 0 && (
 										<div className="font-semibold text-xs text-[#DA469A]">Товар відсутній на складі</div>

@@ -6,7 +6,8 @@ import Button from "../../components/ButtonNew/Button";
 import NumberInput from "../../components/NumberInput/NumberInput";
 import DeleteIcon from "../../components/Icons/DeleteIcon";
 import {handleRemoveFromCart, refreshCartAvailability} from "../../utils/helpers/basket";
-import {getIsLoggedIn, getOptUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../redux/auth/selectors";
+import {getIsLoggedIn, getOptUser, getDropUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../redux/auth/selectors";
+import {resolveUserPrice} from "../../utils/helpers/priceByUser";
 import {addToCart} from "../../redux/cart/slice";
 import {useNavigate} from "react-router-dom";
 import {trackInitiateCheckout} from "../../ads/AdEvents";
@@ -15,6 +16,7 @@ const CartPage = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const isOptUser = useSelector(getOptUser);
+	const isDropUser = useSelector(getDropUser);
 
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const userEmail = useSelector(getUserEmail);
@@ -25,9 +27,9 @@ const CartPage = () => {
 	const [notAvailableProductsAmount, setNotAvailableProductsAmount] = useState([])
 	const getItemKey = (item) => item?.id ?? item?.productId;
 
-	const totalAmount = isOptUser
+	const totalAmount = (isOptUser || isDropUser)
 		? cartItems.reduce(
-			(total, item) => total + item.priceOPT * item.quantity,
+			(total, item) => total + resolveUserPrice(item, {isOptUser, isDropUser}) * item.quantity,
 			0
 		)
 		: cartItems.reduce(
@@ -147,7 +149,7 @@ const CartPage = () => {
 											<DeleteIcon onClick={() => removeFromCart(product)} classes="cursor-pointer"/>
 										</div>
 										<div className="text-md font-semibold leading-[11px]">
-											{isOptUser ? product.priceOPT : product.price} ГРН
+											{resolveUserPrice(product, {isOptUser, isDropUser})} ГРН
 										</div>
 									</div>
 								</div>

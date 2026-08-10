@@ -1,0 +1,135 @@
+import Button from "../../../components/ButtonNew/Button";
+import Input from "../../../components/Input/Input";
+import PhoneInputField from "../../../components/PhoneInputField/PhoneInputField";
+import {useState} from "react";
+import {useDispatch} from "react-redux";
+import {register} from "../../../redux/auth/operation";
+import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
+import Checkbox from "../../../components/Inputs/Checkbox";
+import {extractFieldErrors, resolveAuthMessage} from "../../../utils/helpers/authErrors";
+
+const RegisterDropCabinetPage = () => {
+	const navigate = useNavigate();
+
+	const [formData, setFormData] = useState({
+		email:       "",
+		password:    "",
+		firstName:   "",
+		lastName:    "",
+		number:      "",
+		city:        "",
+		link:        "",
+		onlineShop:  false,
+		offlineShop: false,
+		socialMedia: false,
+		optUser:     false,
+		dropUser:    true,
+	});
+	const [phoneError, setPhoneError] = useState(null);
+	const [fieldErrors, setFieldErrors] = useState({});
+
+	const dispatch = useDispatch();
+
+	const validatePhone = (raw) => {
+		const phonePattern = /^\+[1-9]\d{6,14}$/;
+		return phonePattern.test(String(raw ?? "").trim());
+	};
+
+	function registerDispatch() {
+		const isPhoneValid = validatePhone(formData.number);
+		setPhoneError(isPhoneValid ? null : "Невірний формат номеру");
+		if (!isPhoneValid) {
+			toast.error("Введіть коректний номер телефону у міжнародному форматі, наприклад +380XXXXXXXXX");
+			return;
+		}
+		setFieldErrors({});
+		dispatch(register(formData))
+			.then((response) => {
+				if (response.type === "auth/register/fulfilled") {
+					navigate('/');
+				} else {
+					const payload = response.payload;
+					console.log(payload)
+					setFieldErrors(extractFieldErrors(payload));
+					toast.error(resolveAuthMessage(payload));
+				}
+			})
+			.catch((error) => {
+				console.error("Сталася помилка:", error);
+			});
+	}
+
+	const inputs = [
+		{key: "email", label: "E-mail*"},
+		{key: "password", label: "Пароль*"},
+		{key: "firstName", label: "Ім'я*"},
+		{key: "lastName", label: "Прізвище*"},
+		{key: "number", label: "Номер телефону*"},
+		{key: "city", label: "Місто*"},
+	]
+
+	return (
+		<div className="flex flex-col mx-auto w-full items-center pt-10 px-5 md:px-[100px]">
+			<div className="font-semibold text-lg uppercase mb-[50px]">Реєстрація дропшипінг кабінету</div>
+			<div className="flex flex-col md:flex-row gap-[clamp(50px,7vw,99px)] justify-center w-full max-w-[909px]">
+				<div className="flex flex-col gap-[30px] w-full">
+					{inputs.map((input, index) => (
+						input.key === "number" ? (
+							<PhoneInputField
+								key={index}
+								name={input.key}
+								value={formData[input.key] || ""}
+								onChange={(e) => setFormData(prev => ({...prev, [e.target.name]: e.target.value}))}
+								onBlur={() => {
+									const isPhoneValid = validatePhone(formData.number);
+									setPhoneError(isPhoneValid ? null : "Невірний формат номеру");
+								}}
+								placeholder={input.label}
+								inputClasses="h-[53px]"
+								errorMessage={phoneError || fieldErrors[input.key]}
+							/>
+						) : (
+							<Input
+								key={index}
+								value={formData[input.key] || ""}
+								type={input.key === "email" ? "email" : input.key === "password" ? "password" : "text"}
+								name={input.key}
+								placeholder={input.label}
+								onChange={(e) => setFormData(prev => ({...prev, [e.target.name]: e.target.value}))}
+								errorMessage={fieldErrors[input.key]}
+							/>
+						)
+					))}
+				</div>
+				<div className="flex flex-col gap-[clamp(50px,7vw,99px)] md:gap-0 justify-between w-full">
+					<div className="flex flex-col gap-10">
+						<div className="flex flex-col gap-5">
+							<div className="font-semibold text-md leading-[11px]">Тип вашого магазину</div>
+							<Checkbox label="Онлайн магазин" onChange={(e) => setFormData(prev => ({...prev, ['onlineShop']: !formData.onlineShop}))}/>
+							<Checkbox label="Офлайн магазин" onChange={(e) => setFormData(prev => ({...prev, ['offlineShop']: !formData.offlineShop}))}/>
+							<Checkbox label="Сторінка у соц. мережах" onChange={(e) => setFormData(prev => ({...prev, ['socialMedia']: !formData.socialMedia}))}/>
+						</div>
+						<div className="flex flex-col gap-5">
+							<div className="font-semibold text-md leading-[16px]">Введіть посилання на ваш сайт або сторінку</div>
+							<Input
+								value={formData.link}
+								type="text"
+								name="link"
+								placeholder="MyShop.com"
+								onChange={(e) => setFormData(prev => ({...prev, [e.target.name]: e.target.value}))}
+							/>
+						</div>
+					</div>
+					<Button
+						type="primary"
+						classes="w-full h-[53px] mb-[50px] md:mb-0"
+						text="ЗАРЕЄСТРУВАТИСЬ"
+						onClick={() => registerDispatch()}
+					/>
+				</div>
+			</div>
+		</div>
+	);
+};
+export default RegisterDropCabinetPage;

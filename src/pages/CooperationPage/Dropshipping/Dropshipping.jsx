@@ -35,6 +35,13 @@ const Dropshipping = () => {
 					<CooperationList items={importantListItems}/>
 				</div>
 				<div className="flex flex-col gap-8">
+					<SecondaryTitle>ЩОБ ПОБАЧИТИ ДРОП ЦІНИ – ЗАРЕЄСТРУЙТЕСЬ АБО УВІЙДІТЬ, ЯК ДРОПШИПЕР!</SecondaryTitle>
+					<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+						<Button type="primary" text="ЗАРЕЄСТРУВАТИСЬ" to="/reg-drop-cabinet"/>
+						<Button type="secondary" text="УВІЙТИ В КАБІНЕТ" to="/authorization"/>
+					</div>
+				</div>
+				<div className="flex flex-col gap-8">
 					<div className="flex flex-col gap-6 text-center lg:text-left">
 						<SecondaryTitle>ДЕ ДІЗНАТИСЬ БІЛЬШЕ?</SecondaryTitle>
 						<div className="font-normal text-md">Детальна інструкція зі створення ТТН та актуальні ціни — в наших каналах:</div>

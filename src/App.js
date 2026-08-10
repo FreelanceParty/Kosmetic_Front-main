@@ -23,6 +23,7 @@ import UserPage from "./pages/UserPage/UserPage";
 import SharedLayoutWithoutFooter from "./components/SharedLayoutWithoutFooter/SharedLayoutWithoutFooter";
 import AuthorizationPage from "./pages/Authorization/AuthorizationPage";
 import RegisterOptCabinetPage from "./pages/Authorization/SubPages/RegisterOptCabinetPage";
+import RegisterDropCabinetPage from "./pages/Authorization/SubPages/RegisterDropCabinetPage";
 import RegisterPersonalCabinetPage from "./pages/Authorization/SubPages/RegisterPersonalCabinetPage";
 import {useDispatch, useSelector} from "react-redux";
 import {refreshUser} from "./redux/auth/operation";
@@ -235,6 +236,14 @@ function App() {
 						element={
 							<Suspense fallback={<Loader/>}>
 								<RegisterOptCabinetPage/>
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/reg-drop-cabinet"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<RegisterDropCabinetPage/>
 							</Suspense>
 						}
 					/>

@@ -12,6 +12,7 @@ const initialState = {
 	isRegister: false,
 	isAdmin: false,
 	optUser: false,
+	dropUser: false,
 	_id: null,
 };
 
@@ -29,6 +30,7 @@ const authSlice = createSlice({
 				      state.number = action.payload.number;
 				      state.isAdmin = action.payload.isAdmin;
 				      state.optUser = action.payload.optUser;
+				      state.dropUser = action.payload.dropUser;
 				      state.isRegister = true;
 				      state._id = action.payload._id;
 			      })
@@ -39,6 +41,7 @@ const authSlice = createSlice({
 				      state.number = action.payload.number;
 				      state.isAdmin = action.payload.isAdmin;
 				      state.optUser = action.payload.optUser;
+				      state.dropUser = action.payload.dropUser;
 				      state._id = action.payload._id;
 				      state.isLoggedIn = true;
 				      state.isRegister = true;
@@ -56,6 +59,7 @@ const authSlice = createSlice({
 				      state.isLoggedIn = false;
 				      state.isRegister = false;
 				      state.optUser = false;
+				      state.dropUser = false;
 				      state._id = null;
 			      })
 			      .addCase(refreshUser.pending, (state, action) => {
@@ -68,6 +72,7 @@ const authSlice = createSlice({
 				      state.email = action.payload.email;
 				      state.isAdmin = action.payload.isAdmin;
 				      state.optUser = action.payload.optUser;
+				      state.dropUser = action.payload.dropUser;
 				      state._id = action.payload._id;
 				      state.isLoggedIn = true;
 				      state.isRegister = true;
@@ -82,6 +87,7 @@ const authSlice = createSlice({
 					      state.email = null;
 					      state.isAdmin = false;
 					      state.optUser = false;
+					      state.dropUser = false;
 					      state._id = null;
 					      state.token = null;
 					      state.isLoggedIn = false;

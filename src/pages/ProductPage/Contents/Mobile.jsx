@@ -4,7 +4,8 @@ import Button from "../../../components/ButtonNew/Button";
 import Details from "../Sections/Details";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {getIsAdmin, getOptUser} from "../../../redux/auth/selectors";
+import {getIsAdmin, getOptUser, getDropUser} from "../../../redux/auth/selectors";
+import {resolveUserPrice, resolveUserPriceOld, getPriceLabel} from "../../../utils/helpers/priceByUser";
 import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 import Input from "../../../components/Input/Input";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
@@ -25,20 +26,16 @@ const Mobile = ({
 	updateProductCountHandler
 }) => {
 	const isOptUser = useSelector(getOptUser);
+	const isDropUser = useSelector(getDropUser);
 	const isAdmin = useSelector(getIsAdmin);
 
 	const [price, setPrice] = useState(0);
 	const [priceOld, setPriceOld] = useState(0);
 
 	useEffect(() => {
-		if (isOptUser) {
-			setPrice(product.priceOPT);
-			setPriceOld(product.priceOldOPT);
-		} else {
-			setPrice(product.price);
-			setPriceOld(product.priceOld);
-		}
-	}, [isOptUser])
+		setPrice(resolveUserPrice(product, {isOptUser, isDropUser}));
+		setPriceOld(resolveUserPriceOld(product, {isOptUser, isDropUser}));
+	}, [isOptUser, isDropUser])
 
 	const hasDiscount = Boolean(product.sale && priceOld);
 
@@ -72,7 +69,7 @@ const Mobile = ({
 									<div className="font-normal text-md line-through leading-[11px]">{priceOld} ГРН</div>
 								)}
 								<div className={`font-bold text-2xl leading-[17px] ${hasDiscount ? 'text-[#B90003]' : ''}`}>{price} ГРН</div>
-								<div className="font-normal text-lg leading-[8px]">{isOptUser ? 'Оптова ціна' : 'Роздрібна ціна'}</div>
+								<div className="font-normal text-lg leading-[8px]">{getPriceLabel({isOptUser, isDropUser})}</div>
 							</div>
 							{isInCart ||
 								<NumberInput number={quantity} setNumber={setQuantity}/>
@@ -116,7 +113,7 @@ const Mobile = ({
 								</div>
 							</div>
 						</div>
-						{isOptUser ? (
+						{(isOptUser || isDropUser) ? (
 							<div/>
 						) : (
 							<div className="flex gap-3 items-center">

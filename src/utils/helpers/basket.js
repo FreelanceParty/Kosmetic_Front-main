@@ -30,6 +30,7 @@ export const handleAddToCart = async ({product, quantity, dispatch, isLoggedIn})
 				amount:         product.amount,
 				description:    product.description,
 				priceOPT:       product.priceOPT,
+				priceDrop:      product.priceDrop,
 				quantity:       requestedQuantity,
 				price:          product.price,
 				brand:          product.brand,
