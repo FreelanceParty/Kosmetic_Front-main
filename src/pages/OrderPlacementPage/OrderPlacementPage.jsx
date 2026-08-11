@@ -80,9 +80,10 @@ const OrderPlacementPage = () => {
 		firstName:      userFirstName,
 		lastName:       userLastName,
 		number:         userNumber || "+380",
-		city:           null,
+		city:           isDropUser ? "—" : null,
+		warehouse:      isDropUser ? "—" : undefined,
 		paymentMethod:  "Оплата за реквізитами",
-		deliveryMethod: null,
+		deliveryMethod: isDropUser ? "Дропшипінг" : null,
 		orderNumber:    orderNumberRef.current,
 		isOptUser:      isOptUser,
 		isDropUser:     isDropUser,
@@ -159,31 +160,33 @@ const OrderPlacementPage = () => {
 			return false;
 		}
 
-		if (!formData.city) {
-			showErrorMessage("Будь ласка, виберіть місто", withErrorMessage);
-			setIsValidForm(false);
-			return false;
-		}
-		if (!formData.deliveryMethod) {
-			showErrorMessage("Будь ласка, виберіть спосіб доставки", withErrorMessage);
-			setIsValidForm(false);
-			return false;
-		} else if (formData.deliveryMethod === "Доставка кур'єром") {
-			if (!formData.address) {
-				showErrorMessage("Будь ласка, введіть адресу", withErrorMessage);
+		if (!isDropUser) {
+			if (!formData.city) {
+				showErrorMessage("Будь ласка, виберіть місто", withErrorMessage);
 				setIsValidForm(false);
 				return false;
 			}
-			if (!formData.building) {
-				showErrorMessage("Будь ласка, введіть будинок", withErrorMessage);
+			if (!formData.deliveryMethod) {
+				showErrorMessage("Будь ласка, виберіть спосіб доставки", withErrorMessage);
 				setIsValidForm(false);
 				return false;
-			}
-		} else if (formData.deliveryMethod === "Доставка на відділення") {
-			if (!formData.warehouse) {
-				showErrorMessage("Будь ласка, виберіть відділення НП", withErrorMessage);
-				setIsValidForm(false);
-				return false;
+			} else if (formData.deliveryMethod === "Доставка кур'єром") {
+				if (!formData.address) {
+					showErrorMessage("Будь ласка, введіть адресу", withErrorMessage);
+					setIsValidForm(false);
+					return false;
+				}
+				if (!formData.building) {
+					showErrorMessage("Будь ласка, введіть будинок", withErrorMessage);
+					setIsValidForm(false);
+					return false;
+				}
+			} else if (formData.deliveryMethod === "Доставка на відділення") {
+				if (!formData.warehouse) {
+					showErrorMessage("Будь ласка, виберіть відділення НП", withErrorMessage);
+					setIsValidForm(false);
+					return false;
+				}
 			}
 		}
 		if (orderNumberRef.current === "") {

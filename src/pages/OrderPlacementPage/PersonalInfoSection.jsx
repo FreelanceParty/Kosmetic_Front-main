@@ -1,5 +1,7 @@
 import Input from "../../components/Input/Input";
 import React, {useEffect, useRef, useState} from "react";
+import {useSelector} from "react-redux";
+import {getDropUser} from "../../redux/auth/selectors";
 import DangerIcon from "../../components/Icons/DangerIcon";
 import Select from "../../components/Select/Select";
 import TextArea from "../../components/TextArea/TextArea";
@@ -19,6 +21,8 @@ const PersonalInfoSection = ({
 	      setFormData,
       }) => {
 	      const apiKey = "c9cfd468abe7e624f872ca0e59a29184";
+
+	      const isDropUser = useSelector(getDropUser);
 
 	      const [deliveryType, setDeliveryType] = useState(0);
 	      const [paymentType, setPaymentType] = useState(0);
@@ -237,6 +241,11 @@ const PersonalInfoSection = ({
 		      <div className="flex flex-col gap-6 w-full min-w-[335px] max-w-[400px]">
 			      <div className="flex flex-col gap-4">
 				      <div className="font-semibold text-md leading-[11px]">ОСОБИСТА ІНФОРМАЦІЯ</div>
+				      {isDropUser && (
+					      <div className="px-5 py-4 bg-[#EBFCEC] text-[#007504] rounded-[3px] w-full text-sm leading-[150%]">
+						      <span className="font-semibold">Зверніть увагу!</span> Нижче вказуєте ВАШІ дані для зв'язку з вами через Viber або Telegram. Реквізити для оплати надсилає менеджер після збору замовлення
+					      </div>
+				      )}
 				      <Input
 					      type="text"
 					      name="firstName"
@@ -274,6 +283,7 @@ const PersonalInfoSection = ({
 					      inputClasses={'h-[43px]'}
 				      />
 			      </div>
+			      {!isDropUser && (<>
 			      <div className="flex flex-col gap-4">
 				      <div className="font-semibold text-md leading-[11px]">ДОСТАВКА</div>
 				      <Select
@@ -378,6 +388,7 @@ const PersonalInfoSection = ({
 					      </div>
 				      )}
 			      </div>
+			      </>)}
 			      <div className="flex flex-col gap-4">
 				      <div className="font-semibold text-md leading-[11px]">КОМЕНТАР ДО ЗАМОВЛЕННЯ</div>
 				      <TextArea

@@ -34,6 +34,12 @@ const Dropshipping = () => {
 					<SecondaryTitle className="text-[#B90003]">ВАЖЛИВО!</SecondaryTitle>
 					<CooperationList items={importantListItems}/>
 				</div>
+				<div className="px-5 py-4 bg-[#EBFCEC] text-[#007504] rounded-[3px] w-full text-md leading-[160%]">
+					<span className="font-semibold">Зверніть увагу!</span> При оформленні замовлення вказуєте ВАШІ дані для зв'язку в Viber або Telegram.
+					Реквізити для оплати надсилає менеджер після збору вашого замовлення.
+					<br/>
+					ТТН надсилаєте у вигляді PDF файлу нашому менеджеру, після оплати замовлення.
+				</div>
 				<div className="flex flex-col gap-8">
 					<SecondaryTitle>ЩОБ ПОБАЧИТИ ДРОП ЦІНИ – ЗАРЕЄСТРУЙТЕСЬ АБО УВІЙДІТЬ, ЯК ДРОПШИПЕР!</SecondaryTitle>
 					<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
