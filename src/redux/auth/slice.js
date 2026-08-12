@@ -31,8 +31,10 @@ const authSlice = createSlice({
 				      state.isAdmin = action.payload.isAdmin;
 				      state.optUser = action.payload.optUser;
 				      state.dropUser = action.payload.dropUser;
-				      state.isRegister = true;
 				      state._id = action.payload._id;
+				      state.isLoggedIn = true;
+				      state.isRegister = true;
+				      state.token = action.payload.token;
 			      })
 			      .addCase(logIn.fulfilled, (state, action) => {
 				      state.firstName = action.payload.firstName;
