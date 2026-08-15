@@ -60,6 +60,8 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 			href:    getCategoryRoute("догляд для тіла"),
 			menuKey: "ТІЛО",
 		},
+		{key: "ТОЧКОВІ ЗАСОБИ", type: "link", href: getCategoryRoute("точкові засоби")},
+		{key: "ДЛЯ ШИЇ ТА ДЕКОЛЬТЕ", type: "link", href: getCategoryRoute("для шиї та декольте")},
 		{
 			key:     "НАБОРИ & ПОДАРУНКИ",
 			type:    "category",

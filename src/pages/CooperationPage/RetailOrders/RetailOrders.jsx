@@ -44,7 +44,7 @@ const RetailOrders = () => {
 					</div>
 				</div>
 				<div className="flex flex-col gap-8">
-					<SecondaryTitle>УМОВИ ЗБЕРІГАННЯ</SecondaryTitle>
+					<SecondaryTitle>УМОВИ ЗАМОВЛЕННЯ</SecondaryTitle>
 					<CooperationList items={orderConditionsListItems}/>
 				</div>
 				<div className="flex flex-col gap-8">

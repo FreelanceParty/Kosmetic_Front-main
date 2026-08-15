@@ -21,6 +21,14 @@ export function routeHelper() {
 			name:  "Набори",
 			route: "/katehoriji/folds",
 		},
+		{
+			name:  "Точкові засоби",
+			route: "/katehoriji/spotCare",
+		},
+		{
+			name:  "Для шиї та декольте",
+			route: "/katehoriji/neckDecollete",
+		},
 		// todo:
 		{
 			name:  "Захист від сонця",

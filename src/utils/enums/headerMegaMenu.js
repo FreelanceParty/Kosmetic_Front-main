@@ -141,8 +141,6 @@ export const HEADER_MEGA_MENU = {
 					{title: "ДЛЯ ТІЛА", items: []},
 					{title: "ДЛЯ ВОЛОССЯ", items: []},
 					{title: "МІНІ-ФОРМАТИ В НАБОРАХ", items: []},
-					{title: "ПРОБНИКИ", items: []},
-					{title: "АКСЕСУАРИ", items: [], link: '/katehoriji/folds?category=Аксесуари для догляду'},
 				],
 			},
 			{

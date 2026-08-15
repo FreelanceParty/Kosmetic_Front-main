@@ -45,6 +45,8 @@ const Header = () => {
 		{title: "ВОЛОССЯ", href: getCategoryRoute("догляд для волосся")},
 		{title: "МАКІЯЖ", href: getCategoryRoute("макіяж")},
 		{title: "ТІЛО", href: getCategoryRoute("догляд для тіла")},
+		{title: "ТОЧКОВІ ЗАСОБИ", href: getCategoryRoute("точкові засоби")},
+		{title: "ДЛЯ ШИЇ ТА ДЕКОЛЬТЕ", href: getCategoryRoute("для шиї та декольте")},
 		{title: "НАБОРИ & ПОДАРУНКИ", href: getCategoryRoute("набори")},
 		{title: "СПІВПРАЦЯ", href: "/cooperation"},
 		{title: "SALE", href: "/search?marker=sale&page=1&query=", styles: "text-[#B90003]"},
@@ -133,7 +135,7 @@ const Header = () => {
 						<HeaderMenu icon="basket" title="КОШИК" badgeCount={cartBadgeCount} onClick={() => handleGoToCart()}/>
 					</div>
 				</div>
-				<div className="hidden lg:flex justify-center gap-10 font-semibold text-md leading-[10px] py-6">
+				<div className="hidden lg:flex flex-wrap justify-center gap-x-6 xl:gap-x-8 gap-y-3 font-semibold text-sm leading-[10px] py-4">
 					{navLinks.map((link, index) => {
 						const isDropdownOpen = openedDropdown === link.title;
 						const hasDropdown = Boolean(HEADER_MEGA_MENU[link.title]);
