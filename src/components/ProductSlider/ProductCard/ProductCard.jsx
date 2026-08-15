@@ -17,8 +17,8 @@ const ProductCard = ({product, isSlider = false}) => {
 	const productCart = useSelector(selectCart);
 	const isOptUser = useSelector(getOptUser);
 	const isDropUser = useSelector(getDropUser);
-	const [price, setPrice] = useState(0);
-	const [priceOld, setPriceOld] = useState(0);
+	const price = resolveUserPrice(product, {isOptUser, isDropUser});
+	const priceOld = resolveUserPriceOld(product, {isOptUser, isDropUser});
 
 	const userEmail = useSelector(getUserEmail);
 	const userFirstName = useSelector(getUserFirstName);
@@ -27,11 +27,6 @@ const ProductCard = ({product, isSlider = false}) => {
 
 	const [averageRating, setAverageRating] = useState(0);
 	const [reviewsCount, setReviewsCount] = useState('');
-
-	useEffect(() => {
-		setPrice(resolveUserPrice(product, {isOptUser, isDropUser}));
-		setPriceOld(resolveUserPriceOld(product, {isOptUser, isDropUser}));
-	}, [isOptUser, isDropUser])
 
 	useEffect(() => {
 		function getReviewWord(count) {

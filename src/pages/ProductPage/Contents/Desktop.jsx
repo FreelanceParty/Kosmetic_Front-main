@@ -3,7 +3,6 @@ import {routeHelper} from "../../../utils/helpers/routeHelper";
 import NumberInput from "../../../components/NumberInput/NumberInput";
 import Button from "../../../components/ButtonNew/Button";
 import Details from "../Sections/Details";
-import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {getIsAdmin, getOptUser, getDropUser} from "../../../redux/auth/selectors";
 import {resolveUserPrice, resolveUserPriceOld, getPriceLabel} from "../../../utils/helpers/priceByUser";
@@ -31,13 +30,8 @@ const Desktop = ({
 	const isAdmin = useSelector(getIsAdmin);
 
 	const {getCategoryRoute} = routeHelper();
-	const [price, setPrice] = useState(0);
-	const [priceOld, setPriceOld] = useState(0);
-
-	useEffect(() => {
-		setPrice(resolveUserPrice(product, {isOptUser, isDropUser}));
-		setPriceOld(resolveUserPriceOld(product, {isOptUser, isDropUser}));
-	}, [isOptUser, isDropUser])
+	const price = resolveUserPrice(product, {isOptUser, isDropUser});
+	const priceOld = resolveUserPriceOld(product, {isOptUser, isDropUser});
 
 	const hasDiscount = Boolean(product.sale && priceOld);
 
