@@ -15,6 +15,7 @@ export const HEADER_MEGA_MENU = {
 							"Скраб",
 						],
 					},
+					{title: "ТОЧКОВІ ЗАСОБИ", items: [], link: '/katehoriji/spotCare'},
 				],
 			},
 			{
@@ -129,6 +130,7 @@ export const HEADER_MEGA_MENU = {
 				sections: [
 					{title: "ПРОБНИКИ ТА МІНІ-ФОРМАТИ ДЛЯ ТІЛА", items: []},
 					{title: "АКСЕСУАРИ", items: []},
+					{title: "ДЛЯ ШИЇ ТА ДЕКОЛЬТЕ", items: [], link: '/katehoriji/neckDecollete'},
 				],
 			},
 		],
