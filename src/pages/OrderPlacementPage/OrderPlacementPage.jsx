@@ -154,7 +154,7 @@ const OrderPlacementPage = () => {
 			setIsValidForm(false);
 			return false;
 		}
-		if (isOptUser && totalAmount < 3000) {
+		if (isOptUser && !isDropUser && totalAmount < 3000) {
 			showErrorMessage("Мінімальна сума замовлення 3000 грн!", withErrorMessage);
 			setIsValidForm(false);
 			return false;

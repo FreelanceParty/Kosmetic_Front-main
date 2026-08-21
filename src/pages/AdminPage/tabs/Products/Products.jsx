@@ -2,6 +2,8 @@ import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import axios from "axios";
 
+import ProductsImport from "./ProductsImport";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 const emptyForm = {
@@ -261,7 +263,8 @@ const Products = () => {
 				<div className="border-t border-[#E8E8E8]"/>
 			</div>
 
-			{/* Пошук існуючого товару */}
+			<ProductsImport/>
+
 			<div className="flex flex-col gap-2">
 				<div className="text-sm font-medium text-[#111827]">Знайти товар для редагування / видалення</div>
 				<input
@@ -296,7 +299,6 @@ const Products = () => {
 				)}
 			</div>
 
-			{/* Заголовок режиму + скидання */}
 			<div className="flex items-center justify-between gap-3 flex-wrap">
 				<div className="font-semibold text-md text-[#000E55]">
 					{isEditing ? `Редагування товару (id ${editingId})` : "Новий товар"}
@@ -312,7 +314,6 @@ const Products = () => {
 				)}
 			</div>
 
-			{/* Форма товару */}
 			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<Field label="Назва*" name="name" value={form.name} onChange={handleChange}/>
