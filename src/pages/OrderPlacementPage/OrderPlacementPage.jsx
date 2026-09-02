@@ -288,6 +288,12 @@ const OrderPlacementPage = () => {
 			if (normalizedDataToSend.comments === null) {
 				delete normalizedDataToSend.comments;
 			}
+			["apartment", "address", "building", "warehouse"].forEach((key) => {
+				const value = normalizedDataToSend[key];
+				if (value === undefined || value === null || String(value).trim() === "") {
+					delete normalizedDataToSend[key];
+				}
+			});
 			const response = await axios.post(`${API_URL}/orders`, normalizedDataToSend);
 
 			if (response.status !== 201) {
