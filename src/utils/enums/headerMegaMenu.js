@@ -16,6 +16,7 @@ export const HEADER_MEGA_MENU = {
 						],
 					},
 					{title: "ТОЧКОВІ ЗАСОБИ", items: [], link: '/katehoriji/spotCare'},
+					{title: "ПРОБНИКИ", items: [], link: '/katehoriji/samples'},
 				],
 			},
 			{

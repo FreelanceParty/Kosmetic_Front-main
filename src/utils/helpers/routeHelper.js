@@ -26,6 +26,10 @@ export function routeHelper() {
 			route: "/katehoriji/spotCare",
 		},
 		{
+			name:  "Пробники",
+			route: "/katehoriji/samples",
+		},
+		{
 			name:  "Для шиї та декольте",
 			route: "/katehoriji/neckDecollete",
 		},
