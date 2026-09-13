@@ -1,5 +1,12 @@
 import ChevronIcon from "../../../../components/Icons/ChevronIcon";
 import {useState} from "react";
+import {getOrderCabinetLabel} from "../../../../utils/helpers/cabinets";
+
+const CabinetBadge = ({order}) => (
+	<span className="inline-block px-2 py-[2px] rounded-full bg-[#FFE8F5] text-[#E667A4] text-xs font-medium whitespace-nowrap">
+		{getOrderCabinetLabel(order)}
+	</span>
+);
 
 const OrderBlock = ({order}) => {
 
@@ -32,7 +39,10 @@ const OrderBlock = ({order}) => {
 		<div className="flex flex-col border-b md:border border-[#E8E8E8] gap-3 md:gap-0 pr-2">
 			<div className="hidden md:flex p-5 justify-between items-center w-full cursor-pointer" onClick={() => toggleOrder()}>
 				<div className="flex flex-col gap-5">
-					<div className="text-md leading-[14px]">Замовлення №{order.orderNumber}, {formatDate(order.createdAt)}</div>
+					<div className="flex items-center gap-3">
+						<div className="text-md leading-[14px]">Замовлення №{order.orderNumber}, {formatDate(order.createdAt)}</div>
+						<CabinetBadge order={order}/>
+					</div>
 					<div className={`font-semibold text-md leading-[11px] text-[${getOrderStatusColor(order.status)}]`}>{order.status}</div>
 				</div>
 				<div className="flex gap-[100px] items-center">
@@ -47,7 +57,10 @@ const OrderBlock = ({order}) => {
 			</div>
 			<div className="flex flex-col md:hidden pl-3 w-full border-l-2 border-[#000E55] cursor-pointer gap-5" onClick={() => toggleOrder()}>
 				<div className="flex justify-between gap-5">
-					<div className="text-md leading-[16px]">Замовлення №{order.orderNumber},<br/>{formatDate(order.createdAt)}</div>
+					<div className="flex flex-col gap-2">
+						<div className="text-md leading-[16px]">Замовлення №{order.orderNumber},<br/>{formatDate(order.createdAt)}</div>
+						<CabinetBadge order={order}/>
+					</div>
 					<div className={`transition-transform duration-300 ${isOpen ? 'rotate-0' : 'rotate-180'}`}>
 						<ChevronIcon/>
 					</div>

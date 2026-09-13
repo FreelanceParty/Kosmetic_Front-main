@@ -1,9 +1,15 @@
 import React from "react";
+import {useSelector} from "react-redux";
 import CooperationList from "../_elements/CooperationList";
 import {MainTitle, SecondaryTitle} from "../CooperationPage.styled";
 import Button from "../../../components/ButtonNew/Button";
+import {getIsLoggedIn, getOwnedCabinets} from "../../../redux/auth/selectors";
 
 const Business = () => {
+	const isLoggedIn = useSelector(getIsLoggedIn);
+	const ownedCabinets = useSelector(getOwnedCabinets) ?? [];
+	const ownsOpt = ownedCabinets.includes("opt");
+
 	const orderConditionsListItems = [
 		{firstPart: "МІНІМАЛЬНЕ ЗАМОВЛЕННЯ ЛИШЕ 3000 ГРН", secondPart: ""},
 		{firstPart: "ПОВНА ОПЛАТА НА РАХУНОК ФОП", secondPart: ""},
@@ -26,13 +32,23 @@ const Business = () => {
 					<SecondaryTitle>УМОВИ ЗАМОВЛЕННЯ</SecondaryTitle>
 					<CooperationList items={orderConditionsListItems}/>
 				</div>
-				<div className="flex flex-col gap-8">
-					<SecondaryTitle>ЩОБ ПОБАЧИТИ ОПТОВІ ЦІНИ – ЗАРЕЄСТРУЙТЕСЬ АБО УВІЙДІТЬ, ЯК ОПТОВИЙ ПОКУПЕЦЬ!</SecondaryTitle>
-					<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
-						<Button type="primary" text="ЗАРЕЄСТРУВАТИСЬ" to="/reg-opt-cabinet"/>
-						<Button type="secondary" text="УВІЙТИ В КАБІНЕТ" to="/authorization"/>
+				{!isLoggedIn && (
+					<div className="flex flex-col gap-8">
+						<SecondaryTitle>ЩОБ ПОБАЧИТИ ОПТОВІ ЦІНИ – ЗАРЕЄСТРУЙТЕСЬ АБО УВІЙДІТЬ, ЯК ОПТОВИЙ ПОКУПЕЦЬ!</SecondaryTitle>
+						<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+							<Button type="primary" text="ЗАРЕЄСТРУВАТИСЬ" to="/reg-opt-cabinet"/>
+							<Button type="secondary" text="УВІЙТИ В КАБІНЕТ" to="/authorization"/>
+						</div>
 					</div>
-				</div>
+				)}
+				{isLoggedIn && !ownsOpt && (
+					<div className="flex flex-col gap-8">
+						<SecondaryTitle>ХОЧЕТЕ БАЧИТИ ОПТОВІ ЦІНИ? СТВОРІТЬ ОПТОВИЙ КАБІНЕТ!</SecondaryTitle>
+						<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+							<Button type="primary" text="СТВОРИТИ ОПТ КАБІНЕТ" to="/cabinet?tab=cabinets&create=opt"/>
+						</div>
+					</div>
+				)}
 				<div className="flex flex-col gap-10">
 					<div className="font-semibold text-2xl text-center lg:text-left">ОФОРМЛЮЙТЕ ЗАМОВЛЕННЯ ЛЕГКО!</div>
 					<div className="flex flex-col gap-6 leading-[160%]">

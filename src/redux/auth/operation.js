@@ -65,6 +65,36 @@ export const logOut = createAsyncThunk(
 	}
 );
 
+export const switchCabinet = createAsyncThunk(
+	"auth/switchCabinet",
+	async (type, thunkAPI) => {
+		try {
+			const {data} = await axios.post(`${REACT_APP_API_URL}/auth/active-cabinet`, {type});
+			return data;
+		} catch (error) {
+			if (axios.isAxiosError(error) && error.response?.data) {
+				return thunkAPI.rejectWithValue(error.response.data);
+			}
+			return thunkAPI.rejectWithValue({message: error.message});
+		}
+	}
+);
+
+export const addCabinet = createAsyncThunk(
+	"auth/addCabinet",
+	async (payload, thunkAPI) => {
+		try {
+			const {data} = await axios.post(`${REACT_APP_API_URL}/auth/cabinets`, payload);
+			return data;
+		} catch (error) {
+			if (axios.isAxiosError(error) && error.response?.data) {
+				return thunkAPI.rejectWithValue(error.response.data);
+			}
+			return thunkAPI.rejectWithValue({message: error.message});
+		}
+	}
+);
+
 export const refreshUser = createAsyncThunk(
 	"auth/refreshUser",
 	async (_, thunkAPI) => {

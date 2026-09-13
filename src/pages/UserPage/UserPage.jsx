@@ -1,19 +1,26 @@
 import React, {useState} from "react";
+import {useSearchParams} from "react-router-dom";
 import {Container, Slider, SliderElement} from "./UserPage.styled";
 import OrderHistory from "./Sections/OrderHistory";
 import ContactInfo from "./Sections/ContactInfo";
 import ChangePassword from "./Sections/ChangePassword";
 import LeaveFeedback from "./Sections/LeaveFeedback";
+import Cabinets from "./Sections/Cabinets";
 
 const tabs = [
 	{id: "order_history", label: "Історія замовлень", component: <OrderHistory/>},
+	{id: "cabinets", label: "Мої кабінети", component: <Cabinets/>},
 	{id: "contact_info", label: "Контактна інформація", component: <ContactInfo/>},
 	{id: "change_password", label: "Змінити пароль", component: <ChangePassword/>},
 	{id: "leave_feedback", label: "Залишити відгук", component: <LeaveFeedback/>},
 ];
 
 const UserPage = () => {
-	const [activeTab, setActiveTab] = useState("order_history");
+	const [searchParams] = useSearchParams();
+	const requestedTab = searchParams.get("tab");
+	const [activeTab, setActiveTab] = useState(
+		tabs.some((tab) => tab.id === requestedTab) ? requestedTab : "order_history"
+	);
 
 	return (
 		<Container>

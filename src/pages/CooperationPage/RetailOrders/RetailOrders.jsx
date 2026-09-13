@@ -1,8 +1,14 @@
 import CooperationList from "../_elements/CooperationList";
 import {MainTitle, SecondaryTitle} from "../CooperationPage.styled";
 import Button from "../../../components/ButtonNew/Button";
+import {useSelector} from "react-redux";
+import {getIsLoggedIn, getOwnedCabinets} from "../../../redux/auth/selectors";
 
 const RetailOrders = () => {
+	const isLoggedIn = useSelector(getIsLoggedIn);
+	const ownedCabinets = useSelector(getOwnedCabinets) ?? [];
+	const ownsRetail = ownedCabinets.includes("retail");
+
 	const orderConditionsListItems = [
 		{firstPart: "БЕЗ МІНІМАЛЬНОЇ СУМИ ЗАМОВЛЕННЯ", secondPart: " — замовляй хоч один крем 😉"},
 		{firstPart: "БЕЗКОШТОВНА ДОСТАВКА", secondPart: " — при умові від 2000 грн"},
@@ -61,6 +67,14 @@ const RetailOrders = () => {
 						<div className="font-semibold text-md">ВАЖЛИВО. Якщо отримувач буде інший, вказуйте в коментарях дані отримувача.</div>
 					</div>
 				</div>
+				{isLoggedIn && !ownsRetail && (
+					<div className="flex flex-col gap-8">
+						<SecondaryTitle>ХОЧЕТЕ КУПУВАТИ В РОЗДРІБ? СТВОРІТЬ РОЗДРІБНИЙ КАБІНЕТ!</SecondaryTitle>
+						<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+							<Button type="primary" text="СТВОРИТИ РОЗДРІБНИЙ КАБІНЕТ" to="/cabinet?tab=cabinets&create=retail"/>
+						</div>
+					</div>
+				)}
 			</div>
 			<Button type="primary" text="ВПЕРЕД ЗА ПОКУПКАМИ" to="/search?page=1&query="/>
 		</div>

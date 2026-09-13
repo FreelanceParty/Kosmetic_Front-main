@@ -3,8 +3,14 @@ import {MainTitle, SecondaryTitle} from "../CooperationPage.styled";
 import Button from "../../../components/ButtonNew/Button";
 import viberIcon from "../../../assets/icons/viber.svg";
 import telegIcon from "../../../assets/icons/teleg.svg";
+import {useSelector} from "react-redux";
+import {getIsLoggedIn, getOwnedCabinets} from "../../../redux/auth/selectors";
 
 const Dropshipping = () => {
+	const isLoggedIn = useSelector(getIsLoggedIn);
+	const ownedCabinets = useSelector(getOwnedCabinets) ?? [];
+	const ownsDrop = ownedCabinets.includes("drop");
+
 	const orderConditionsListItems = [
 		{firstPart: "БЕЗ МІНІМАЛЬНОЇ СУМИ ЗАМОВЛЕННЯ", secondPart: ""},
 		{firstPart: "ПОВНА ОПЛАТА НА РАХУНОК ФОП", secondPart: ""},
@@ -40,13 +46,23 @@ const Dropshipping = () => {
 					<br/>
 					ТТН надсилаєте у вигляді PDF файлу нашому менеджеру, після оплати замовлення.
 				</div>
-				<div className="flex flex-col gap-8">
-					<SecondaryTitle>ЩОБ ПОБАЧИТИ ДРОП ЦІНИ – ЗАРЕЄСТРУЙТЕСЬ АБО УВІЙДІТЬ, ЯК ДРОПШИПЕР!</SecondaryTitle>
-					<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
-						<Button type="primary" text="ЗАРЕЄСТРУВАТИСЬ" to="/reg-drop-cabinet"/>
-						<Button type="secondary" text="УВІЙТИ В КАБІНЕТ" to="/authorization"/>
+				{!isLoggedIn && (
+					<div className="flex flex-col gap-8">
+						<SecondaryTitle>ЩОБ ПОБАЧИТИ ДРОП ЦІНИ – ЗАРЕЄСТРУЙТЕСЬ АБО УВІЙДІТЬ, ЯК ДРОПШИПЕР!</SecondaryTitle>
+						<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+							<Button type="primary" text="ЗАРЕЄСТРУВАТИСЬ" to="/reg-drop-cabinet"/>
+							<Button type="secondary" text="УВІЙТИ В КАБІНЕТ" to="/authorization"/>
+						</div>
 					</div>
-				</div>
+				)}
+				{isLoggedIn && !ownsDrop && (
+					<div className="flex flex-col gap-8">
+						<SecondaryTitle>ХОЧЕТЕ БАЧИТИ ДРОП ЦІНИ? СТВОРІТЬ ДРОПШИПІНГ КАБІНЕТ!</SecondaryTitle>
+						<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+							<Button type="primary" text="СТВОРИТИ ДРОП КАБІНЕТ" to="/cabinet?tab=cabinets&create=drop"/>
+						</div>
+					</div>
+				)}
 				<div className="flex flex-col gap-8">
 					<div className="flex flex-col gap-6 text-center lg:text-left">
 						<SecondaryTitle>ДЕ ДІЗНАТИСЬ БІЛЬШЕ?</SecondaryTitle>
