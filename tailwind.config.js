@@ -6,8 +6,10 @@ module.exports = {
 	theme:   {
 		extend: {
 			fontFamily: {
-				sans:   ["Montserrat", "sans-serif"],
-				stolzl: ['Stolzl', "system-ui", "sans-serif"],
+				sans:    ["Montserrat", "sans-serif"],
+				stolzl:  ['Stolzl', "system-ui", "sans-serif"],
+				roboto:  ["Roboto", "sans-serif"],
+				anton:   ["Anton", "sans-serif"],
 			},
 			screens:    {
 				xs: '480px',

@@ -6,6 +6,7 @@ import Reviews from "../../components/Reviews/Reviews.jsx";
 import axios from "axios";
 import ReviewsMobile from "../../components/Reviews/ReviewsMobile";
 import CelimaxBanner from "../../components/Banners/CelimaxBanner";
+import Skin1004Banner from "../../components/Banners/Skin1004Banner";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -65,7 +66,7 @@ const HomePage = () => {
 	}, []);
 	return (
 		<div>
-			<CelimaxBanner/>
+			<Skin1004Banner/>
 			<div className="flex flex-col gap-[60px] items-center py-10 px-2 xl:px-10">
 				<ProductSlider title="BEAUTY ЗНИЖКИ %" products={discountProducts} buttonRoute={'marker=sale&'}/>
 				<ProductSlider title="НОВИНКИ" products={newProducts} buttonRoute={'marker=new&'}/>
