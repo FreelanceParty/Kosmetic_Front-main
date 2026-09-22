@@ -7,8 +7,14 @@ import brandsReducer from "./brands/brandsSlice";
 import cartReducer from "./cart/slice";
 import {authReducer} from "./auth/slice";
 import storage from "redux-persist/lib/storage";
-import {persistReducer, persistStore} from "redux-persist";
+import {persistReducer, persistStore, createTransform} from "redux-persist";
 import {combineReducers} from "redux";
+
+const cleanCartTransform = createTransform(
+	(inboundState) => inboundState,
+	(outboundState) => (Array.isArray(outboundState) ? outboundState.filter((item) => item != null) : outboundState),
+	{whitelist: ["cart"]}
+);
 
 const rootReducer = combineReducers({
 	auth:     authReducer,
@@ -20,9 +26,10 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = {
-	key:       'root',
+	key:        'root',
 	storage,
-	whitelist: ['auth', 'cart'],
+	whitelist:  ['auth', 'cart'],
+	transforms: [cleanCartTransform],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

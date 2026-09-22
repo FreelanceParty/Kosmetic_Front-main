@@ -102,7 +102,7 @@ const ProductPage = () => {
 					return;
 				}
 
-				setIsInCart(productCart.some(item => item.id === response.data.id));
+				setIsInCart((productCart ?? []).some(item => item && item.id === response.data.id));
 				setProductCount(response.data.amount);
 				setProduct(response.data);
 				setLoading(false);

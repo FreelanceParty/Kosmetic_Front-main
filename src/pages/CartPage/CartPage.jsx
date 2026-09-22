@@ -27,15 +27,18 @@ const CartPage = () => {
 	const [notAvailableProductsAmount, setNotAvailableProductsAmount] = useState([])
 	const getItemKey = (item) => item?.id ?? item?.productId;
 
-	const totalAmount = (isOptUser || isDropUser)
-		? cartItems.reduce(
-			(total, item) => total + resolveUserPrice(item, {isOptUser, isDropUser}) * item.quantity,
-			0
-		)
-		: cartItems.reduce(
-			(total, item) => total + item.price * item.quantity,
-			0
-		);
+	const hasDeletedItems = cartItems.some((item) => item?.isDeleted);
+
+	const totalAmount = cartItems.reduce((total, item) => {
+		if (!item || item.isDeleted) {
+			return total;
+		}
+		const price = (isOptUser || isDropUser)
+			? Number(resolveUserPrice(item, {isOptUser, isDropUser})) || 0
+			: Number(item.price) || 0;
+		const qty = Number(item.quantity) || 0;
+		return total + price * qty;
+	}, 0);
 
 	function updateQuantity(product, value) {
 		const nextQuantityRaw = Number(value);
@@ -129,7 +132,7 @@ const CartPage = () => {
 						</div>
 						<div className="flex flex-col gap-6">
 
-							{cartItems.map((product, index) => (
+							{cartItems.filter(Boolean).map((product, index) => (
 								<div key={getItemKey(product) ?? index} className="flex gap-4 py-4">
 									{notAvailableProductsAmount.includes(getItemKey(product)) &&
 										<div className="my-auto font-extrabold text-md text-[#DA469A]">**</div>
@@ -141,7 +144,9 @@ const CartPage = () => {
 										<div className="line-clamp-2">
 											{product.name}
 										</div>
-										{Number(product?.amount ?? 0) <= 0 && (
+										{product?.isDeleted ? (
+											<div className="font-semibold text-xs text-[#DA469A]">Товар знято з продажу</div>
+										) : Number(product?.amount ?? 0) <= 0 && (
 											<div className="font-semibold text-xs text-[#DA469A]">Товар відсутній на складі</div>
 										)}
 										<div className="flex justify-between items-center">
@@ -162,12 +167,15 @@ const CartPage = () => {
 							<div className="text-xl leading-[14px]">{totalAmount} ГРН</div>
 						</div>
 						<div className={`font-semibold text-xs text-[#DA469A]`}>{notAvailableProductsAmount.length > 0 && '*Даний товар/кількість не доступні на складі'}</div>
+						{hasDeletedItems && (
+							<div className="font-semibold text-xs text-[#DA469A]">*Деякі товари знято з продажу — видаліть їх, щоб оформити замовлення</div>
+						)}
 						<Button
 							type={"primary"}
 							text={"ОФОРМИТИ ЗАМОВЛЕННЯ"}
 							classes={"w-full max-w-[335px] mx-auto bg-[#E667A4]"}
 							onClick={checkout}
-							isDisabled={notAvailableProductsAmount.length > 0}
+							isDisabled={notAvailableProductsAmount.length > 0 || hasDeletedItems}
 						/>
 					</div>
 				</div>

@@ -28,15 +28,18 @@ const Basket = ({onClose}) => {
 	const [notAvailableProductsAmount, setNotAvailableProductsAmount] = useState([])
 	const getItemKey = (item) => item?.id ?? item?.productId;
 
-	const totalAmount = (isOptUser || isDropUser)
-		? cartItems.reduce(
-			(total, item) => total + resolveUserPrice(item, {isOptUser, isDropUser}) * item.quantity,
-			0
-		)
-		: cartItems.reduce(
-			(total, item) => total + item.price * item.quantity,
-			0
-		);
+	const hasDeletedItems = cartItems.some((item) => item?.isDeleted);
+
+	const totalAmount = cartItems.reduce((total, item) => {
+		if (!item || item.isDeleted) {
+			return total;
+		}
+		const price = (isOptUser || isDropUser)
+			? Number(resolveUserPrice(item, {isOptUser, isDropUser})) || 0
+			: Number(item.price) || 0;
+		const qty = Number(item.quantity) || 0;
+		return total + price * qty;
+	}, 0);
 
 	function updateQuantity(product, value) {
 		const nextQuantityRaw = Number(value);
@@ -118,7 +121,7 @@ const Basket = ({onClose}) => {
 			) : (
 				<>
 					<div className="flex flex-col gap-5 mb-10 max-h-[433px] overflow-y-auto">
-						{cartItems.map((product, index) => (
+						{cartItems.filter(Boolean).map((product, index) => (
 							<div key={getItemKey(product) ?? index} className="relative flex h-[150px]">
 								{notAvailableProductsAmount.includes(getItemKey(product)) &&
 									<div className="absolute font-extrabold text-2xl text-[#DA469A] top-[45%]">**</div>
@@ -131,7 +134,9 @@ const Basket = ({onClose}) => {
 										<div className="text-md line-clamp-2">{product.name}</div>
 										<div className="font-semibold text-xl whitespace-nowrap">{resolveUserPrice(product, {isOptUser, isDropUser})} ГРН</div>
 									</div>
-									{Number(product?.amount ?? 0) <= 0 && (
+									{product?.isDeleted ? (
+										<div className="font-semibold text-xs text-[#DA469A]">Товар знято з продажу</div>
+									) : Number(product?.amount ?? 0) <= 0 && (
 										<div className="font-semibold text-xs text-[#DA469A]">Товар відсутній на складі</div>
 									)}
 									<div className="flex justify-between items-center">
@@ -146,7 +151,10 @@ const Basket = ({onClose}) => {
 						<div className="text-lg">ВСЬОГО:</div>
 						<div className="text-xl">{totalAmount} ГРН</div>
 					</div>
-					<div className={`font-semibold text-md text-[#DA469A] mb-[24px] mx-[22px]`}>{notAvailableProductsAmount.length > 0 && '*Даний товар/кількість не доступні на складі'}</div>
+					<div className={`font-semibold text-sm text-[#DA469A] mb-2 mx-[22px]`}>{notAvailableProductsAmount.length > 0 && '*Даний товар/кількість не доступні на складі'}</div>
+					{hasDeletedItems && (
+						<div className="font-semibold text-sm text-[#DA469A] mb-[24px] mx-[22px]">*Деякі товари знято з продажу — видаліть їх, щоб оформити замовлення</div>
+					)}
 					<div className="flex justify-between items-center gap-[51px] mx-[22px]">
 						<div className="text-[15px] leading-[16px]"><span className="text-[#E667A4]">Увага!</span> Ваша корзина автоматично анулюється через 10 днів.</div>
 						<Button
@@ -154,7 +162,7 @@ const Basket = ({onClose}) => {
 							text="ОФОРМИТИ ЗАМОВЛЕННЯ"
 							classes="w-full max-w-[294px] bg-[#E667A4]"
 							onClick={checkout}
-							isDisabled={notAvailableProductsAmount.length > 0}
+							isDisabled={notAvailableProductsAmount.length > 0 || hasDeletedItems}
 						/>
 					</div>
 				</>

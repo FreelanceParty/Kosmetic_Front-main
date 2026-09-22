@@ -70,7 +70,7 @@ export const refreshCartAvailability = async ({cartItems, dispatch}) => {
 				};
 			} catch (e) {
 				if (e?.response?.status === 404) {
-					return null;
+					return {...item, isDeleted: true, amount: 0};
 				}
 				return item;
 			}

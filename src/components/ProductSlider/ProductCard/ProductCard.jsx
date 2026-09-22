@@ -60,7 +60,7 @@ const ProductCard = ({product, isSlider = false}) => {
 	}, [product]);
 
 	const productCartFind = productCart?.find(
-		(item) => +item.id === +product.id
+		(item) => item && +item.id === +product?.id
 	);
 
 	const productId = product?.id || product?._id || product?.productId || product?.code;

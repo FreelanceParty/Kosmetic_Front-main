@@ -49,27 +49,36 @@ const OrderPlacementPage = () => {
 	const updateItems = cartItems;
 	const totalAmount = useMemo(
 		() =>
-			updateItems.reduce(
-				(total, item) => total + resolveUserPrice(item, {isOptUser, isDropUser}) * item.quantity,
-				0
-			),
+			updateItems.reduce((total, item) => {
+				if (!item || item.isDeleted) {
+					return total;
+				}
+				const price = Number(resolveUserPrice(item, {isOptUser, isDropUser})) || 0;
+				const qty = Number(item.quantity) || 0;
+				return total + price * qty;
+			}, 0),
 		[updateItems, isOptUser, isDropUser]
 	);
 	const orderedItems = useMemo(
 		() =>
-			updateItems.map((item) => ({
-				productId: item.id ?? item.productId,
-				images:    item.images,
-				name:      item.name,
-				sale:      item.sale,
-				code:      item.code.toString(),
-				quantity:  item.quantity,
-				amount:    resolveUserPrice(item, {isOptUser, isDropUser}) * item.quantity,
-			})),
+			updateItems
+				.filter((item) => item && !item.isDeleted)
+				.map((item) => ({
+					productId: item.id ?? item.productId,
+					images:    item.images,
+					name:      item.name,
+					sale:      item.sale,
+					code:      String(item?.code ?? ""),
+					quantity:  item.quantity,
+					amount:    resolveUserPrice(item, {isOptUser, isDropUser}) * item.quantity,
+				})),
 		[updateItems, isOptUser, isDropUser]
 	);
 
 	const hasUnavailableItems = updateItems.some((item) => {
+		if (!item || item.isDeleted) {
+			return true;
+		}
 		const q = Number(item?.quantity ?? 0);
 		const available = Number(item?.amount ?? 0);
 		return !Number.isFinite(q) || q <= 0 || !Number.isFinite(available) || available <= 0 || q > available;
@@ -419,7 +428,7 @@ const OrderPlacementPage = () => {
 						<div className="font-semibold text-lg text-center leading-[13px] p-[10px] border-b border-[#F6F6F6]">ОФОРМЛЕННЯ ЗАМОВЛЕННЯ</div>
 						<div className="flex flex-col">
 							<div className="flex flex-col gap-1 pr-5 max-h-[350px] overflow-y-auto">
-								{cartItems.map((product, index) => (
+								{cartItems.filter(Boolean).map((product, index) => (
 									<div key={index} className="flex border-b border-[#E8E8E8]">
 										<div className="flex items-center justify-center my-auto h-[52px] aspect-square">
 											<img src={product.images} alt="product"/>
@@ -427,7 +436,9 @@ const OrderPlacementPage = () => {
 										<div className="flex flex-col gap-5 py-[10px] px-3">
 											<div className="text-[13px] line-clamp-4 w-full leading-[15px]">{product.name}</div>
 
-											{Number(product?.amount ?? 0) <= 0 && (
+											{product?.isDeleted ? (
+												<div className="font-semibold text-xs text-[#DA469A]">Товар знято з продажу</div>
+											) : Number(product?.amount ?? 0) <= 0 && (
 												<div className="font-semibold text-xs text-[#DA469A]">Товар відсутній на складі</div>
 											)}
 
@@ -464,6 +475,9 @@ const OrderPlacementPage = () => {
 							isDisabled={hasUnavailableItems}
 							//isDisabled={!isValidForm}
 						/>
+						{hasUnavailableItems && (
+							<div className="font-semibold text-xs text-[#DA469A] text-center">Видаліть з кошика недоступні товари, щоб оформити замовлення</div>
+						)}
 						<div className="flex gap-[10px]">
 							<DangerIcon classes="mt-1 min-h-[14px] min-w-[14px]"/>
 							<div className="text-md">
@@ -474,14 +488,16 @@ const OrderPlacementPage = () => {
 					<div className="hidden sm:flex flex-col gap-[30px] max-w-[760px]">
 						<div className="font-semibold text-lg leading-[13px]">ОФОРМЛЕННЯ ЗАМОВЛЕННЯ</div>
 						<div className="flex flex-col gap-[10px] pr-5">
-							{cartItems.map((product, index) => (
+							{cartItems.filter(Boolean).map((product, index) => (
 								<div key={index} className="flex border-b items-center">
 									<div className="flex h-[36px] aspect-square">
 										<img src={product.images} alt="product"/>
 									</div>
 									<div className="flex gap-5 py-[10px] px-3 items-center">
 										<div className="text-[13px] line-clamp-3 w-3/5 leading-[15px]">{product.name}</div>
-										{Number(product?.amount ?? 0) <= 0 && (
+										{product?.isDeleted ? (
+											<div className="font-semibold text-xs text-[#DA469A]">Товар знято з продажу</div>
+										) : Number(product?.amount ?? 0) <= 0 && (
 											<div className="font-semibold text-xs text-[#DA469A]">Товар відсутній на складі</div>
 										)}
 										<div className="text-md w-1/5 text-center">{product.quantity} шт.</div>
@@ -503,6 +519,9 @@ const OrderPlacementPage = () => {
 								isDisabled={hasUnavailableItems}
 								//isDisabled={!isValidForm}
 							/>
+							{hasUnavailableItems && (
+								<div className="font-semibold text-xs text-[#DA469A]">Видаліть з кошика недоступні товари, щоб оформити замовлення</div>
+							)}
 							<div className="flex gap-[10px]">
 								<DangerIcon classes="mt-1 min-h-[14px] min-w-[14px]"/>
 								<div className="text-md">

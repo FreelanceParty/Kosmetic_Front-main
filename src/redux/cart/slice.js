@@ -6,7 +6,9 @@ const cartSlice = createSlice({
 	initialState: [],
 	reducers:     {
 		setCart:            (state, action) => {
-			const itemsToAdd = Array.isArray(action.payload) ? action.payload : [];
+			const itemsToAdd = Array.isArray(action.payload)
+				? action.payload.filter((item) => item != null)
+				: [];
 			state.length = 0;
 			state.push(...itemsToAdd);
 		},
