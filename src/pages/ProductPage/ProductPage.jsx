@@ -159,6 +159,7 @@ const ProductPage = () => {
 			{product && (
 				<Seo
 					title={`${product.name} — купити`}
+					canonical={`/products/${product.id}`}
 					description={`Купити ${product.name} — оригінал від ${product.brand ?? "Beauty Blossom"}. Швидка доставка по Україні та подарунок у кожному замовленні.`}
 				/>
 			)}

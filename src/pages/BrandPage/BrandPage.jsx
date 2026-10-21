@@ -204,6 +204,7 @@ const BrandPage = () => {
 		<div className="flex flex-col gap-10 mx-auto w-full max-w-[1440px] pt-2 px-5">
 			<Seo
 				title={`Косметика ${brand?.name ?? decodedBrandName} — купити оригінал`}
+				canonical={`/brands/${encodeURIComponent(brand?.name ?? decodedBrandName)}`}
 				description={`Оригінальна корейська косметика ${brand?.name ?? decodedBrandName} в інтернет-магазині Beauty Blossom. Повний асортимент бренду, опт і роздріб, швидка доставка по Україні.`}
 			/>
 			<MobileHeadingTag className="flex lg:hidden py-[10px] font-semibold text-lg justify-center border-b border-[#F6F6F6]">
