@@ -39,7 +39,7 @@ const AboutUsPage = () => {
 							Ми компанія <span className="font-bold text-[#8F49A3]">Beauty</span> <span className="font-bold text-[#DA469A]">Blossom</span> – прямі постачальники корейської косметики з
 							Південної Кореї, Америки, Європи та України.
 							<br/> <br/>
-							У нас в наявності <span className="font-semibold">більше 50-ти популярних брендів та більше 2500 тис товарів.</span>
+							У нас в наявності <span className="font-semibold">більше 50-ти популярних брендів та більше 2500 товарів.</span>
 							<br/> <br/>
 							В нашому асортименті ви завжди знайдете : <span className="font-semibold">догляд</span> для шкіри обличчя, догляд для тіла та волосся. Засоби для <span
 							className="font-semibold">лікування акне та розацеа.</span> Засоби для <span className="font-semibold">омолодження та ліфтинг</span> ефекту.
