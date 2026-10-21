@@ -10,6 +10,7 @@ import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 import Input from "../../../components/Input/Input";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
 import starPercentageIcon from "../../../assets/icons/star_percentage.svg";
+import {useMedia} from "../../../utils/hooks/useMedia";
 
 const Desktop = ({
 	product,
@@ -34,6 +35,9 @@ const Desktop = ({
 	const priceOld = resolveUserPriceOld(product, {isOptUser, isDropUser});
 
 	const hasDiscount = Boolean(product.sale && priceOld);
+
+	const {isMobileScreen} = useMedia();
+	const NameTag = isMobileScreen ? "div" : "h1";
 
 	return (
 		<div className="hidden md:flex w-full justify-center relative">
@@ -62,7 +66,7 @@ const Desktop = ({
 						</div>
 						<div className="flex flex-col gap-10 w-1/2">
 							<div className="flex flex-col gap-[30px]">
-								<div className="font-semibold text-[36px] leading-[42px]">{product.name}</div>
+								<NameTag className="font-semibold text-[36px] leading-[42px]">{product.name}</NameTag>
 								<a className="underline cursor-pointer font-medium text-lg max-w-fit leading-[13px]" href={`/brands/${product.brand}`}>{product.brand}</a>
 								<div className="flex gap-3 items-center">
 									<RateHearts heartSize={14} count={averageRating}/>

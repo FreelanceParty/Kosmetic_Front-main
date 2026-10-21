@@ -9,6 +9,7 @@ import Tag from "../../../components/ProductSlider/ProductCard/_elements/Tag";
 import Input from "../../../components/Input/Input";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
 import starPercentageIcon from "../../../assets/icons/star_percentage.svg";
+import {useMedia} from "../../../utils/hooks/useMedia";
 
 const Mobile = ({
 	isInCart,
@@ -33,6 +34,9 @@ const Mobile = ({
 
 	const hasDiscount = Boolean(product.sale && priceOld);
 
+	const {isMobileScreen} = useMedia();
+	const NameTag = isMobileScreen ? "h1" : "div";
+
 	return (
 		<div className="flex md:hidden w-full flex-col p-5 pb-[60px] text-[#000E55]">
 			<div className="flex flex-col items-center">
@@ -54,7 +58,7 @@ const Mobile = ({
 								<div className="font-normal text-xs text-nowrap">{reviewsCount}</div>
 							</div>
 						</div>
-						<div className="font-semibold text-[20px]">{product.name}</div>
+						<NameTag className="font-semibold text-[20px]">{product.name}</NameTag>
 					</div>
 					<div className="flex flex-col gap-6">
 						<div className="flex justify-between items-center">

@@ -72,6 +72,7 @@ const HomePage = () => {
 			/>
 			<Skin1004Banner/>
 			<div className="flex flex-col gap-[60px] items-center py-10 px-2 xl:px-10">
+				<h1 className="sr-only">Корейська косметика оптом і в роздріб</h1>
 				<ProductSlider title="BEAUTY ЗНИЖКИ %" products={discountProducts} buttonRoute={'marker=sale&'}/>
 				<ProductSlider title="НОВИНКИ" products={newProducts} buttonRoute={'marker=new&'}/>
 				<CategoryList/>

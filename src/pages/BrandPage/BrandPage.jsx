@@ -17,6 +17,7 @@ import CloseCrossIcon from "../../components/Icons/CloseCrossIcon";
 import Button from "../../components/ButtonNew/Button";
 import {Loader} from "../../components/Loader/Loader";
 import Seo from "../../components/Seo/Seo";
+import {useMedia} from "../../utils/hooks/useMedia";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -29,6 +30,10 @@ const BrandPage = () => {
 	const {brands} = useParams();
 	const decodedBrandName = decodeURIComponent(brands ?? "");
 	const encodedBrandName = encodeURIComponent(decodedBrandName);
+	// Назва бренду виводиться двічі (заголовок до lg і хлібні крихти від lg), H1 — лише видима
+	const {isDesktopScreen} = useMedia();
+	const MobileHeadingTag = isDesktopScreen ? "div" : "h1";
+	const DesktopHeadingTag = isDesktopScreen ? "h1" : "div";
 	const [brand, setBrand] = useState(null);
 	const [initialProducts, setInitialProducts] = useState(null);
 	const [categories, setCategories] = useState(null);
@@ -201,16 +206,16 @@ const BrandPage = () => {
 				title={`Косметика ${brand?.name ?? decodedBrandName} — купити оригінал`}
 				description={`Оригінальна корейська косметика ${brand?.name ?? decodedBrandName} в інтернет-магазині Beauty Blossom. Повний асортимент бренду, опт і роздріб, швидка доставка по Україні.`}
 			/>
-			<div className="flex md:hidden py-[10px] font-semibold text-lg justify-center border-b border-[#F6F6F6]">
+			<MobileHeadingTag className="flex lg:hidden py-[10px] font-semibold text-lg justify-center border-b border-[#F6F6F6]">
 				{decodedBrandName}
-			</div>
+			</MobileHeadingTag>
 			<div className="flex justify-between w-full">
 				<div className="gap-[10px] items-center text-[#000E55] text-sm hidden lg:flex h-6">
 					<Link className="cursor-pointer" to="/">Головна</Link>
 					<div className="border-l border-gray-700 h-full"></div>
 					<Link className="cursor-pointer" to="/brands">Бренди</Link>
 					<div className="border-l border-gray-700 h-full"></div>
-					<div>{decodedBrandName}</div>
+					<DesktopHeadingTag>{decodedBrandName}</DesktopHeadingTag>
 				</div>
 				<button
 					type="button"
