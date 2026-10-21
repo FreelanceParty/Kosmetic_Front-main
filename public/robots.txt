@@ -1,4 +1,5 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow: /private/
-Disallow: /admin/
+Allow: /
+
+Sitemap: https://www.beautyblossom.com.ua/sitemap.xml

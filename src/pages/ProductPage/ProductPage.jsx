@@ -11,6 +11,8 @@ import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserN
 import {handleAddToCart,} from "../../utils/helpers/basket";
 import {toast} from "react-toastify";
 import Seo from "../../components/Seo/Seo";
+import JsonLd, {breadcrumbs, productSchema} from "../../components/Seo/JsonLd";
+import {routeHelper} from "../../utils/helpers/routeHelper";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -38,6 +40,7 @@ const ProductPage = () => {
 	const userNumber = useSelector(getUserNumber);
 
 	const dispatch = useDispatch();
+	const {getCategoryRoute} = routeHelper();
 
 	async function addToCart() {
 		setIsInCart(true);
@@ -157,11 +160,19 @@ const ProductPage = () => {
 	return (
 		<>
 			{product && (
-				<Seo
-					title={`${product.name} — купити`}
-					canonical={`/products/${product.id}`}
-					description={`Купити ${product.name} — оригінал від ${product.brand ?? "Beauty Blossom"}. Швидка доставка по Україні та подарунок у кожному замовленні.`}
-				/>
+				<>
+					<Seo
+						title={`${product.name} — купити`}
+						canonical={`/products/${product.id}`}
+						description={`Купити ${product.name} — оригінал від ${product.brand ?? "Beauty Blossom"}. Швидка доставка по Україні та подарунок у кожному замовленні.`}
+					/>
+					<JsonLd id="product" data={productSchema(product)}/>
+					<JsonLd id="breadcrumbs" data={breadcrumbs([
+						{name: "Головна", path: "/"},
+						...(product.category ? [{name: product.category, path: getCategoryRoute(product.category)}] : []),
+						{name: product.name, path: `/products/${product.id}`},
+					])}/>
+				</>
 			)}
 			{loading ? (
 				<div className="w-full flex justify-center items-center min-h-[60vh]">

@@ -17,6 +17,7 @@ import CloseCrossIcon from "../../components/Icons/CloseCrossIcon";
 import Button from "../../components/ButtonNew/Button";
 import {Loader} from "../../components/Loader/Loader";
 import Seo from "../../components/Seo/Seo";
+import JsonLd, {breadcrumbs} from "../../components/Seo/JsonLd";
 import {useMedia} from "../../utils/hooks/useMedia";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -207,6 +208,13 @@ const BrandPage = () => {
 				canonical={`/brands/${encodeURIComponent(brand?.name ?? decodedBrandName)}`}
 				description={`Оригінальна корейська косметика ${brand?.name ?? decodedBrandName} в інтернет-магазині Beauty Blossom. Повний асортимент бренду, опт і роздріб, швидка доставка по Україні.`}
 			/>
+			{brand && (
+				<JsonLd id="breadcrumbs" data={breadcrumbs([
+					{name: "Головна", path: "/"},
+					{name: "Бренди", path: "/brands"},
+					{name: brand.name, path: `/brands/${encodeURIComponent(brand.name)}`},
+				])}/>
+			)}
 			<MobileHeadingTag className="flex lg:hidden py-[10px] font-semibold text-lg justify-center border-b border-[#F6F6F6]">
 				{decodedBrandName}
 			</MobileHeadingTag>

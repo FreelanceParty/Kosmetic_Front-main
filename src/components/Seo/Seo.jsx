@@ -6,9 +6,12 @@ const SITE_NAME = "Beauty Blossom";
 const MAX_DESCRIPTION_LENGTH = 160;
 
 const defaults = {
-	title:       document.title,
-	description: getMetaContent("name", "description"),
-	robots:      getMetaContent("name", "robots"),
+	title:         document.title,
+	description:   getMetaContent("name", "description"),
+	robots:        getMetaContent("name", "robots"),
+	ogTitle:       getMetaContent("property", "og:title"),
+	ogDescription: getMetaContent("property", "og:description"),
+	ogUrl:         getMetaContent("property", "og:url"),
 };
 
 function getMetaContent(attr, key) {
@@ -76,9 +79,9 @@ const Seo = ({title, description, canonical, noindex = false}) => {
 			document.title = defaults.title;
 			setMeta("name", "description", defaults.description);
 			setMeta("name", "robots", defaults.robots);
-			setMeta("property", "og:title", null);
-			setMeta("property", "og:description", null);
-			setMeta("property", "og:url", null);
+			setMeta("property", "og:title", defaults.ogTitle);
+			setMeta("property", "og:description", defaults.ogDescription);
+			setMeta("property", "og:url", defaults.ogUrl);
 			setCanonical(null);
 		};
 	}, [title, description, noindex, canonicalUrl]);
