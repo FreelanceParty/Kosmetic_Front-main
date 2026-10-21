@@ -10,6 +10,7 @@ import {trackAddToCart, trackViewContent} from "../../ads/AdEvents";
 import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../redux/auth/selectors";
 import {handleAddToCart,} from "../../utils/helpers/basket";
 import {toast} from "react-toastify";
+import Seo from "../../components/Seo/Seo";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -155,6 +156,12 @@ const ProductPage = () => {
 
 	return (
 		<>
+			{product && (
+				<Seo
+					title={`${product.name} — купити`}
+					description={`Купити ${product.name} — оригінал від ${product.brand ?? "Beauty Blossom"}. Швидка доставка по Україні та подарунок у кожному замовленні.`}
+				/>
+			)}
 			{loading ? (
 				<div className="w-full flex justify-center items-center min-h-[60vh]">
 					<Loader/>

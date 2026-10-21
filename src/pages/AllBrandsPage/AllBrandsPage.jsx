@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {fetchBrands} from "../../redux/brands/operation";
 import {selectedBrand} from "../../redux/brands/selectors";
 import SearchInput from "../../components/SearchForm/SearchInput";
+import Seo from "../../components/Seo/Seo";
 
 const AllBrandsPage = () => {
 	const dispatch = useDispatch();
@@ -71,6 +72,10 @@ const AllBrandsPage = () => {
 
 	return (
 		<div className="flex flex-col pt-[34px] pb-[84px] px-4 md:px-[100px]">
+			<Seo
+				title="Бренди корейської косметики"
+				description="Усі бренди корейської косметики в Beauty Blossom: Medi-Peel, Heimish, Missha, Enough та інші. Оригінальна продукція, опт і роздріб, швидка доставка по Україні."
+			/>
 			<div className="relative flex-col gap-8 w-full bg-white">
 				<div className="flex md:hidden py-[10px] font-semibold text-lg justify-center border-b border-[#F6F6F6]">
 					БРЕНДИ

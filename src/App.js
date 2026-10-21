@@ -32,6 +32,7 @@ import AboutUsPageMobile from "./pages/AboutUsPage/AboutUsPageMobile";
 import CartPage from "./pages/CartPage/CartPage";
 import OrderPlacementPage from "./pages/OrderPlacementPage/OrderPlacementPage";
 import {trackPageView} from "./ads/AdEvents";
+import Seo from "./components/Seo/Seo";
 import {getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "./redux/auth/selectors";
 import "react-phone-input-2/lib/style.css";
 
@@ -60,7 +61,7 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<Routes>
-				<Route path="*" element={<NotFoundPage/>}/>
+				<Route path="*" element={<><Seo title="Сторінку не знайдено" noindex/><NotFoundPage/></>}/>
 
 				<Route
 					path="/"
@@ -74,6 +75,10 @@ function App() {
 						path="cooperation"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo
+									title="Співпраця: опт і дропшипінг корейської косметики"
+									description="Оптові закупівлі та дропшипінг корейської косметики з Beauty Blossom. Вигідні ціни, оригінальна продукція та швидка відправка по Україні."
+								/>
 								<CooperationPage/>
 							</Suspense>
 						}
@@ -90,6 +95,7 @@ function App() {
 						path="forgotten"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Відновлення пароля" noindex/>
 								<ForgottenPage/>
 							</Suspense>
 						}
@@ -98,6 +104,7 @@ function App() {
 						path="forgotten/:forgottenCode"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Відновлення пароля" noindex/>
 								<ForgottenPage/>
 							</Suspense>
 						}
@@ -154,6 +161,10 @@ function App() {
 						path="about-us"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo
+									title="Про нас"
+									description="Beauty Blossom — інтернет-магазин оригінальної корейської косметики. Дізнайтеся про нас, наші принципи роботи та переваги співпраці."
+								/>
 								<AboutUsPage/>
 								<AboutUsPageMobile/>
 							</Suspense>
@@ -163,6 +174,7 @@ function App() {
 						path="/search"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Пошук" noindex/>
 								<SearchPage/>
 							</Suspense>
 						}
@@ -197,13 +209,14 @@ function App() {
 						path="no-product"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Товарів не знайдено" noindex/>
 								<NoProducts/>
 							</Suspense>
 						}
 					/>
 					<Route
 						path="admin-panel"
-						element={<PrivateAdminRoute component={AdminPage} to="/"/>}
+						element={<><Seo title="Адмін-панель" noindex/><PrivateAdminRoute component={AdminPage} to="/"/></>}
 					/>
 				</Route>
 
@@ -219,6 +232,7 @@ function App() {
 						path="/cabinet"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Особистий кабінет" noindex/>
 								<UserPage/>
 							</Suspense>
 						}
@@ -227,6 +241,7 @@ function App() {
 						path="/authorization"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Вхід" noindex/>
 								<AuthorizationPage/>
 							</Suspense>
 						}
@@ -235,6 +250,7 @@ function App() {
 						path="/reg-opt-cabinet"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Реєстрація оптового кабінету" noindex/>
 								<RegisterOptCabinetPage/>
 							</Suspense>
 						}
@@ -243,6 +259,7 @@ function App() {
 						path="/reg-drop-cabinet"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Реєстрація дроп-кабінету" noindex/>
 								<RegisterDropCabinetPage/>
 							</Suspense>
 						}
@@ -251,6 +268,7 @@ function App() {
 						path="/reg-personal-cabinet"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Реєстрація" noindex/>
 								<RegisterPersonalCabinetPage/>
 							</Suspense>
 						}
@@ -259,6 +277,7 @@ function App() {
 						path="/forgot-password"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Відновлення пароля" noindex/>
 								<ForgotPasswordPage/>
 							</Suspense>
 						}
@@ -267,6 +286,7 @@ function App() {
 						path="cart"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Кошик" noindex/>
 								<CartPage/>
 							</Suspense>
 						}
@@ -275,6 +295,7 @@ function App() {
 						path="order"
 						element={
 							<Suspense fallback={<Loader/>}>
+								<Seo title="Оформлення замовлення" noindex/>
 								<OrderPlacementPage/>
 							</Suspense>
 						}

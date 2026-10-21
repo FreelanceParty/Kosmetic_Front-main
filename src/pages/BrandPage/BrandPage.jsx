@@ -16,6 +16,7 @@ import FilterIcon from "../../components/Icons/FilterIcon";
 import CloseCrossIcon from "../../components/Icons/CloseCrossIcon";
 import Button from "../../components/ButtonNew/Button";
 import {Loader} from "../../components/Loader/Loader";
+import Seo from "../../components/Seo/Seo";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -196,6 +197,10 @@ const BrandPage = () => {
 
 	return (
 		<div className="flex flex-col gap-10 mx-auto w-full max-w-[1440px] pt-2 px-5">
+			<Seo
+				title={`Косметика ${brand?.name ?? decodedBrandName} — купити оригінал`}
+				description={`Оригінальна корейська косметика ${brand?.name ?? decodedBrandName} в інтернет-магазині Beauty Blossom. Повний асортимент бренду, опт і роздріб, швидка доставка по Україні.`}
+			/>
 			<div className="flex md:hidden py-[10px] font-semibold text-lg justify-center border-b border-[#F6F6F6]">
 				{decodedBrandName}
 			</div>

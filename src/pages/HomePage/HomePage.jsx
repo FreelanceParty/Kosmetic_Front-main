@@ -5,8 +5,8 @@ import Cooperation from "../../components/Cooperation/Cooperation.jsx";
 import Reviews from "../../components/Reviews/Reviews.jsx";
 import axios from "axios";
 import ReviewsMobile from "../../components/Reviews/ReviewsMobile";
-import CelimaxBanner from "../../components/Banners/CelimaxBanner";
 import Skin1004Banner from "../../components/Banners/Skin1004Banner";
+import Seo from "../../components/Seo/Seo";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -66,6 +66,10 @@ const HomePage = () => {
 	}, []);
 	return (
 		<div>
+			<Seo
+				title="Корейська косметика оптом і в роздріб"
+				description="Інтернет-магазин корейської косметики Beauty Blossom: оригінальні бренди Medi-Peel, Heimish, Missha та інші. Опт і роздріб, швидка доставка, подарунок у кожному замовленні."
+			/>
 			<Skin1004Banner/>
 			<div className="flex flex-col gap-[60px] items-center py-10 px-2 xl:px-10">
 				<ProductSlider title="BEAUTY ЗНИЖКИ %" products={discountProducts} buttonRoute={'marker=sale&'}/>
