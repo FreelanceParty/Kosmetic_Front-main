@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ScrollToTopBtn = styled.button`
 	position:         fixed;
-	bottom:           20px;
+	bottom:           86px;
 	right:            20px;
 	width:            50px;
 	height:           50px;
@@ -28,5 +28,10 @@ export const ScrollToTopBtn = styled.button`
 	&.show {
 		opacity:    1;
 		visibility: visible;
+	}
+
+	html.contact-widget-open &.show {
+		opacity:    0;
+		visibility: hidden;
 	}
 `;

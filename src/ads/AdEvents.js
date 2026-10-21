@@ -294,6 +294,31 @@ export const trackPurchase = async (totalCost, items, userSelectors = {}) => {
 	}
 }
 
+export const trackContact = async (channel, userSelectors = {}) => {
+	if (!IS_TRACKING_ENABLED) {
+		return;
+	}
+	const eventId    = uuidv4(),
+	      userData   = getHashedUserData(userSelectors),
+	      customData = {channel};
+
+	try {
+		if (window.fbq) {
+			window.fbq('track', 'Contact', {...customData, userData: userData}, {eventID: eventId});
+		} else {
+			console.log('Warning: fbq is not defined');
+		}
+	} catch (e) {
+		console.error('❌ Помилка відправки Pixel Contact події:', e);
+	}
+
+	try {
+		await sendConversionAPI('Contact', eventId, userData, customData);
+	} catch (e) {
+		console.error('Error: ', e);
+	}
+};
+
 const sendConversionAPI = async (eventName, eventId, userData = null, customData = null) => {
 	if (!IS_TRACKING_ENABLED) {
 		return;
