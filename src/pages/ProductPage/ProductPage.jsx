@@ -13,6 +13,8 @@ import {toast} from "react-toastify";
 import Seo from "../../components/Seo/Seo";
 import JsonLd, {breadcrumbs, productSchema} from "../../components/Seo/JsonLd";
 import {routeHelper} from "../../utils/helpers/routeHelper";
+import {useItemListView, useItemView, useUserFlags} from "../../ads/useEcommerceTracking";
+import {trackCartAdd} from "../../ads/Ecommerce";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -42,9 +44,16 @@ const ProductPage = () => {
 	const dispatch = useDispatch();
 	const {getCategoryRoute} = routeHelper();
 
+	const userFlags = useUserFlags();
+	useItemView(product);
+	useItemListView(recommendedProducts, {listName: "Рекомендовані"});
+
 	async function addToCart() {
 		setIsInCart(true);
 		await handleAddToCart({product, quantity, dispatch, isLoggedIn});
+		if (quantity > 0 && quantity <= Number(product?.amount ?? 0)) {
+			trackCartAdd(product, {quantity, userFlags});
+		}
 		try {
 			await trackAddToCart(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber})
 		} catch (e) {
@@ -106,7 +115,6 @@ const ProductPage = () => {
 					return;
 				}
 
-				setIsInCart((productCart ?? []).some(item => item && item.id === response.data.id));
 				setProductCount(response.data.amount);
 				setProduct(response.data);
 				setLoading(false);
@@ -126,7 +134,11 @@ const ProductPage = () => {
 		return () => {
 			isCancelled = true;
 		};
-	}, [id, productCart]);
+	}, [id]);
+
+	useEffect(() => {
+		setIsInCart(Boolean(product) && (productCart ?? []).some(item => item && item.id === product.id));
+	}, [product, productCart]);
 
 	useEffect(() => {
 		const fetchRecommendedProducts = async () => {

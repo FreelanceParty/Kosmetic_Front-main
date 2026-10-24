@@ -7,6 +7,7 @@ import axios from "axios";
 import ReviewsMobile from "../../components/Reviews/ReviewsMobile";
 import Skin1004Banner from "../../components/Banners/Skin1004Banner";
 import Seo from "../../components/Seo/Seo";
+import {useItemListView} from "../../ads/useEcommerceTracking";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -15,6 +16,9 @@ const HomePage = () => {
 	const [newProducts, setNewProducts] = useState([]);
 
 	const [productReviews, setProductReviews] = useState([]);
+
+	useItemListView(discountProducts, {listName: "Головна: Знижки"});
+	useItemListView(newProducts, {listName: "Головна: Новинки"});
 
 	useEffect(() => {
 		const fetchReviews = async () => {

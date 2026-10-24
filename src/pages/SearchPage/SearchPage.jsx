@@ -16,6 +16,7 @@ import FilterIcon from "../../components/Icons/FilterIcon";
 import CloseCrossIcon from "../../components/Icons/CloseCrossIcon";
 import Button from "../../components/ButtonNew/Button";
 import {Loader} from "../../components/Loader/Loader";
+import {useItemListView} from "../../ads/useEcommerceTracking";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -51,6 +52,13 @@ const SearchPage = () => {
 	const [minPrice, setMinPrice] = useState(null);
 	const [maxPrice, setMaxPrice] = useState(null);
 	const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
+	const isTextSearch = Boolean(searchText?.trim());
+	useItemListView(currentPageItems, {
+		listName: isTextSearch ? "Пошук" : ({sale: "Знижки", new: "Новинки"}[searchMarker] ?? "Каталог"),
+		isSearch: isTextSearch,
+		isLoading: loading,
+	});
 
 	function handleBrandOptionChange(brandTitle, isChecked) {
 		if (isChecked) {

@@ -9,8 +9,9 @@ import PersonalInfoSection from "./PersonalInfoSection";
 import axios from "axios";
 import {toast} from "react-toastify";
 import {deleteAll} from "../../redux/cart/slice";
-import CompletedOrder from "./CompletedOrder";
+import {useNavigate} from "react-router-dom";
 import {trackPurchase} from "../../ads/AdEvents";
+import {trackCheckoutBegin, trackPaymentInfo, trackShippingInfo} from "../../ads/Ecommerce";
 
 const COURIER_DELIVERY_TYPE = 1;
 const POST_OFFICE_DELIVERY_TYPE = 2;
@@ -22,9 +23,8 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 const OrderPlacementPage = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	const [isOrderCompleted, setIsOrderCompleted] = useState(false);
-	const [completedOrderNumber, setCompletedOrderNumber] = useState(null);
 	const [isValidForm, setIsValidForm] = useState(false);
 
 	const userEmail = useSelector(getUserEmail);
@@ -46,6 +46,16 @@ const OrderPlacementPage = () => {
 	const orderNumberRef = useRef(generateOrderNumber());
 
 	const cartItems = useSelector(selectCart);
+	const userFlags = useMemo(() => ({isOptUser, isDropUser}), [isOptUser, isDropUser]);
+	const isCheckoutTrackedRef = useRef(false);
+
+	const handleFormInteraction = () => {
+		if (isCheckoutTrackedRef.current) {
+			return;
+		}
+		isCheckoutTrackedRef.current = true;
+		trackCheckoutBegin(cartItems, {userFlags});
+	};
 	const updateItems = cartItems;
 	const totalAmount = useMemo(
 		() =>
@@ -91,7 +101,7 @@ const OrderPlacementPage = () => {
 		number:         userNumber || "+380",
 		city:           isDropUser ? "—" : null,
 		warehouse:      isDropUser ? "—" : undefined,
-		paymentMethod:  "Оплата за реквізитами",
+		paymentMethod:  isDropUser ? "Оплата за реквізитами" : null,
 		deliveryMethod: isDropUser ? "Дропшипінг" : null,
 		orderNumber:    orderNumberRef.current,
 		isOptUser:      isOptUser,
@@ -196,6 +206,11 @@ const OrderPlacementPage = () => {
 					setIsValidForm(false);
 					return false;
 				}
+			}
+			if (!formData.paymentMethod) {
+				showErrorMessage("Будь ласка, виберіть спосіб оплати", withErrorMessage);
+				setIsValidForm(false);
+				return false;
 			}
 		}
 		if (orderNumberRef.current === "") {
@@ -316,10 +331,15 @@ const OrderPlacementPage = () => {
 				      response?.data?._id ||
 				      response?.data?.id ||
 				      orderNumberRef.current;
-			setCompletedOrderNumber(String(responseOrderNumber));
+			const completedOrderNumber = String(responseOrderNumber);
+			const purchasedItems = cartItems
+				.filter((item) => item && !item.isDeleted)
+				.map(({_id, id, name, brand, category, subCategory, subSubCategory, price, priceOPT, priceDrop, quantity}) => ({
+					_id, id, name, brand, category, subCategory, subSubCategory, price, priceOPT, priceDrop, quantity,
+				}));
 			try {
 				const userDataSelectors = {em: userEmail, ph: userNumber, fn: userFirstName, ln: userLastName};
-				await trackPurchase(totalAmount, normalizedOrderedItems, userDataSelectors);
+				await trackPurchase(totalAmount, normalizedOrderedItems, userDataSelectors, completedOrderNumber);
 			} catch (error) {
 				console.error("Помилка розміщення замовлення:", error);
 			}
@@ -344,7 +364,10 @@ const OrderPlacementPage = () => {
 				isOptUser:      isOptUser,
 				isDropUser:     isDropUser,
 			});
-			setIsOrderCompleted(true);
+			navigate(`/order-received/${encodeURIComponent(completedOrderNumber)}`, {
+				replace: true,
+				state:   {items: purchasedItems, value: totalAmount},
+			});
 		} catch (error) {
 			const status = error?.response?.status;
 			const statusText = error?.response?.statusText;
@@ -418,10 +441,6 @@ const OrderPlacementPage = () => {
 
 	return (
 		<>
-			{isOrderCompleted
-				?
-				<CompletedOrder orderNumber={completedOrderNumber}/>
-				:
 				<div
 					className="flex flex-col sm:flex-row gap-8 sm:gap-[clamp(10px,2vw,80px)] pt-10 px-5 justify-start sm:justify-center items-center sm:items-start">
 					<div className="flex flex-col sm:hidden gap-5">
@@ -465,6 +484,9 @@ const OrderPlacementPage = () => {
 						handleInputChange={handleInputChange}
 						formData={formData}
 						setFormData={setFormData}
+						onFormInteraction={handleFormInteraction}
+						onDeliverySelect={(label) => trackShippingInfo(cartItems, label, {userFlags})}
+						onPaymentSelect={(label) => trackPaymentInfo(cartItems, label, {userFlags})}
 					/>
 					<div className="flex flex-col sm:hidden gap-[30px] items-center mb-10 max-w-[400px]">
 						<Button
@@ -535,7 +557,6 @@ const OrderPlacementPage = () => {
 						</div>
 					</div>
 				</div>
-			}
 		</>
 	);
 }

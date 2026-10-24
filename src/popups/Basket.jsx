@@ -12,6 +12,8 @@ import {handleRemoveFromCart, refreshCartAvailability} from "../utils/helpers/ba
 import DeleteIcon from "../components/Icons/DeleteIcon";
 import {Link, useNavigate} from "react-router-dom";
 import {trackInitiateCheckout} from "../ads/AdEvents";
+import {trackCartQuantityChange, trackCartRemove} from "../ads/Ecommerce";
+import {useCartView, useUserFlags} from "../ads/useEcommerceTracking";
 
 const Basket = ({onClose}) => {
 	const dispatch = useDispatch();
@@ -25,6 +27,8 @@ const Basket = ({onClose}) => {
 	const userLastName = useSelector(getUserLastName);
 	const userNumber = useSelector(getUserNumber);
 	const cartItems = useSelector(selectCart);
+	const userFlags = useUserFlags();
+	useCartView(cartItems);
 	const [notAvailableProductsAmount, setNotAvailableProductsAmount] = useState([])
 	const getItemKey = (item) => item?.id ?? item?.productId;
 
@@ -55,6 +59,7 @@ const Basket = ({onClose}) => {
 			return;
 		}
 		const nextQuantity = Math.max(1, Math.min(Math.trunc(nextQuantityRaw), availableAmount));
+		trackCartQuantityChange(product, nextQuantity, {userFlags});
 		dispatch(addToCart({...product, quantity: nextQuantity}));
 
 		if (nextQuantityRaw > availableAmount) {
@@ -71,6 +76,7 @@ const Basket = ({onClose}) => {
 	}
 
 	function removeFromCart(product) {
+		trackCartRemove(product, {userFlags});
 		handleRemoveFromCart({product, dispatch, isLoggedIn});
 	}
 

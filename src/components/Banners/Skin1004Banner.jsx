@@ -6,12 +6,21 @@ import woman2 from '../../assets/images/banner/skin1004/woman_2.png';
 import woman3 from '../../assets/images/banner/skin1004/woman_3.png';
 import woman4 from '../../assets/images/banner/skin1004/woman_4.png';
 import background from '../../assets/images/banner/skin1004/background.png';
+import {usePromotion} from "../../ads/useEcommerceTracking";
 
 const BRAND_ROUTE = "/brands/skin1004";
+const PROMOTION = {
+	promotionId:   "skin1004_calm_repair_glow",
+	promotionName: "SKIN1004",
+	creativeName:  "CALM. REPAIR. GLOW.",
+	creativeSlot:  "Банер на головній",
+};
 
 const Skin1004Banner = () => {
+	const {ref, onClick} = usePromotion(PROMOTION);
+
 	return (
-		<Link to={BRAND_ROUTE} className="block overflow-hidden">
+		<Link ref={ref} to={BRAND_ROUTE} onClick={onClick} className="block overflow-hidden">
 			{/* ===================== MOBILE ===================== */}
 			<div
 				className="sm:hidden relative w-full aspect-[375/262] overflow-hidden bg-cover bg-center bg-no-repeat"

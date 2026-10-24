@@ -19,6 +19,9 @@ const PersonalInfoSection = ({
 	      handleInputChange,
 	      formData,
 	      setFormData,
+	      onFormInteraction,
+	      onDeliverySelect,
+	      onPaymentSelect,
       }) => {
 	      const apiKey = "c9cfd468abe7e624f872ca0e59a29184";
 
@@ -238,7 +241,11 @@ const PersonalInfoSection = ({
 	      };
 
 	      return (
-		      <div className="flex flex-col gap-6 w-full min-w-[335px] max-w-[400px]">
+		      <div
+			      className="flex flex-col gap-6 w-full min-w-[335px] max-w-[400px]"
+			      onFocusCapture={onFormInteraction}
+			      onPointerDownCapture={onFormInteraction}
+		      >
 			      <div className="flex flex-col gap-4">
 				      <div className="font-semibold text-md leading-[11px]">ОСОБИСТА ІНФОРМАЦІЯ</div>
 				      {isDropUser && (
@@ -295,6 +302,7 @@ const PersonalInfoSection = ({
 					      onSelect={(option) => {
 						      setDeliveryType(option.id);
 						      updateFormData('deliveryMethod', option.label);
+						      onDeliverySelect?.(option.label);
 					      }}
 				      />
 				      {deliveryType === COURIER_DELIVERY_TYPE && (
@@ -369,6 +377,7 @@ const PersonalInfoSection = ({
 					      onSelect={(option) => {
 						      setPaymentType(option.id);
 						      updateFormData('paymentMethod', option.label);
+						      onPaymentSelect?.(option.label);
 					      }}
 				      />
 				      {paymentType === POST_PAYMENT && (

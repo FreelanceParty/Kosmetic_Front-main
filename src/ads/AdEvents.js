@@ -236,7 +236,7 @@ export const trackInitiateCheckout = async (totalCost, items, userSelectors = {}
 	}
 }
 
-export const trackPurchase = async (totalCost, items, userSelectors = {}) => {
+export const trackPurchase = async (totalCost, items, userSelectors = {}, transactionId = null) => {
 	if (!IS_TRACKING_ENABLED) {
 		return;
 	}
@@ -284,7 +284,7 @@ export const trackPurchase = async (totalCost, items, userSelectors = {}) => {
 				'send_to':        'AW-16897946922/a7FtCIKR9K0bEKrqyPk-',
 				'value':          totalCost,
 				'currency':       'UAH',
-				'transaction_id': eventId
+				'transaction_id': transactionId ?? eventId
 			});
 		} else {
 			console.log('Warning: gtag is not defined');

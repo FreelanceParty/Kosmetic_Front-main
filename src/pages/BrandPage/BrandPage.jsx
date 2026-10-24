@@ -19,6 +19,7 @@ import {Loader} from "../../components/Loader/Loader";
 import Seo from "../../components/Seo/Seo";
 import JsonLd, {breadcrumbs} from "../../components/Seo/JsonLd";
 import {useMedia} from "../../utils/hooks/useMedia";
+import {useItemListView} from "../../ads/useEcommerceTracking";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -58,6 +59,11 @@ const BrandPage = () => {
 	const [minPrice, setMinPrice] = useState(null);
 	const [maxPrice, setMaxPrice] = useState(null);
 	const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
+	useItemListView(currentPageItems, {
+		listName: [`Бренд: ${brand?.name ?? decodedBrandName}`, chosenCategory].filter(Boolean).join(" / "),
+		isLoading: loading,
+	});
 
 	function handleFilterOptionChange(optionId, isChecked) {
 		if (isChecked) {

@@ -31,6 +31,7 @@ import ForgotPasswordPage from "./pages/Authorization/SubPages/ForgotPasswordPag
 import AboutUsPageMobile from "./pages/AboutUsPage/AboutUsPageMobile";
 import CartPage from "./pages/CartPage/CartPage";
 import OrderPlacementPage from "./pages/OrderPlacementPage/OrderPlacementPage";
+import OrderReceivedPage from "./pages/OrderPlacementPage/OrderReceivedPage";
 import {trackPageView} from "./ads/AdEvents";
 import Seo from "./components/Seo/Seo";
 import ContactWidget from "./components/ContactWidget/ContactWidget";
@@ -298,6 +299,15 @@ function App() {
 							<Suspense fallback={<Loader/>}>
 								<Seo title="Оформлення замовлення" noindex/>
 								<OrderPlacementPage/>
+							</Suspense>
+						}
+					/>
+					<Route
+						path="order-received/:orderNumber"
+						element={
+							<Suspense fallback={<Loader/>}>
+								<Seo title="Замовлення оформлено" noindex/>
+								<OrderReceivedPage/>
 							</Suspense>
 						}
 					/>

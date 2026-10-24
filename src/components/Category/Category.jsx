@@ -19,6 +19,7 @@ import CloseCrossIcon from "../Icons/CloseCrossIcon";
 import Button from "../ButtonNew/Button";
 import {Loader} from "../Loader/Loader";
 import {useMedia} from "../../utils/hooks/useMedia";
+import {useItemListView} from "../../ads/useEcommerceTracking";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -61,6 +62,13 @@ const Category = () => {
 	const [minPrice, setMinPrice] = useState(null);
 	const [maxPrice, setMaxPrice] = useState(null);
 	const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
+	useItemListView(currentPageItems, {
+		listName: [category ?? "Каталог", searchParams.get("category"), searchParams.get("subcategory"), chosenSubCategory]
+			.filter(Boolean)
+			.join(" / "),
+		isLoading: loading,
+	});
 
 	function handleBrandOptionChange(brandTitle, isChecked) {
 		if (isChecked) {

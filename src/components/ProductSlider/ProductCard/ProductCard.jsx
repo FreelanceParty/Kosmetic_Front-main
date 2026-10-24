@@ -6,6 +6,7 @@ import {getIsLoggedIn, getUserEmail, getUserFirstName, getUserLastName, getUserN
 import {resolveUserPrice, resolveUserPriceOld, getPriceLabel} from "../../../utils/helpers/priceByUser";
 import {selectCart} from "../../../redux/cart/selectors";
 import {trackAddToCart} from "../../../ads/AdEvents";
+import {trackCartAdd} from "../../../ads/Ecommerce";
 import {useEffect, useState} from "react";
 import Tag from "./_elements/Tag";
 import {toast} from "react-toastify";
@@ -78,6 +79,7 @@ const ProductCard = ({product, isSlider = false}) => {
 		}
 
 		handleAddToCart({product, quantity: 1, dispatch, isLoggedIn, event: e});
+		trackCartAdd(product, {quantity: 1, userFlags: {isOptUser, isDropUser}});
 		try {
 			trackAddToCart(product, {em: userEmail, fn: userFirstName, ln: userLastName, ph: userNumber});
 			toast.success("Товар додано в корзину");
