@@ -6,6 +6,8 @@ const IS_PROD = process.env.REACT_APP_APP_ENV === 'production';
 const REPEAT_GUARD_MS = 1000;
 const PURCHASES_STORAGE_KEY = 'bb_tracked_purchases';
 const PURCHASES_STORAGE_LIMIT = 20;
+const SELECTED_ITEM_STORAGE_KEY = 'bb_selected_list_item';
+const SELECTED_ITEM_TTL_MS = 30 * 60 * 1000;
 
 const lastViewEvents = new Map();
 
@@ -142,12 +144,56 @@ export const trackItemListView = (products, {listName, listId, userFlags, isSear
 	});
 };
 
-export const trackItemView = (product, {userFlags} = {}) => {
-	const items = buildItems([product], {userFlags, quantity: 1});
-	if (isRepeatedView('view_item', items)) {
+const rememberSelectedItem = (selection) => {
+	try {
+		window.sessionStorage.setItem(SELECTED_ITEM_STORAGE_KEY, JSON.stringify({...selection, selectedAt: Date.now()}));
+	} catch (e) {
+		console.error('Ecommerce select_item storage:', e);
+	}
+};
+
+const takeSelectedItem = (itemId) => {
+	try {
+		const selection = JSON.parse(window.sessionStorage.getItem(SELECTED_ITEM_STORAGE_KEY) ?? 'null');
+		if (!selection || selection.item_id !== itemId) {
+			return null;
+		}
+		window.sessionStorage.removeItem(SELECTED_ITEM_STORAGE_KEY);
+		return Date.now() - selection.selectedAt < SELECTED_ITEM_TTL_MS ? selection : null;
+	} catch (e) {
+		return null;
+	}
+};
+
+export const trackItemSelect = (product, {listName, listId, index, userFlags} = {}) => {
+	const item = buildItem(product, {userFlags, quantity: 1, index, listName, listId});
+	if (!item) {
 		return;
 	}
+	rememberSelectedItem({item_id: item.item_id, item_list_name: listName, item_list_id: listId, index});
+	track('select_item', {items: [item], extra: {item_list_name: listName, item_list_id: listId}, userFlags});
+};
+
+export const trackItemView = (product, {userFlags} = {}) => {
+	const items = buildItems([product], {userFlags, quantity: 1});
+	if (items.length === 0 || isRepeatedView('view_item', items)) {
+		return;
+	}
+	const selection = takeSelectedItem(items[0].item_id);
+	if (selection) {
+		const {item_list_name, item_list_id, index} = selection;
+		items[0] = Object.fromEntries(
+			Object.entries({...items[0], item_list_name, item_list_id, index}).filter(([, value]) => value != null)
+		);
+	}
 	track('view_item', {items, userFlags, remarketingEvent: 'view_item'});
+};
+
+export const trackRemarketingPageView = () => {
+	if (!canSend() || typeof window.gtag !== 'function') {
+		return;
+	}
+	window.gtag('event', 'page_view', {send_to: ADS_ID});
 };
 
 export const trackCartAdd = (product, {quantity = 1, userFlags, withRemarketing = true} = {}) => {

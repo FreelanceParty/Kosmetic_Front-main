@@ -16,7 +16,7 @@ import FilterIcon from "../../components/Icons/FilterIcon";
 import CloseCrossIcon from "../../components/Icons/CloseCrossIcon";
 import Button from "../../components/ButtonNew/Button";
 import {Loader} from "../../components/Loader/Loader";
-import {useItemListView} from "../../ads/useEcommerceTracking";
+import {ItemListContext, useItemListView} from "../../ads/useEcommerceTracking";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -54,7 +54,8 @@ const SearchPage = () => {
 	const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
 	const isTextSearch = Boolean(searchText?.trim());
-	useItemListView(currentPageItems, {
+	const itemList = useItemListView(currentPageItems, {
+		listId:   isTextSearch ? "search" : (["sale", "new"].includes(searchMarker) ? searchMarker : "catalog"),
 		listName: isTextSearch ? "Пошук" : ({sale: "Знижки", new: "Новинки"}[searchMarker] ?? "Каталог"),
 		isSearch: isTextSearch,
 		isLoading: loading,
@@ -312,9 +313,11 @@ const SearchPage = () => {
 						) : currentPageItems?.length > 0 ? (
 							<div className="flex flex-col gap-5 items-center mb-5 w-full">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-									{currentPageItems.map((product) => (
-										<ProductCard key={product.id} product={product}/>
-									))}
+									<ItemListContext.Provider value={itemList}>
+										{currentPageItems.map((product) => (
+											<ProductCard key={product.id} product={product}/>
+										))}
+									</ItemListContext.Provider>
 								</div>
 								{totalPages > 1 &&
 									<Paginator

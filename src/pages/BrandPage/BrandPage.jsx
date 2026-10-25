@@ -19,7 +19,7 @@ import {Loader} from "../../components/Loader/Loader";
 import Seo from "../../components/Seo/Seo";
 import JsonLd, {breadcrumbs} from "../../components/Seo/JsonLd";
 import {useMedia} from "../../utils/hooks/useMedia";
-import {useItemListView} from "../../ads/useEcommerceTracking";
+import {ItemListContext, useItemListView} from "../../ads/useEcommerceTracking";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -60,7 +60,8 @@ const BrandPage = () => {
 	const [maxPrice, setMaxPrice] = useState(null);
 	const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
-	useItemListView(currentPageItems, {
+	const itemList = useItemListView(currentPageItems, {
+		listId:   `brand_${(brand?.name ?? decodedBrandName).trim().toLowerCase().replace(/\s+/g, "_")}`,
 		listName: [`Бренд: ${brand?.name ?? decodedBrandName}`, chosenCategory].filter(Boolean).join(" / "),
 		isLoading: loading,
 	});
@@ -357,9 +358,11 @@ const BrandPage = () => {
 						{currentPageItems?.length > 0 ? (
 							<div className="flex flex-col gap-5 items-center mb-5 w-full">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-									{currentPageItems.map((product) => (
-										<ProductCard key={product.id} product={product}/>
-									))}
+									<ItemListContext.Provider value={itemList}>
+										{currentPageItems.map((product) => (
+											<ProductCard key={product.id} product={product}/>
+										))}
+									</ItemListContext.Provider>
 								</div>
 								{totalPages > 1 &&
 									<Paginator

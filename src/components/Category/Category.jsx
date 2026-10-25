@@ -19,7 +19,7 @@ import CloseCrossIcon from "../Icons/CloseCrossIcon";
 import Button from "../ButtonNew/Button";
 import {Loader} from "../Loader/Loader";
 import {useMedia} from "../../utils/hooks/useMedia";
-import {useItemListView} from "../../ads/useEcommerceTracking";
+import {ItemListContext, useItemListView} from "../../ads/useEcommerceTracking";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -63,7 +63,8 @@ const Category = () => {
 	const [maxPrice, setMaxPrice] = useState(null);
 	const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
-	useItemListView(currentPageItems, {
+	const itemList = useItemListView(currentPageItems, {
+		listId:   `category_${location.pathname.split("/").filter(Boolean).slice(1).join("_") || "all"}`,
 		listName: [category ?? "Каталог", searchParams.get("category"), searchParams.get("subcategory"), chosenSubCategory]
 			.filter(Boolean)
 			.join(" / "),
@@ -371,9 +372,11 @@ const Category = () => {
 						{currentPageItems?.length > 0 ? (
 							<div className="flex flex-col gap-5 items-center mb-5 w-full">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-									{currentPageItems.map((product) => (
-										<ProductCard key={product.id} product={product}/>
-									))}
+									<ItemListContext.Provider value={itemList}>
+										{currentPageItems.map((product) => (
+											<ProductCard key={product.id} product={product}/>
+										))}
+									</ItemListContext.Provider>
 								</div>
 								{totalPages > 1 &&
 									<Paginator

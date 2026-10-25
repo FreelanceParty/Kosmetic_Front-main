@@ -13,7 +13,7 @@ import {toast} from "react-toastify";
 import Seo from "../../components/Seo/Seo";
 import JsonLd, {breadcrumbs, productSchema} from "../../components/Seo/JsonLd";
 import {routeHelper} from "../../utils/helpers/routeHelper";
-import {useItemListView, useItemView, useUserFlags} from "../../ads/useEcommerceTracking";
+import {ItemListContext, useItemListView, useItemView, useUserFlags} from "../../ads/useEcommerceTracking";
 import {trackCartAdd} from "../../ads/Ecommerce";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -46,7 +46,7 @@ const ProductPage = () => {
 
 	const userFlags = useUserFlags();
 	useItemView(product);
-	useItemListView(recommendedProducts, {listName: "Рекомендовані"});
+	const recommendedList = useItemListView(recommendedProducts, {listName: "Рекомендовані", listId: "recommended"});
 
 	async function addToCart() {
 		setIsInCart(true);
@@ -191,7 +191,7 @@ const ProductPage = () => {
 					<Loader/>
 				</div>
 			) : (
-				<>
+				<ItemListContext.Provider value={recommendedList}>
 					<Desktop
 						isInCart={isInCart}
 						product={product}
@@ -220,7 +220,7 @@ const ProductPage = () => {
 						setProductCount={setProductCount}
 						updateProductCountHandler={updateProductCountHandler}
 					/>
-				</>
+				</ItemListContext.Provider>
 			)}
 		</>
 	);

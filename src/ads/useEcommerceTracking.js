@@ -1,17 +1,22 @@
-import {useCallback, useEffect, useMemo, useRef} from "react";
+import {createContext, useCallback, useContext, useEffect, useMemo, useRef} from "react";
+import {useLocation} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {getDropUser, getOptUser} from "../redux/auth/selectors";
 import {
 	trackCartView,
 	trackItemListView,
+	trackItemSelect,
 	trackItemView,
 	trackOrderPurchase,
 	trackPromotionSelect,
 	trackPromotionView,
+	trackRemarketingPageView,
 } from "./Ecommerce";
 
 const LIST_SETTLE_MS = 700;
 const PROMOTION_VISIBLE_RATIO = 0.5;
+
+export const ItemListContext = createContext(null);
 
 export const useUserFlags = () => {
 	const isOptUser = useSelector(getOptUser);
@@ -19,7 +24,7 @@ export const useUserFlags = () => {
 	return useMemo(() => ({isOptUser, isDropUser}), [isOptUser, isDropUser]);
 };
 
-export const useItemListView = (products, {listName, isSearch = false, isLoading = false}) => {
+export const useItemListView = (products, {listName, listId, isSearch = false, isLoading = false}) => {
 	const userFlags = useUserFlags();
 	const productsRef = useRef(products);
 	productsRef.current = products;
@@ -30,10 +35,43 @@ export const useItemListView = (products, {listName, isSearch = false, isLoading
 			return;
 		}
 		const timer = setTimeout(() => {
-			trackItemListView(productsRef.current, {listName, isSearch, userFlags});
+			trackItemListView(productsRef.current, {listName, listId, isSearch, userFlags});
 		}, LIST_SETTLE_MS);
 		return () => clearTimeout(timer);
-	}, [signature, listName, isSearch, isLoading, userFlags]);
+	}, [signature, listName, listId, isSearch, isLoading, userFlags]);
+
+	return useMemo(() => ({listName, listId, products}), [listName, listId, products]);
+};
+
+export const useItemSelect = (product) => {
+	const list = useContext(ItemListContext);
+	const userFlags = useUserFlags();
+
+	return useCallback(() => {
+		if (!list?.listName) {
+			return;
+		}
+		const position = (list.products ?? []).findIndex((item) => item?._id === product?._id);
+		trackItemSelect(product, {
+			listName: list.listName,
+			listId:   list.listId,
+			index:    position >= 0 ? position + 1 : undefined,
+			userFlags,
+		});
+	}, [list, product, userFlags]);
+};
+
+export const useRemarketingPageView = () => {
+	const {pathname} = useLocation();
+	const previousPathnameRef = useRef(pathname);
+
+	useEffect(() => {
+		if (previousPathnameRef.current === pathname) {
+			return;
+		}
+		previousPathnameRef.current = pathname;
+		trackRemarketingPageView();
+	}, [pathname]);
 };
 
 export const useItemView = (product) => {

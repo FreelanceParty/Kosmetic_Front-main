@@ -7,6 +7,7 @@ import {resolveUserPrice, resolveUserPriceOld, getPriceLabel} from "../../../uti
 import {selectCart} from "../../../redux/cart/selectors";
 import {trackAddToCart} from "../../../ads/AdEvents";
 import {trackCartAdd} from "../../../ads/Ecommerce";
+import {useItemSelect} from "../../../ads/useEcommerceTracking";
 import {useEffect, useState} from "react";
 import Tag from "./_elements/Tag";
 import {toast} from "react-toastify";
@@ -26,6 +27,7 @@ const ProductCard = ({product, isSlider = false}) => {
 	const userLastName = useSelector(getUserLastName);
 	const userNumber = useSelector(getUserNumber);
 
+	const handleSelectItem = useItemSelect(product);
 	const [averageRating, setAverageRating] = useState(0);
 	const [reviewsCount, setReviewsCount] = useState('');
 
@@ -93,6 +95,7 @@ const ProductCard = ({product, isSlider = false}) => {
 		<>
 			<Link
 				to={productLink}
+				onClick={handleSelectItem}
 				className={`flex flex-col w-[159px] cursor-pointer ${isSlider ? 'md:hidden' : 'sm:hidden'} ${product.amount <= 0 ? 'opacity-50' : ''}`}
 			>
 				<div className="relative flex items-center justify-center w-full h-[160px]">
@@ -143,6 +146,7 @@ const ProductCard = ({product, isSlider = false}) => {
 
 			<Link
 				to={productLink}
+				onClick={handleSelectItem}
 				className={`hidden flex-col ${isSlider ? 'md:flex w-full' : 'sm:flex w-[283px]'} cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`}
 			>
 				<div className="relative flex items-center justify-center w-full h-[300px]">

@@ -33,6 +33,7 @@ import CartPage from "./pages/CartPage/CartPage";
 import OrderPlacementPage from "./pages/OrderPlacementPage/OrderPlacementPage";
 import OrderReceivedPage from "./pages/OrderPlacementPage/OrderReceivedPage";
 import {trackPageView} from "./ads/AdEvents";
+import {useRemarketingPageView} from "./ads/useEcommerceTracking";
 import Seo from "./components/Seo/Seo";
 import ContactWidget from "./components/ContactWidget/ContactWidget";
 import {getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "./redux/auth/selectors";
@@ -46,6 +47,7 @@ function RedirectProductToProducts() {
 
 function App() {
 	useMedia();
+	useRemarketingPageView();
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const userEmail = useSelector(getUserEmail);

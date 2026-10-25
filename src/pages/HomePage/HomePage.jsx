@@ -7,7 +7,7 @@ import axios from "axios";
 import ReviewsMobile from "../../components/Reviews/ReviewsMobile";
 import Skin1004Banner from "../../components/Banners/Skin1004Banner";
 import Seo from "../../components/Seo/Seo";
-import {useItemListView} from "../../ads/useEcommerceTracking";
+import {ItemListContext, useItemListView} from "../../ads/useEcommerceTracking";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -17,8 +17,8 @@ const HomePage = () => {
 
 	const [productReviews, setProductReviews] = useState([]);
 
-	useItemListView(discountProducts, {listName: "Головна: Знижки"});
-	useItemListView(newProducts, {listName: "Головна: Новинки"});
+	const discountList = useItemListView(discountProducts, {listName: "Головна: Знижки", listId: "home_sale"});
+	const newList = useItemListView(newProducts, {listName: "Головна: Новинки", listId: "home_new"});
 
 	useEffect(() => {
 		const fetchReviews = async () => {
@@ -77,8 +77,12 @@ const HomePage = () => {
 			<Skin1004Banner/>
 			<div className="flex flex-col gap-[60px] items-center py-10 px-2 xl:px-10">
 				<h1 className="sr-only">Корейська косметика оптом і в роздріб</h1>
-				<ProductSlider title="BEAUTY ЗНИЖКИ %" products={discountProducts} buttonRoute={'marker=sale&'}/>
-				<ProductSlider title="НОВИНКИ" products={newProducts} buttonRoute={'marker=new&'}/>
+				<ItemListContext.Provider value={discountList}>
+					<ProductSlider title="BEAUTY ЗНИЖКИ %" products={discountProducts} buttonRoute={'marker=sale&'}/>
+				</ItemListContext.Provider>
+				<ItemListContext.Provider value={newList}>
+					<ProductSlider title="НОВИНКИ" products={newProducts} buttonRoute={'marker=new&'}/>
+				</ItemListContext.Provider>
 				<CategoryList/>
 				<Cooperation/>
 				<Reviews reviews={productReviews}/>
