@@ -1,6 +1,7 @@
 import basketIcon from "../../assets/icons/header/basket.svg";
 import cooperationIcon from "../../assets/icons/header/cooperation.svg";
 import mobMenuIcon from "../../assets/icons/header/mob-menu.svg";
+import phoneIcon from "../../assets/icons/header/phone.svg";
 import searchIcon from "../../assets/icons/header/search.svg";
 import userIcon from "../../assets/icons/header/user.svg";
 
@@ -8,6 +9,7 @@ const icons = {
 	basket:      basketIcon,
 	cooperation: cooperationIcon,
 	"mob-menu":  mobMenuIcon,
+	phone:       phoneIcon,
 	search:      searchIcon,
 	user:        userIcon,
 };

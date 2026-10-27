@@ -46,11 +46,9 @@ const Header = () => {
 		{title: "МАКІЯЖ", href: getCategoryRoute("макіяж")},
 		{title: "ТІЛО", href: getCategoryRoute("догляд для тіла")},
 		{title: "НАБОРИ & ПОДАРУНКИ", href: getCategoryRoute("набори")},
-		{title: "СПІВПРАЦЯ", href: "/cooperation"},
 		{title: "SALE", href: "/search?marker=sale&page=1&query=", styles: "text-[#B90003]"},
 		{title: "NEW", href: "/search?marker=new&page=1&query=", styles: "text-green-600"},
 		{title: "БРЕНДИ", href: "/brands"},
-		{title: "ПРО НАС", href: "/about-us"},
 	]), [getCategoryRoute]);
 
 	const openedMenu = openedDropdown ? HEADER_MEGA_MENU[openedDropdown] : null;
@@ -131,6 +129,9 @@ const Header = () => {
 					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<User icon="user" title={isLoggedIn ? userName : "ВХІД"} onClick={() => handleUserIconClick()}/>
 						<HeaderMenu icon="basket" title="КОШИК" badgeCount={cartBadgeCount} onClick={() => handleGoToCart()}/>
+						<a href="tel:+380500529100" aria-label="Зателефонувати +380 50 052 91 00" className="flex h-fit">
+							<HeaderMenu icon="phone" title={<span className="text-nowrap">+380 50 052 91 00</span>}/>
+						</a>
 					</div>
 				</div>
 				<div className="hidden lg:flex justify-center gap-10 font-semibold text-md leading-[10px] py-6">

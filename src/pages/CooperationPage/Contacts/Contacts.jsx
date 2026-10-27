@@ -20,6 +20,19 @@ const Contacts = () => {
 							<div className="font-medium text-md"><a className="hover:text-[#E667A4]" href="mailto:beautyblossom.opt@gmail.com">beautyblossom.opt@gmail.com</a></div>
 						</div>
 					</div>
+					<div className="flex flex-col gap-5">
+						<div className="font-semibold text-xl leading-[22px]">АДРЕСА</div>
+						<address className="font-medium text-md not-italic">
+							<a
+								className="hover:text-[#E667A4]"
+								href="https://www.google.com/maps/search/?api=1&query=%D0%BC.+%D0%9A%D0%B8%D1%97%D0%B2%2C+%D0%B2%D1%83%D0%BB.+%D0%9A%D0%BE%D0%B7%D0%B0%D1%86%D1%8C%D0%BA%D0%B0+116%D0%90"
+								target="_blank"
+								rel="noreferrer"
+							>
+								м. Київ, вул. Козацька 116А
+							</a>
+						</address>
+					</div>
 				</div>
 				<div className="flex flex-col lg:flex-row gap-[50px] justify-between">
 					<div className="flex flex-col gap-5 max-w-fit">
