@@ -117,8 +117,8 @@ const Header = () => {
 			)}
 			<Promo/>
 			<div className="relative flex flex-col z-20 bg-white shadow-sm" ref={menuContainerRef}>
-				<div className="flex justify-around border-b border-[#E8E8E8] py-[10px] lg:py-5 items-center">
-					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
+				<div className="grid grid-cols-[1fr_auto_1fr] border-b border-[#E8E8E8] py-[10px] lg:py-5 items-center">
+					<div className="flex justify-self-center gap-5 lg:gap-6 xl:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<HeaderMenu icon="mob-menu" classes="flex lg:hidden" onClick={() => setIsMobileMenuOpen(true)}/>
 						<HeaderMenu icon="search" title="ПОШУК" onClick={() => handleSearchIconClick()}/>
 						<Link to="/cooperation" className="hidden lg:flex">
@@ -126,10 +126,10 @@ const Header = () => {
 						</Link>
 					</div>
 					<Logo/>
-					<div className="flex gap-5 lg:gap-[46px] max-h-[24px] md:max-h-[18px]">
+					<div className="flex justify-self-center gap-5 lg:gap-6 xl:gap-[46px] max-h-[24px] md:max-h-[18px]">
 						<User icon="user" title={isLoggedIn ? userName : "ВХІД"} onClick={() => handleUserIconClick()}/>
 						<HeaderMenu icon="basket" title="КОШИК" badgeCount={cartBadgeCount} onClick={() => handleGoToCart()}/>
-						<a href="tel:+380500529100" aria-label="Зателефонувати +380 50 052 91 00" className="flex h-fit">
+						<a href="tel:+380500529100" aria-label="Зателефонувати +380 50 052 91 00" className="hidden lg:flex h-fit">
 							<HeaderMenu icon="phone" title={<span className="text-nowrap">+380 50 052 91 00</span>}/>
 						</a>
 					</div>
