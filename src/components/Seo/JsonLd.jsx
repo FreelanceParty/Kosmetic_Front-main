@@ -51,7 +51,9 @@ export const productSchema = (product) => {
 		"gtin":        isValidGtin(product.code) ? String(product.code) : undefined,
 		"brand":       product.brand ? {"@type": "Brand", "name": product.brand} : undefined,
 		"category":    product.category || undefined,
-		"offers":      product.price ? {
+		"size":        product.volume || undefined,
+		"countryOfOrigin": product.country || undefined,
+		"offers":     product.price ? {
 			"@type":         "Offer",
 			"url":           url,
 			"price":         String(product.price),

@@ -23,6 +23,11 @@ const emptyForm = {
 	images:         "",
 	description:    "",
 	filterTagIds:   "",
+	age:            "",
+	skinType:       "",
+	purpose:        "",
+	volume:         "",
+	gender:         "",
 	new:            false,
 	sale:           false,
 };
@@ -138,6 +143,11 @@ const Products = () => {
 				images:         p.images ?? "",
 				description:    p.description ?? "",
 				filterTagIds:   p.filterTagIds ?? "",
+				age:            p.age ?? "",
+				skinType:       p.skinType ?? "",
+				purpose:        p.purpose ?? "",
+				volume:         p.volume ?? "",
+				gender:         p.gender ?? "",
 				new:            Boolean(p.new),
 				sale:           Boolean(p.sale),
 			});
@@ -168,6 +178,11 @@ const Products = () => {
 			images:         form.images.trim(),
 			description:    form.description.trim(),
 			filterTagIds:   form.filterTagIds.trim(),
+			age:            form.age.trim(),
+			skinType:       form.skinType.trim(),
+			purpose:        form.purpose.trim(),
+			volume:         form.volume.trim(),
+			gender:         form.gender.trim(),
 			new:            Boolean(form.new),
 			sale:           Boolean(form.sale),
 		};
@@ -330,6 +345,11 @@ const Products = () => {
 					<Field label="Підкатегорія" name="subCategory" value={form.subCategory} onChange={handleChange}/>
 					<Field label="Під-підкатегорія" name="subSubCategory" value={form.subSubCategory} onChange={handleChange}/>
 					<Field label="ID тегів фільтра" name="filterTagIds" value={form.filterTagIds} onChange={handleChange}/>
+					<Field label="Вік" name="age" value={form.age} onChange={handleChange}/>
+					<Field label="Тип шкіри" name="skinType" value={form.skinType} onChange={handleChange}/>
+					<Field label="Призначення" name="purpose" value={form.purpose} onChange={handleChange}/>
+					<Field label="Об’єм" name="volume" value={form.volume} onChange={handleChange}/>
+					<Field label="Стать" name="gender" value={form.gender} onChange={handleChange}/>
 				</div>
 
 				<Field label="Посилання на зображення (URL)*" name="images" value={form.images} onChange={handleChange}/>

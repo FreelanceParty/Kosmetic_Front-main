@@ -27,6 +27,11 @@ const FIELD_LABELS = {
 	compound:          "Склад",
 	filterTagIds:      "Теги фільтра",
 	usageInstructions: "Спосіб застосування",
+	age:               "Вік",
+	skinType:          "Тип шкіри",
+	purpose:           "Призначення",
+	volume:            "Об’єм",
+	gender:            "Стать",
 };
 
 const fmtVal = (v) => {

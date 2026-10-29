@@ -2,6 +2,7 @@ import {Container} from "./Details.styled";
 import Description from "./DetailTabs/Description";
 import Using from "./DetailTabs/Using";
 import Composition from "./DetailTabs/Composition";
+import Characteristics, {getCharacteristics} from "./DetailTabs/Characteristics";
 import ProductFeedbacks from "./DetailTabs/ProductFeedbacks";
 import React, {useState} from "react";
 import ChevronRightIcon from "../../../components/Icons/ChevronRightIcon";
@@ -10,6 +11,7 @@ const Details = ({product, reviewsCount}) => {
 	const tabs = [
 		{id: "description", label: "ОПИС ПРОДУКТУ", component: <Description product={product}/>},
 		{id: "using", label: "СПОСІБ ЗАСТОСУВАННЯ", component: <Using product={product}/>},
+		...(getCharacteristics(product).length ? [{id: "characteristics", label: "ХАРАКТЕРИСТИКИ", component: <Characteristics product={product}/>}] : []),
 		{id: "composition", label: "СКЛАД", component: <Composition product={product}/>},
 		{id: "reviews", label: `ВІДГУКИ ${reviewsCount !== 0 ? `(${reviewsCount})` : ''}`, component: <ProductFeedbacks product={product}/>},
 	];
