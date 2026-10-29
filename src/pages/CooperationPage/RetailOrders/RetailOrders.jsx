@@ -70,7 +70,7 @@ const RetailOrders = () => {
 				{isLoggedIn && !ownsRetail && (
 					<div className="flex flex-col gap-8">
 						<SecondaryTitle>ХОЧЕТЕ КУПУВАТИ В РОЗДРІБ? СТВОРІТЬ РОЗДРІБНИЙ КАБІНЕТ!</SecondaryTitle>
-						<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+						<div className="flex flex-col lg:flex-row flex-wrap gap-[18px] lg:gap-8 items-center">
 							<Button type="primary" text="СТВОРИТИ РОЗДРІБНИЙ КАБІНЕТ" to="/cabinet?tab=cabinets&create=retail"/>
 						</div>
 					</div>

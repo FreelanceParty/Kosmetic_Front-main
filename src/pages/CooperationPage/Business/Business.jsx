@@ -12,6 +12,7 @@ const Business = () => {
 
 	const orderConditionsListItems = [
 		{firstPart: "МІНІМАЛЬНЕ ЗАМОВЛЕННЯ ЛИШЕ 3000 ГРН", secondPart: ""},
+		{firstPart: "КЕШБЕК НА КОЖНЕ НАСТУПНЕ ОПТОВЕ ЗАМОВЛЕННЯ", secondPart: ""},
 		{firstPart: "ПОВНА ОПЛАТА НА РАХУНОК ФОП", secondPart: ""},
 		{firstPart: "НАКЛАДНИЙ ПЛАТІЖ", secondPart: " —  за передплатою 100 грн"},
 		{firstPart: "ВІДПРАВКА НОВОЮ ПОШТОЮ", secondPart: " — 1-3 дні з моменту оплати замовлення"},
@@ -35,7 +36,7 @@ const Business = () => {
 				{!isLoggedIn && (
 					<div className="flex flex-col gap-8">
 						<SecondaryTitle>ЩОБ ПОБАЧИТИ ОПТОВІ ЦІНИ – ЗАРЕЄСТРУЙТЕСЬ АБО УВІЙДІТЬ, ЯК ОПТОВИЙ ПОКУПЕЦЬ!</SecondaryTitle>
-						<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+						<div className="flex flex-col lg:flex-row flex-wrap gap-[18px] lg:gap-8 items-center">
 							<Button type="primary" text="ЗАРЕЄСТРУВАТИСЬ" to="/reg-opt-cabinet"/>
 							<Button type="secondary" text="УВІЙТИ В КАБІНЕТ" to="/authorization"/>
 						</div>
@@ -44,7 +45,7 @@ const Business = () => {
 				{isLoggedIn && !ownsOpt && (
 					<div className="flex flex-col gap-8">
 						<SecondaryTitle>ХОЧЕТЕ БАЧИТИ ОПТОВІ ЦІНИ? СТВОРІТЬ ОПТОВИЙ КАБІНЕТ!</SecondaryTitle>
-						<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+						<div className="flex flex-col lg:flex-row flex-wrap gap-[18px] lg:gap-8 items-center">
 							<Button type="primary" text="СТВОРИТИ ОПТ КАБІНЕТ" to="/cabinet?tab=cabinets&create=opt"/>
 						</div>
 					</div>

@@ -10,6 +10,8 @@ import Input from "../../../components/Input/Input";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
 import starPercentageIcon from "../../../assets/icons/star_percentage.svg";
 import {useMedia} from "../../../utils/hooks/useMedia";
+import WholesalePriceHint from "../Sections/WholesalePriceHint";
+import OrderTerms from "../Sections/OrderTerms";
 
 const Mobile = ({
 	isInCart,
@@ -121,9 +123,10 @@ const Mobile = ({
 									width={28}
 									height={28}
 								/>
-								<div className="leading-[20px]">Зареєструйтесь або увійдіть для відображення оптових цін</div>
+								<WholesalePriceHint classes="leading-[20px]"/>
 							</div>
 						)}
+						<OrderTerms classes="text-md"/>
 					</div>
 				</div>
 				<Details

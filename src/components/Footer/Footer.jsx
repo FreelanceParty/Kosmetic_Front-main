@@ -20,7 +20,8 @@ const Footer = () => {
 					<div className="flex flex-col gap-6 text-[14px] leading-[10px]">
 						<Link to="/about-us">Про нас</Link>
 						<Link to="/cooperation">Оптова співпраця</Link>
-						<a href="/">Оплата і доставка</a>
+						<Link to="/cooperation?section=delivery">Оплата та доставка</Link>
+						<Link to="/cooperation?section=returns">Умови повернення</Link>
 						<Link to="/cabinet">Особистий кабінет</Link>
 						<Link to="/cooperation?section=contacts">Контакти</Link>
 						<a href="/docs/Договір_публічної_оферти_2026р_BEAUTYBLOSSOM.docx" target="_blank" rel="noreferrer">Договір публічної оферти</a>
@@ -40,6 +41,8 @@ const Footer = () => {
 							<Link className="leading-[12px]" to="/about-us">Про нас</Link>
 							<Link className="leading-[12px]" to="/cooperation?section=business">Оптова співпраця</Link>
 							<Link className="leading-[12px]" to="/cooperation?section=dropshipping">Дропшипінг</Link>
+							<Link className="leading-[12px]" to="/cooperation?section=returns">Умови повернення</Link>
+							<Link className="leading-[12px]" to="/cooperation?section=delivery">Оплата та доставка</Link>
 							<a className="leading-[12px]" href="/docs/Договір_публічної_оферти_2026р_BEAUTYBLOSSOM.docx" target="_blank" rel="noreferrer">Договір публічної оферти</a>
 							<Link className="leading-[12px]" to="/cooperation?section=contacts">Контакти</Link>
 						</div>

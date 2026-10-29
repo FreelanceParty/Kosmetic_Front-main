@@ -1,23 +1,28 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Container, Slider, SliderElement} from "./CooperationPage.styled";
 import RetailOrders from "./RetailOrders/RetailOrders";
 import Business from "./Business/Business";
 import Dropshipping from "./Dropshipping/Dropshipping";
 import Contacts from "./Contacts/Contacts";
+import Delivery from "./Delivery/Delivery";
+import Returns from "./Returns/Returns";
 import {useSearchParams} from "react-router-dom";
 
 const tabs = [
-	{id: "personal", label: "Роздрібні замовлення", component: <RetailOrders/>},
+	{id: "personal", label: "Особисті замовлення", component: <RetailOrders/>},
 	{id: "business", label: "Для бізнесів (Опт)", component: <Business/>},
 	{id: "dropshipping", label: "Дропшипінг", component: <Dropshipping/>},
+	{id: "delivery", label: "Оплата та доставка", component: <Delivery/>},
+	{id: "returns", label: "Обмін та повернення", component: <Returns/>},
 	{id: "contacts", label: "Контакти", component: <Contacts/>},
 ];
 
 const CooperationPage = () => {
 	const [searchParams] = useSearchParams();
 	const section = searchParams.get("section");
-	const isSearchSectionValid = section === 'personal' || section === 'business' || section === 'dropshipping' || section === 'contacts';
+	const isSearchSectionValid = tabs.some(tab => tab.id === section);
 	const [activeTab, setActiveTab] = useState(isSearchSectionValid ? section : "personal");
+	const sliderRef = useRef(null);
 
 	useEffect(() => {
 		if (isSearchSectionValid) {
@@ -27,9 +32,17 @@ const CooperationPage = () => {
 		}
 	}, [section]);
 
+	useEffect(() => {
+		const slider = sliderRef.current;
+		const activeElement = slider?.children[tabs.findIndex(tab => tab.id === activeTab)];
+		if (activeElement) {
+			slider.scrollTo({left: activeElement.offsetLeft - (slider.clientWidth - activeElement.offsetWidth) / 2, behavior: "smooth"});
+		}
+	}, [activeTab]);
+
 	return (
 		<Container>
-			<Slider>
+			<Slider ref={sliderRef}>
 				{tabs.map((tab, index) => (
 					<SliderElement
 						key={tab.id}
@@ -66,7 +79,7 @@ const CooperationPage = () => {
 							</SliderElement>
 						))}
 					</div>
-					<div className="js-content px-5">
+					<div className="js-content px-5 flex-1 min-w-0">
 						{tabs.find(tab => tab.id === activeTab)?.component}
 					</div>
 				</div>

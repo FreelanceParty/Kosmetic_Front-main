@@ -49,7 +49,7 @@ const Dropshipping = () => {
 				{!isLoggedIn && (
 					<div className="flex flex-col gap-8">
 						<SecondaryTitle>ЩОБ ПОБАЧИТИ ДРОП ЦІНИ – ЗАРЕЄСТРУЙТЕСЬ АБО УВІЙДІТЬ, ЯК ДРОПШИПЕР!</SecondaryTitle>
-						<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+						<div className="flex flex-col lg:flex-row flex-wrap gap-[18px] lg:gap-8 items-center">
 							<Button type="primary" text="ЗАРЕЄСТРУВАТИСЬ" to="/reg-drop-cabinet"/>
 							<Button type="secondary" text="УВІЙТИ В КАБІНЕТ" to="/authorization"/>
 						</div>
@@ -58,7 +58,7 @@ const Dropshipping = () => {
 				{isLoggedIn && !ownsDrop && (
 					<div className="flex flex-col gap-8">
 						<SecondaryTitle>ХОЧЕТЕ БАЧИТИ ДРОП ЦІНИ? СТВОРІТЬ ДРОПШИПІНГ КАБІНЕТ!</SecondaryTitle>
-						<div className="flex flex-col lg:flex-row gap-[18px] lg:gap-8 items-center">
+						<div className="flex flex-col lg:flex-row flex-wrap gap-[18px] lg:gap-8 items-center">
 							<Button type="primary" text="СТВОРИТИ ДРОП КАБІНЕТ" to="/cabinet?tab=cabinets&create=drop"/>
 						</div>
 					</div>

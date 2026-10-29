@@ -33,6 +33,8 @@ const MobileMenu = ({isOpen, setIsOpen}) => {
 				{label: "ОСОБИСТІ ЗАМОВЛЕННЯ", to: "/cooperation"},
 				{label: "ДЛЯ БІЗНЕСУ (ОПТ)", to: "/cooperation?section=business"},
 				{label: "ДРОПШИПІНГ", to: "/cooperation?section=dropshipping"},
+				{label: "ОПЛАТА ТА ДОСТАВКА", to: "/cooperation?section=delivery"},
+				{label: "ОБМІН ТА ПОВЕРНЕННЯ", to: "/cooperation?section=returns"},
 				{label: "КОНТАКТИ", to: "/cooperation?section=contacts"},
 			],
 		},

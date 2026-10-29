@@ -11,6 +11,8 @@ import Input from "../../../components/Input/Input";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
 import starPercentageIcon from "../../../assets/icons/star_percentage.svg";
 import {useMedia} from "../../../utils/hooks/useMedia";
+import WholesalePriceHint from "../Sections/WholesalePriceHint";
+import OrderTerms from "../Sections/OrderTerms";
 
 const Desktop = ({
 	product,
@@ -134,9 +136,10 @@ const Desktop = ({
 										width={28}
 										height={28}
 									/>
-									<div className="text-lg leading-[18px]">Зареєструйтесь або увійдіть для відображення оптових цін</div>
+									<WholesalePriceHint classes="text-lg leading-[18px]"/>
 								</div>
 							)}
+							<OrderTerms classes="text-lg pl-5 -mt-4 mb-14"/>
 						</div>
 					</div>
 					<Details
