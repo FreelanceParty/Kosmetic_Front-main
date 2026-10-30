@@ -242,7 +242,7 @@ const PersonalInfoSection = ({
 
 	      return (
 		      <div
-			      className="flex flex-col gap-6 w-full min-w-[335px] max-w-[400px]"
+			      className="flex flex-col gap-6 w-full min-w-[335px] max-w-[400px] sm:mb-20"
 			      onFocusCapture={onFormInteraction}
 			      onPointerDownCapture={onFormInteraction}
 		      >

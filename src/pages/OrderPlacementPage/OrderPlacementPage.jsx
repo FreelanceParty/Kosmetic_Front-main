@@ -507,9 +507,9 @@ const OrderPlacementPage = () => {
 							</div>
 						</div>
 					</div>
-					<div className="hidden sm:flex flex-col gap-[30px] max-w-[760px]">
+					<div className="hidden sm:flex flex-col gap-[30px] [@media(max-height:800px)]:gap-5 max-w-[760px] sticky top-5">
 						<div className="font-semibold text-lg leading-[13px]">ОФОРМЛЕННЯ ЗАМОВЛЕННЯ</div>
-						<div className="flex flex-col gap-[10px] pr-5">
+						<div className="flex flex-col gap-[10px] pr-5 max-h-[max(120px,calc(100vh-500px))] overflow-y-auto">
 							{cartItems.filter(Boolean).map((product, index) => (
 								<div key={index} className="flex border-b items-center">
 									<div className="flex h-[36px] aspect-square">
