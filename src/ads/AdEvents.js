@@ -328,7 +328,6 @@ const sendConversionAPI = async (eventName, eventId, userData = null, customData
 	}
 	const payload = {
 		event_name:       eventName,
-		event_time:       Math.floor(Date.now() / 1000),
 		event_id:         eventId,
 		event_source_url: window.location.href,
 	};

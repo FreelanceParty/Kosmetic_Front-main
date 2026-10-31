@@ -6,6 +6,7 @@ import {getUserEmail, getUserFirstName, getUserId, getUserLastName, getUserNumbe
 import axios from "axios";
 import {toast} from "react-toastify";
 import PhoneInputField from "../../../components/PhoneInputField/PhoneInputField";
+import {isValidPhone} from "../../../utils/helpers/phone";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -83,10 +84,7 @@ const ContactInfo = () => {
 	}, [formData.lastName])
 
 	useEffect(() => {
-		const phonePattern = /^\+[1-9]\d{6,14}$/;
-		const trimmedValue = String(formData.number ?? "").trim();
-		const isPhoneValid = phonePattern.test(trimmedValue);
-		if (isPhoneValid) {
+		if (isValidPhone(formData.number)) {
 			setErrors({...errors, ['number']: null});
 		} else {
 			setErrors({...errors, ['number']: "Невірний формат номеру"});

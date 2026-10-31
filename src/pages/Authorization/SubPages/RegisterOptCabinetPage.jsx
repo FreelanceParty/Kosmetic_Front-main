@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import Checkbox from "../../../components/Inputs/Checkbox";
 import {extractFieldErrors, resolveAuthMessage} from "../../../utils/helpers/authErrors";
+import {isValidPhone} from "../../../utils/helpers/phone";
 
 const RegisterOptCabinetPage = () => {
 	const navigate = useNavigate();
@@ -30,13 +31,8 @@ const RegisterOptCabinetPage = () => {
 
 	const dispatch = useDispatch();
 
-	const validatePhone = (raw) => {
-		const phonePattern = /^\+[1-9]\d{6,14}$/;
-		return phonePattern.test(String(raw ?? "").trim());
-	};
-
 	function registerDispatch() {
-		const isPhoneValid = validatePhone(formData.number);
+		const isPhoneValid = isValidPhone(formData.number);
 		setPhoneError(isPhoneValid ? null : "Невірний формат номеру");
 		if (!isPhoneValid) {
 			toast.error("Введіть коректний номер телефону у міжнародному форматі, наприклад +380XXXXXXXXX");
@@ -81,7 +77,7 @@ const RegisterOptCabinetPage = () => {
 								value={formData[input.key] || ""}
 								onChange={(e) => setFormData(prev => ({...prev, [e.target.name]: e.target.value}))}
 								onBlur={() => {
-									const isPhoneValid = validatePhone(formData.number);
+									const isPhoneValid = isValidPhone(formData.number);
 									setPhoneError(isPhoneValid ? null : "Невірний формат номеру");
 								}}
 								placeholder={input.label}

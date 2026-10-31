@@ -4,6 +4,7 @@ import Button from "../../components/ButtonNew/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {getIsLoggedIn, getOptUser, getDropUser, getUserEmail, getUserFirstName, getUserLastName, getUserNumber} from "../../redux/auth/selectors";
 import {resolveUserPrice} from "../../utils/helpers/priceByUser";
+import {isValidPhone} from "../../utils/helpers/phone";
 import {selectCart} from "../../redux/cart/selectors";
 import PersonalInfoSection from "./PersonalInfoSection";
 import axios from "axios";
@@ -234,12 +235,7 @@ const OrderPlacementPage = () => {
 			setIsValidForm(false);
 			return false;
 		}
-		const phonePattern = /^\+[1-9]\d{6,14}$/;
-		const trimmedValue = String(formData.number ?? "").trim();
-
-		const isPhoneValid = phonePattern.test(trimmedValue);
-
-		if (!isPhoneValid) {
+		if (!isValidPhone(formData.number)) {
 			showErrorMessage("Введіть коректний номер телефону у міжнародному форматі, наприклад +380XXXXXXXXX", withErrorMessage);
 			setIsValidForm(false);
 			return false;

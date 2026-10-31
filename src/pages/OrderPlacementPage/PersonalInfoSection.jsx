@@ -6,6 +6,7 @@ import DangerIcon from "../../components/Icons/DangerIcon";
 import Select from "../../components/Select/Select";
 import TextArea from "../../components/TextArea/TextArea";
 import PhoneInputField from "../../components/PhoneInputField/PhoneInputField";
+import {isValidPhone} from "../../utils/helpers/phone";
 
 const COURIER_DELIVERY_TYPE = 1;
 const POST_OFFICE_DELIVERY_TYPE = 2;
@@ -235,11 +236,6 @@ const PersonalInfoSection = ({
 		      setFormData({...formData, [key]: value});
 	      }
 
-	      const validatePhone = (raw) => {
-		      const phonePattern = /^\+[1-9]\d{6,14}$/;
-		      return phonePattern.test(String(raw ?? "").trim());
-	      };
-
 	      return (
 		      <div
 			      className="flex flex-col gap-6 w-full min-w-[335px] max-w-[400px] sm:mb-20"
@@ -274,7 +270,7 @@ const PersonalInfoSection = ({
 					      value={formData.number}
 					      onChange={handleInputChange}
 					      onBlur={() => {
-						      const isPhoneValid = validatePhone(formData.number);
+						      const isPhoneValid = isValidPhone(formData.number);
 						      setPhoneError(isPhoneValid ? null : "Невірний формат номеру");
 					      }}
 					      placeholder="Номер телефону"
