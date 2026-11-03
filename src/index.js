@@ -15,6 +15,7 @@ import {Provider} from "react-redux";
 import store, {persistor} from "./redux/store";
 import {PersistGate} from "redux-persist/integration/react";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import {reportWebVitals} from "./ads/WebVitals";
 
 if (
 	process.env.NODE_ENV === "production" &&
@@ -57,3 +58,5 @@ root.render(
 		</Provider>
 	</React.StrictMode>
 );
+
+reportWebVitals();
