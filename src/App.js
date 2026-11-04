@@ -179,7 +179,7 @@ function App() {
 						element={
 							<Suspense fallback={<Loader/>}>
 								<Seo title="Пошук" noindex/>
-								<SearchPage/>
+								<SearchPage key={new URLSearchParams(location.search).get("marker")}/>
 							</Suspense>
 						}
 					/>

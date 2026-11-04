@@ -149,20 +149,20 @@ const Header = () => {
 									aria-controls="header-mega-menu"
 									onMouseEnter={() => setOpenedDropdown(link.title)}
 								>
-									<a key={index} href={link.href} className={`text-nowrap ${link.styles ?? ''}`}>{link.title}</a>
+									<Link key={index} to={link.href} className={`text-nowrap ${link.styles ?? ''}`} onClick={() => setOpenedDropdown(null)}>{link.title}</Link>
 								</button>
 							);
 						}
 
 						return (
-							<a
+							<Link
 								key={index}
-								href={link.href}
+								to={link.href}
 								className={`text-nowrap ${link.styles ?? ""}`}
 								onMouseEnter={() => setOpenedDropdown(null)}
 							>
 								{link.title}
-							</a>
+							</Link>
 						);
 					})}
 				</div>
@@ -180,24 +180,24 @@ const Header = () => {
 										<div className="flex flex-col gap-4">
 											{(col.sections ?? []).map((section, sectionIdx) => (
 												<div key={sectionIdx} className="min-w-0 flex flex-col gap-4">
-													<a
+													<Link
 														key={section.title}
-														href={section.link ?? ((navLinks.find((l) => l.title === openedDropdown)?.href ?? "#") + '?category=' + section.title)}
+														to={section.link ?? ((navLinks.find((l) => l.title === openedDropdown)?.href ?? "#") + '?category=' + section.title)}
 														className="text-[#000E55] font-semibold text-sm uppercase tracking-wide hover:text-[#FF63B8] truncate leading-[12px]"
 														onClick={() => setOpenedDropdown(null)}
 													>
 														{section.title}
-													</a>
+													</Link>
 													<div className="flex flex-col gap-4">
 														{(section.items ?? []).map((item, itemIdx) => (
-															<a
+															<Link
 																key={itemIdx}
-																href={(navLinks.find((l) => l.title === openedDropdown)?.href ?? "#") + '?subcategory=' + item}
+																to={(navLinks.find((l) => l.title === openedDropdown)?.href ?? "#") + '?subcategory=' + item}
 																className="text-[#000E55] text-sm font-normal hover:text-[#FF63B8] truncate leading-[12px]"
 																onClick={() => setOpenedDropdown(null)}
 															>
 																{item}
-															</a>
+															</Link>
 														))}
 													</div>
 												</div>

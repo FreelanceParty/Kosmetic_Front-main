@@ -22,7 +22,7 @@ const CategoryPage = () => {
 					{name: category, path: getCategoryRoute(category)},
 				])}/>
 			)}
-			<Category/>
+			<Category key={location.pathname + location.search}/>
 		</div>
 	);
 };

@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 import RateHearts from "../../../components/RateHearts/RateHearts";
 import NumberInput from "../../../components/NumberInput/NumberInput";
 import Button from "../../../components/ButtonNew/Button";
@@ -54,7 +55,7 @@ const Mobile = ({
 				<div className="flex flex-col gap-8 w-full">
 					<div className="flex flex-col gap-6">
 						<div className="flex justify-between items-center">
-							<a className="underline cursor-pointer font-medium text-lg max-w-fit leading-[20px]" href={`/brands/${product.brand}`}>{product.brand}</a>
+							<Link className="underline cursor-pointer font-medium text-lg max-w-fit leading-[20px]" to={`/brands/${product.brand}`}>{product.brand}</Link>
 							<div className="flex gap-3">
 								<RateHearts heartSize={14} count={averageRating}/>
 								<div className="font-normal text-xs text-nowrap">{reviewsCount}</div>

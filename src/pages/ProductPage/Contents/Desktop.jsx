@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 import RateHearts from "../../../components/RateHearts/RateHearts";
 import {routeHelper} from "../../../utils/helpers/routeHelper";
 import NumberInput from "../../../components/NumberInput/NumberInput";
@@ -45,11 +46,11 @@ const Desktop = ({
 		<div className="hidden md:flex w-full justify-center relative">
 			<div className="flex flex-col max-w-[1240px] mx-20 text-[#000E55]">
 				<div className="flex gap-[10px] my-10 font-normal text-sm">
-					<a className="cursor-pointer" href="/">Головна</a>
+					<Link className="cursor-pointer" to="/">Головна</Link>
 					<div className="border-[#000E55] border-l"></div>
 					{product?.category && (
 						<>
-							<a className="cursor-pointer" href={getCategoryRoute(product.category)}>{product.category}</a>
+							<Link className="cursor-pointer" to={getCategoryRoute(product.category)}>{product.category}</Link>
 							<div className="border-[#000E55] border-l"></div>
 						</>
 					)}
@@ -69,7 +70,7 @@ const Desktop = ({
 						<div className="flex flex-col gap-10 w-1/2">
 							<div className="flex flex-col gap-[30px]">
 								<NameTag className="font-semibold text-[36px] leading-[42px]">{product.name}</NameTag>
-								<a className="underline cursor-pointer font-medium text-lg max-w-fit leading-[13px]" href={`/brands/${product.brand}`}>{product.brand}</a>
+								<Link className="underline cursor-pointer font-medium text-lg max-w-fit leading-[13px]" to={`/brands/${product.brand}`}>{product.brand}</Link>
 								<div className="flex gap-3 items-center">
 									<RateHearts heartSize={14} count={averageRating}/>
 									<div className="font-normal text-xs leading-[8px]">{reviewsCount}</div>
