@@ -1,11 +1,11 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-import woman1 from '../../assets/images/banner/skin1004/woman_1.png';
-import woman2 from '../../assets/images/banner/skin1004/woman_2.png';
-import woman3 from '../../assets/images/banner/skin1004/woman_3.png';
-import woman4 from '../../assets/images/banner/skin1004/woman_4.png';
-import background from '../../assets/images/banner/skin1004/background.png';
+import woman1 from '../../assets/images/banner/skin1004/woman_1.webp';
+import woman2 from '../../assets/images/banner/skin1004/woman_2.webp';
+import woman3 from '../../assets/images/banner/skin1004/woman_3.webp';
+import woman4 from '../../assets/images/banner/skin1004/woman_4.webp';
+import background from '../../assets/images/banner/skin1004/background.webp';
 import {usePromotion} from "../../ads/useEcommerceTracking";
 
 const BRAND_ROUTE = "/brands/skin1004";
@@ -23,9 +23,15 @@ const Skin1004Banner = () => {
 		<Link ref={ref} to={BRAND_ROUTE} onClick={onClick} className="block overflow-hidden">
 			{/* ===================== MOBILE ===================== */}
 			<div
-				className="sm:hidden relative w-full aspect-[375/262] overflow-hidden bg-cover bg-center bg-no-repeat"
-				style={{backgroundImage: `url(${background})`}}
+				className="sm:hidden relative w-full aspect-[375/262] overflow-hidden"
 			>
+				<img
+					src={background}
+					alt=""
+					aria-hidden="true"
+					fetchPriority="high"
+					className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+				/>
 				{/* logo + texts */}
 				<div className="absolute left-[4.5vw] top-[4vw] right-[3vw] z-[3]">
 					<div className="font-roboto font-normal tracking-[0.12em] text-[2.4vw] leading-none text-[#E79AA2]">
@@ -48,9 +54,15 @@ const Skin1004Banner = () => {
 
 			{/* ===================== DESKTOP ===================== */}
 			<div
-				className="hidden sm:block relative w-full aspect-[1440/432] overflow-hidden bg-cover bg-center bg-no-repeat"
-				style={{backgroundImage: `url(${background})`}}
+				className="hidden sm:block relative w-full aspect-[1440/432] overflow-hidden"
 			>
+				<img
+					src={background}
+					alt=""
+					aria-hidden="true"
+					fetchPriority="high"
+					className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+				/>
 				{/* left pink block — solid #FAB1B9 (Frame 1171274943) */}
 				<div className="absolute inset-y-0 left-0 w-[49.7%] bg-[#FAB1B9] z-[1]"/>
 				{/* waves over the pink block via multiply (Frame 1171274946) */}

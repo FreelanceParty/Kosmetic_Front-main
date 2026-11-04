@@ -359,8 +359,8 @@ const BrandPage = () => {
 							<div className="flex flex-col gap-5 items-center mb-5 w-full">
 								<div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 xl:grid-cols-3 gap-4">
 									<ItemListContext.Provider value={itemList}>
-										{currentPageItems.map((product) => (
-											<ProductCard key={product.id} product={product}/>
+										{currentPageItems.map((product, index) => (
+											<ProductCard key={product.id} product={product} eager={index < 4}/>
 										))}
 									</ItemListContext.Provider>
 								</div>

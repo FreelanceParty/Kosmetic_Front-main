@@ -13,7 +13,7 @@ import Tag from "./_elements/Tag";
 import {toast} from "react-toastify";
 import buyMobileIcon from "../../../assets/icons/buy_mobile.svg";
 
-const ProductCard = ({product, isSlider = false}) => {
+const ProductCard = ({product, isSlider = false, eager = false}) => {
 	const dispatch = useDispatch();
 	const isLoggedIn = useSelector(getIsLoggedIn);
 	const productCart = useSelector(selectCart);
@@ -99,7 +99,7 @@ const ProductCard = ({product, isSlider = false}) => {
 				className={`flex flex-col w-[159px] cursor-pointer ${isSlider ? 'md:hidden' : 'sm:hidden'} ${product.amount <= 0 ? 'opacity-50' : ''}`}
 			>
 				<div className="relative flex items-center justify-center w-full h-[160px]">
-					<img className="w-full h-full object-contain" src={product.images} alt="product"/>
+					<img className="w-full h-full object-contain" src={product.images} alt="product" loading={eager ? "eager" : "lazy"}/>
 					{(product.sale || product.new) &&
 						<div className="absolute top-3 right-0 flex flex-col gap-3 z-9">
 							{product.sale && <Tag isSale={true}/>}
@@ -150,7 +150,7 @@ const ProductCard = ({product, isSlider = false}) => {
 				className={`hidden flex-col ${isSlider ? 'md:flex w-full' : 'sm:flex w-[283px]'} cursor-pointer ${product.amount <= 0 ? 'opacity-50' : ''}`}
 			>
 				<div className="relative flex items-center justify-center w-full h-[300px]">
-					<img className="w-full h-full object-contain" src={product.images} alt="product"/>
+					<img className="w-full h-full object-contain" src={product.images} alt="product" loading={eager ? "eager" : "lazy"}/>
 					{(product.sale || product.new) &&
 						<div className="absolute top-4 right-0 flex flex-col gap-4 z-9">
 							{product.sale && <Tag isSale={true}/>}

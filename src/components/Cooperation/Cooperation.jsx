@@ -1,10 +1,10 @@
 import React from "react";
 import Button from "../ButtonNew/Button";
 import ellipseIcon from "../../assets/icons/cooperation/ellipse.svg";
-import cooperation1 from "../../assets/images/cooperation/1.png";
-import cooperation2 from "../../assets/images/cooperation/2.png";
-import cooperation3 from "../../assets/images/cooperation/3.png";
-import cooperation4 from "../../assets/images/cooperation/4.png";
+import cooperation1 from "../../assets/images/cooperation/1.webp";
+import cooperation2 from "../../assets/images/cooperation/2.webp";
+import cooperation3 from "../../assets/images/cooperation/3.webp";
+import cooperation4 from "../../assets/images/cooperation/4.webp";
 
 const advantages = [
 	{
@@ -54,10 +54,10 @@ const Cooperation = () => {
 						/>
 					</div>
 				</div>
-				<div className="grid grid-cols-2 gap-2 lg:gap-4 w-full md:w-1/2 max-w-fit max-h-fit">
+				<div className="grid grid-cols-2 gap-2 lg:gap-4 w-full md:w-1/2 max-h-fit">
 					{images.map((image, index) => (
 						<div key={index} className="flex justify-center relative w-full h-full rounded-[3px]">
-							<img className="rounded-[8px] w-full h-full" src={image} alt="category"/>
+							<img className="rounded-[8px] w-full h-full" src={image} alt="category" width={568} height={465} loading="lazy"/>
 						</div>
 					))}
 				</div>

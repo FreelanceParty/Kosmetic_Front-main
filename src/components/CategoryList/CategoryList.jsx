@@ -78,7 +78,7 @@ const CategoryList = () => {
 			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 pt-[23px] md:pt-10 border-t border-[#E8E8E8]">
 				{CATEGORIES.map((category, index) => (
 					<Link key={index} to={category.route} className="flex justify-center relative w-[clamp(159px,20vw,298px)] h-[clamp(173px,25vw,323px)] rounded-[8px] cursor-pointer">
-						<img className="rounded-[8px] w-full h-full object-cover object-center" src={category.image} alt="category"/>
+						<img className="rounded-[8px] w-full h-full object-cover object-center" src={category.image} alt="category" loading="lazy"/>
 						<div
 							className="flex items-center justify-center rounded-[27px] bg-white absolute h-[clamp(44px,5vw,50px)] left-[clamp(6px,2vw,30px)] right-[clamp(6px,2vw,30px)] bottom-[clamp(6px,2vw,30px)]">
 							<div className="font-medium text-xs uppercase leading-[17px] text-center">{category.name}</div>
