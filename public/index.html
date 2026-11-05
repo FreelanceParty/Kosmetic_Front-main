@@ -82,6 +82,8 @@
 
 	<script>
 		window.__ENABLE_TRACKING__ = !(
+			'%REACT_APP_APP_ENV%' === 'staging' ||
+			'%REACT_APP_APP_ENV%' === 'local' ||
 			window.location.hostname === 'localhost' ||
 			window.location.hostname === '127.0.0.1'
 		);

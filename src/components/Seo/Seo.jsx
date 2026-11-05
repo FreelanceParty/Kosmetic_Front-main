@@ -4,11 +4,12 @@ import {useLocation} from "react-router-dom";
 const SITE_URL = "https://www.beautyblossom.com.ua";
 const SITE_NAME = "Beauty Blossom";
 const MAX_DESCRIPTION_LENGTH = 160;
+const IS_STAGING = process.env.REACT_APP_APP_ENV === "staging";
 
 const defaults = {
 	title:         document.title,
 	description:   getMetaContent("name", "description"),
-	robots:        getMetaContent("name", "robots"),
+	robots:        IS_STAGING ? "noindex, nofollow" : getMetaContent("name", "robots"),
 	ogTitle:       getMetaContent("property", "og:title"),
 	ogDescription: getMetaContent("property", "og:description"),
 	ogUrl:         getMetaContent("property", "og:url"),
@@ -59,7 +60,8 @@ function truncate(text, maxLength) {
 	return clean.slice(0, maxLength - 1).replace(/\s+\S*$/, "") + "…";
 }
 
-const Seo = ({title, description, canonical, noindex = false}) => {
+const Seo = ({title, description, canonical, noindex: pageNoindex = false}) => {
+	const noindex = IS_STAGING || pageNoindex;
 	const {pathname} = useLocation();
 	const canonicalUrl = noindex ? null : toCanonicalUrl(canonical ?? pathname);
 
