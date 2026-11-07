@@ -11,6 +11,7 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import {deleteAll} from "../../redux/cart/slice";
 import {useNavigate} from "react-router-dom";
+import {v4 as uuidv4} from "uuid";
 import {trackPurchase} from "../../ads/AdEvents";
 import {trackCheckoutBegin, trackPaymentInfo, trackShippingInfo} from "../../ads/Ecommerce";
 
@@ -27,6 +28,9 @@ const OrderPlacementPage = () => {
 	const navigate = useNavigate();
 
 	const [isValidForm, setIsValidForm] = useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const isSubmittingRef = useRef(false);
+	const idempotencyKeyRef = useRef(uuidv4());
 
 	const userEmail = useSelector(getUserEmail);
 	const userFirstName = useSelector(getUserFirstName);
@@ -131,6 +135,10 @@ const OrderPlacementPage = () => {
 	};
 	useEffect(() => {
 		validateForm(false);
+	}, [formData]);
+
+	useEffect(() => {
+		idempotencyKeyRef.current = uuidv4();
 	}, [formData]);
 
 	useEffect(() => {
@@ -259,6 +267,12 @@ const OrderPlacementPage = () => {
 	}
 
 	const submitOrder = async () => {
+		if (isSubmittingRef.current) {
+			return;
+		}
+		isSubmittingRef.current = true;
+		setIsSubmitting(true);
+
 		const sendTelegramError = async (text) => {
 			const token = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
 			const chatId = process.env.REACT_APP_TELEGRAM_CHAT_ID;
@@ -302,7 +316,8 @@ const OrderPlacementPage = () => {
 			const normalizedDataToSend = {
 				...dataToSend,
 				number:       normalizedPhone,
-				orderedItems: normalizedOrderedItems,
+				orderedItems:   normalizedOrderedItems,
+				idempotencyKey: idempotencyKeyRef.current,
 			};
 
 			if (normalizedDataToSend.comments === null) {
@@ -333,12 +348,10 @@ const OrderPlacementPage = () => {
 				.map(({_id, id, name, brand, category, subCategory, subSubCategory, price, priceOPT, priceDrop, quantity}) => ({
 					_id, id, name, brand, category, subCategory, subSubCategory, price, priceOPT, priceDrop, quantity,
 				}));
-			try {
-				const userDataSelectors = {em: userEmail, ph: userNumber, fn: userFirstName, ln: userLastName};
-				await trackPurchase(totalAmount, normalizedOrderedItems, userDataSelectors, completedOrderNumber);
-			} catch (error) {
+			const userDataSelectors = {em: userEmail, ph: userNumber, fn: userFirstName, ln: userLastName};
+			trackPurchase(totalAmount, normalizedOrderedItems, userDataSelectors, completedOrderNumber).catch((error) => {
 				console.error("Помилка розміщення замовлення:", error);
-			}
+			});
 			if (isLoggedIn) {
 				removeCartItem();
 			}
@@ -425,6 +438,8 @@ const OrderPlacementPage = () => {
 			toast.error(`Помилка створення замовлення${status ? ` (${status})` : ""}: ${message}`);
 		} finally {
 			setIsValidForm(false);
+			isSubmittingRef.current = false;
+			setIsSubmitting(false);
 		}
 	};
 	const removeCartItem = async () => {
@@ -487,10 +502,10 @@ const OrderPlacementPage = () => {
 					<div className="flex flex-col sm:hidden gap-[30px] items-center mb-10 max-w-[400px]">
 						<Button
 							type="primary-pink"
-							text="ОФОРМИТИ ЗАМОВЛЕННЯ"
+							text={isSubmitting ? "ОФОРМЛЮЄМО..." : "ОФОРМИТИ ЗАМОВЛЕННЯ"}
 							classes="h-[51px] w-full"
 							onClick={submitOrder}
-							isDisabled={hasUnavailableItems}
+							isDisabled={hasUnavailableItems || isSubmitting}
 							//isDisabled={!isValidForm}
 						/>
 						{hasUnavailableItems && (
@@ -531,10 +546,10 @@ const OrderPlacementPage = () => {
 						<div className="flex flex-col lg:flex-row gap-[clamp(10px,2vw,30px)] items-center">
 							<Button
 								type="primary-pink"
-								text="ОФОРМИТИ ЗАМОВЛЕННЯ"
+								text={isSubmitting ? "ОФОРМЛЮЄМО..." : "ОФОРМИТИ ЗАМОВЛЕННЯ"}
 								classes="h-[51px] w-full max-w-full lg:max-w-[293px]"
 								onClick={submitOrder}
-								isDisabled={hasUnavailableItems}
+								isDisabled={hasUnavailableItems || isSubmitting}
 								//isDisabled={!isValidForm}
 							/>
 							{hasUnavailableItems && (
