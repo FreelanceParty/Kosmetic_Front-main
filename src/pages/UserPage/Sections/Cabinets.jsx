@@ -44,13 +44,18 @@ const Cabinets = () => {
 	const [selectedType, setSelectedType] = useState(presetType ?? availableTypes[0] ?? null);
 	const [formData, setFormData] = useState(accountForm);
 	const [cityError, setCityError] = useState(null);
+	const [shopTypeError, setShopTypeError] = useState(null);
+	const [linkError, setLinkError] = useState(null);
 
 	const needsDetails = selectedType === "opt" || selectedType === "drop";
+	const isOpt = selectedType === "opt";
 
 	const startCreating = () => {
 		setSelectedType(availableTypes[0] ?? null);
 		setFormData(accountForm);
 		setCityError(null);
+		setShopTypeError(null);
+		setLinkError(null);
 		setCreating(true);
 	};
 
@@ -63,6 +68,16 @@ const Cabinets = () => {
 			setCityError("Вкажіть місто");
 			toast.error("Вкажіть місто");
 			return;
+		}
+		if (isOpt) {
+			const hasShopType = formData.onlineShop || formData.offlineShop || formData.socialMedia;
+			const hasLink = Boolean(formData.link.trim());
+			setShopTypeError(hasShopType ? null : "Оберіть тип вашого магазину");
+			setLinkError(hasLink ? null : "Вкажіть посилання на ваш сайт або сторінку");
+			if (!hasShopType || !hasLink) {
+				toast.error(!hasShopType ? "Оберіть тип вашого магазину" : "Вкажіть посилання на ваш сайт або сторінку");
+				return;
+			}
 		}
 
 		const payload = {type: selectedType};
@@ -163,32 +178,43 @@ const Cabinets = () => {
 								/>
 							</div>
 							<div className="flex flex-col gap-4">
-								<div className="font-semibold text-md">Тип вашого магазину</div>
-								<Checkbox
-									label="Онлайн магазин"
-									defaultChecked={formData.onlineShop}
-									onChange={(v) => setFormData((prev) => ({...prev, onlineShop: v}))}
-								/>
-								<Checkbox
-									label="Офлайн магазин"
-									defaultChecked={formData.offlineShop}
-									onChange={(v) => setFormData((prev) => ({...prev, offlineShop: v}))}
-								/>
-								<Checkbox
-									label="Сторінка у соц. мережах"
-									defaultChecked={formData.socialMedia}
-									onChange={(v) => setFormData((prev) => ({...prev, socialMedia: v}))}
-								/>
+								<div className="font-semibold text-md">
+									Тип вашого магазину{isOpt && <span className="text-[#E667A4]">*</span>}
+								</div>
+								{[
+									{key: "onlineShop", label: "Онлайн магазин"},
+									{key: "offlineShop", label: "Офлайн магазин"},
+									{key: "socialMedia", label: "Сторінка у соц. мережах"},
+								].map(({key, label}) => (
+									<Checkbox
+										key={key}
+										label={label}
+										defaultChecked={formData[key]}
+										onChange={(v) => {
+											setFormData((prev) => ({...prev, [key]: v}));
+											if (v) setShopTypeError(null);
+										}}
+									/>
+								))}
+								{isOpt && shopTypeError &&
+									<div className="text-sm text-red-500">{shopTypeError}</div>
+								}
 							</div>
 							<div className="flex flex-col gap-2">
-								<div className="font-semibold text-md">Посилання на ваш сайт або сторінку</div>
+								<div className="font-semibold text-md">
+									Посилання на ваш сайт або сторінку{isOpt && <span className="text-[#E667A4]">*</span>}
+								</div>
 								<Input
 									type="text"
 									name="link"
 									value={formData.link}
 									placeholder="MyShop.com"
 									inputClasses="h-[53px] !bg-[#f6f6f6]"
-									onChange={(e) => setFormData((prev) => ({...prev, link: e.target.value}))}
+									onChange={(e) => {
+										setFormData((prev) => ({...prev, link: e.target.value}));
+										if (linkError) setLinkError(null);
+									}}
+									errorMessage={isOpt ? linkError : null}
 								/>
 							</div>
 						</>

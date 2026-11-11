@@ -28,6 +28,8 @@ const RegisterOptCabinetPage = () => {
 	});
 	const [phoneError, setPhoneError] = useState(null);
 	const [fieldErrors, setFieldErrors] = useState({});
+	const [shopTypeError, setShopTypeError] = useState(null);
+	const [linkError, setLinkError] = useState(null);
 
 	const dispatch = useDispatch();
 
@@ -36,6 +38,14 @@ const RegisterOptCabinetPage = () => {
 		setPhoneError(isPhoneValid ? null : "Невірний формат номеру");
 		if (!isPhoneValid) {
 			toast.error("Введіть коректний номер телефону у міжнародному форматі, наприклад +380XXXXXXXXX");
+			return;
+		}
+		const hasShopType = formData.onlineShop || formData.offlineShop || formData.socialMedia;
+		const hasLink = Boolean(formData.link.trim());
+		setShopTypeError(hasShopType ? null : "Оберіть тип вашого магазину");
+		setLinkError(hasLink ? null : "Вкажіть посилання на ваш сайт або сторінку");
+		if (!hasShopType || !hasLink) {
+			toast.error(!hasShopType ? "Оберіть тип вашого магазину" : "Вкажіть посилання на ваш сайт або сторінку");
 			return;
 		}
 		setFieldErrors({});
@@ -100,19 +110,37 @@ const RegisterOptCabinetPage = () => {
 				<div className="flex flex-col gap-[clamp(50px,7vw,99px)] md:gap-0 justify-between w-full">
 					<div className="flex flex-col gap-10">
 						<div className="flex flex-col gap-5">
-							<div className="font-semibold text-md leading-[11px]">Тип вашого магазину</div>
-							<Checkbox label="Онлайн магазин" onChange={(e) => setFormData(prev => ({...prev, ['onlineShop']: !formData.onlineShop}))}/>
-							<Checkbox label="Офлайн магазин" onChange={(e) => setFormData(prev => ({...prev, ['offlineShop']: !formData.offlineShop}))}/>
-							<Checkbox label="Сторінка у соц. мережах" onChange={(e) => setFormData(prev => ({...prev, ['socialMedia']: !formData.socialMedia}))}/>
+							<div className="font-semibold text-md leading-[11px]">Тип вашого магазину*</div>
+							{[
+								{key: "onlineShop", label: "Онлайн магазин"},
+								{key: "offlineShop", label: "Офлайн магазин"},
+								{key: "socialMedia", label: "Сторінка у соц. мережах"},
+							].map(({key, label}) => (
+								<Checkbox
+									key={key}
+									label={label}
+									onChange={(checked) => {
+										setFormData(prev => ({...prev, [key]: checked}));
+										if (checked) setShopTypeError(null);
+									}}
+								/>
+							))}
+							{(shopTypeError || fieldErrors.body) &&
+								<div className="text-sm text-red-500">{shopTypeError || fieldErrors.body}</div>
+							}
 						</div>
 						<div className="flex flex-col gap-5">
-							<div className="font-semibold text-md leading-[16px]">Введіть посилання на ваш сайт або сторінку</div>
+							<div className="font-semibold text-md leading-[16px]">Введіть посилання на ваш сайт або сторінку*</div>
 							<Input
 								value={formData.link}
 								type="text"
 								name="link"
 								placeholder="MyShop.com"
-								onChange={(e) => setFormData(prev => ({...prev, [e.target.name]: e.target.value}))}
+								onChange={(e) => {
+									setFormData(prev => ({...prev, [e.target.name]: e.target.value}));
+									if (linkError) setLinkError(null);
+								}}
+								errorMessage={linkError || fieldErrors.link}
 							/>
 						</div>
 					</div>
