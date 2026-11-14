@@ -26,6 +26,16 @@ if (
 	);
 }
 
+axios.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (error?.response?.status === 503 && error.response.data?.maintenance) {
+			window.location.assign("/maintenance/");
+		}
+		return Promise.reject(error);
+	}
+);
+
 const persistedToken = localStorage.getItem("token");
 if (persistedToken) {
 	axios.defaults.headers.common.Authorization = `Bearer ${persistedToken}`;

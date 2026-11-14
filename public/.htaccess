@@ -1,6 +1,14 @@
+ErrorDocument 503 /maintenance/index.html
+
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase /
+
+	RewriteCond %{DOCUMENT_ROOT}/maintenance.enable -f
+	RewriteCond %{HTTP_COOKIE} !bb_maintenance_bypass=j7Qx2mV9
+	RewriteCond %{REQUEST_URI} !^/(maintenance/.*|robots\.txt|logo\.png|favicon\.ico)$
+	RewriteRule ^ - [R=503,L]
+
 	RewriteRule ^index\.html$ - [L]
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
