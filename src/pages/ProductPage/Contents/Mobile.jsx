@@ -43,8 +43,8 @@ const Mobile = ({
 	return (
 		<div className="flex md:hidden w-full flex-col p-5 pb-[60px] text-[#000E55]">
 			<div className="flex flex-col items-center">
-				<div className="relative w-full flex items-center justify-center mb-6">
-					<img src={product.images} alt="product"/>
+				<div className="relative w-full aspect-square flex items-center justify-center mb-6">
+					<img className="absolute inset-0 w-full h-full object-contain" src={product.images} alt="product" fetchPriority="high"/>
 					{(product.sale || product.new) &&
 						<div className="absolute top-4 right-0 flex flex-col gap-4 z-9">
 							{product.sale && <Tag isSale={true}/>}

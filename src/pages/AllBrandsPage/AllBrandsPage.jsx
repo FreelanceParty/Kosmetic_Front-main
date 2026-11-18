@@ -86,7 +86,7 @@ const AllBrandsPage = () => {
 					<div className="py-[7px]">Бренди</div>
 				</div>
 
-				<div className="flex md:hidden gap-4 pt-[30px] flex-wrap">
+				<div className="flex md:hidden gap-4 pt-[30px] flex-wrap min-h-[74px]">
 					{initLetters.map(letter => (
 						<div
 							key={letter}
@@ -126,7 +126,7 @@ const AllBrandsPage = () => {
 				)}
 			</div>
 
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-x-[clamp(20px,2vw,100px)] max-w-[1100px] mx-0 md:mx-auto">
+			<div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-x-[clamp(20px,2vw,100px)] max-w-[1100px] mx-0 md:mx-auto ${letters.length ? "" : "min-h-screen"}`}>
 				{letters.map(letter => (
 					<div className="flex gap-[34px] pb-6 border-b border-[#E8E8E8] w-full" key={letter}>
 						<div className="text-[#DA469A] text-[40px] leading-[28px] font-semibold w-[30px]">{letter}</div>

@@ -322,7 +322,7 @@ const BrandPage = () => {
 					</div>
 				)}
 				{loading ? (
-					<div className="flex justify-center w-full py-10">
+					<div className="flex justify-center items-center w-full min-h-screen">
 						<Loader/>
 					</div>
 				) : initialProducts !== null && (

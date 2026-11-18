@@ -187,7 +187,7 @@ const ProductPage = () => {
 				</>
 			)}
 			{loading ? (
-				<div className="w-full flex justify-center items-center min-h-[60vh]">
+				<div className="w-full flex justify-center items-center min-h-screen">
 					<Loader/>
 				</div>
 			) : (

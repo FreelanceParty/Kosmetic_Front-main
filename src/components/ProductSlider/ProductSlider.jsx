@@ -18,7 +18,7 @@ const ProductSlider = ({title, products, buttonRoute = null}) => {
 
 	if (!products || products.length === 0) {
 		return (
-			<div className="flex justify-center w-full py-10">
+			<div className="flex justify-center items-center w-full min-h-screen">
 				<Loader/>
 			</div>
 		);

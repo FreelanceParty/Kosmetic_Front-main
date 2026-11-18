@@ -307,7 +307,7 @@ const SearchPage = () => {
 				{searchText !== null && (
 					<div className="flex flex-col items-center gap-10 w-full">
 						{loading ? (
-							<div className="flex justify-center w-full py-10">
+							<div className="flex justify-center items-center w-full min-h-screen">
 								<Loader/>
 							</div>
 						) : currentPageItems?.length > 0 ? (
